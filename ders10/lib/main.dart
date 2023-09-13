@@ -4,6 +4,7 @@ void main() => runApp(MaterialApp(
   home: Scaffold(
     appBar: AppBar(
       title: const Text("Floating Action"),
+      centerTitle: true,
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     bottomNavigationBar: BottomAppBar(

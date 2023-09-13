@@ -12,16 +12,14 @@ class Uygulamam extends StatefulWidget {
 }
 
 class _UygulamamState extends State {
-  TextEditingController _controller = TextEditingController();
-  String _yeniYazi="Hadi Birşeyler Yaz";
+  String _yeniYazi = "Merhaba Flutter";
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text("TextField Uygulaması"),
-          centerTitle: true,
-
         ),
         body: Container(
           padding: const EdgeInsets.only(left: 100, right: 100),
@@ -30,13 +28,16 @@ class _UygulamamState extends State {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(_yeniYazi,
+              Text(
+                _yeniYazi,
                 style: TextStyle(fontSize: 20, color: Colors.blue),
               ),
               TextField(
-                controller: _controller,
-                style: TextStyle(color: Colors.white),
-
+                onChanged: (String TextFieldIcindekiYazi) {
+                  setState(() {
+                    _yeniYazi = TextFieldIcindekiYazi;
+                  });
+                },
 
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -55,20 +56,11 @@ class _UygulamamState extends State {
                 //açılınca drekt içerisine odaklansın istedim
                 cursorColor: Colors.black12,
                 //içerisinde yanıp sönen cursorü siyah yaptım
-
               ),
-              ElevatedButton(onPressed: () {
-                setState(() {
-                  _yeniYazi=_controller.text;
-                });
-
-              }, child: const Text("Değiştir"))
             ],
           ),
         ),
       ),
-      debugShowCheckedModeBanner: false,
-
     );
   }
 }
