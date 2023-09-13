@@ -3,35 +3,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(
     MaterialApp(
-      home: Scaffold(
-        body: AppNavigator(),
-        appBar: AppBar(
-          actions:  [ //içerisine liste alır, iconlar ekledik
-            IconButton(onPressed: (){}, icon: const Icon(Icons.mail)),
-            IconButton(onPressed: (){}, icon: const Icon(Icons.person))
-          ],
-          leading: IconButton(onPressed:(){}, icon: const Icon(Icons.menu) ,),
-          title: const Text("AppBar Örnek"),
-          centerTitle: true,
-          backgroundColor: Colors.blue[300], //arkaplan rengi
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Ana Sayfa',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profil',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Ara',
-            ),
-          ],
-        ),
-      ),
+      home: AppNavigator(),
       debugShowCheckedModeBanner: false,
     ),
   );
@@ -52,7 +24,59 @@ class _AppNavigatorState extends State<AppNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    return _pages[_currentIndex];
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Burada mail iconuna tıklama işlevi ekleyebilirsiniz.
+              // Örneğin, yeni bir sayfa açabilirsiniz.
+            },
+            icon: const Icon(Icons.mail),
+          ),
+          IconButton(
+            onPressed: () {
+              // Burada profil iconuna tıklama işlevi ekleyebilirsiniz.
+              // Örneğin, yeni bir sayfa açabilirsiniz.
+            },
+            icon: const Icon(Icons.person),
+          ),
+        ],
+        leading: IconButton(
+          onPressed: () {
+            // Burada menü iconuna tıklama işlevi ekleyebilirsiniz.
+            // Örneğin, bir yan menü açabilirsiniz.
+          },
+          icon: const Icon(Icons.menu),
+        ),
+        title: const Text("AppBar Örnek"),
+        centerTitle: true,
+        backgroundColor: Colors.blue[300],
+      ),
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Ana Sayfa',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Ara',
+          ),
+        ],
+      ),
+    );
   }
 }
 
