@@ -47,16 +47,36 @@ void main() => runApp(MaterialApp(
         ],
       ),
     ),
-    floatingActionButton: FloatingActionButton.extended(
-      onPressed: () {},
-      heroTag: "AnaSayfa",
-      backgroundColor: Colors.deepPurple,
-      foregroundColor: Colors.white,
-      label: Text(
-        "Merhaba Flutter",
-        style: TextStyle(fontSize: 20),
-      ),
-      icon: Icon(Icons.add_alert),
+    floatingActionButton: Wrap(
+      direction: Axis.horizontal,
+      children: <Widget>[
+        Container(
+            margin: const EdgeInsets.all(15),
+            child: FloatingActionButton(
+              onPressed: () {
+                //action code for button 1
+              },
+              child: const Icon(Icons.add),
+            )), //button first
+
+        Container(
+            margin: const EdgeInsets.all(15),
+            child: FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: Colors.green,
+              child: const Icon(Icons.add),
+            )),
+
+        Container(
+            margin: const EdgeInsets.all(15),
+            child: FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: Colors.deepOrangeAccent,
+              child: const Icon(Icons.add),
+            )),
+
+        // Add more buttons here
+      ],
     ),
   ),
   debugShowCheckedModeBanner: false,
