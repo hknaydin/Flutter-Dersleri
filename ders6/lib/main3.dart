@@ -16,6 +16,7 @@ class AppNavigator extends StatefulWidget {
 
 class _AppNavigatorState extends State<AppNavigator> {
   int _currentIndex = 0;
+  String _pageTitle = "Ana Sayfa"; // Başlangıçta "Ana Sayfa" metni
   final List<Widget> _pages = [
     HomePage(),
     ProfilePage(),
@@ -49,7 +50,7 @@ class _AppNavigatorState extends State<AppNavigator> {
           },
           icon: const Icon(Icons.menu),
         ),
-        title: const Text("AppBar Örnek"),
+        title: Text("AppBar Örnek"), // Dinamik olarak değişen metni kullan
         centerTitle: true,
         backgroundColor: _getBackgroundColor(), // AppBar'ın arka plan rengi
         elevation: 2, // Border eklemek için elevation değerini ayarlayabilirsiniz
@@ -61,7 +62,7 @@ class _AppNavigatorState extends State<AppNavigator> {
           ),
           Center(
             child: Text(
-              "Ana Sayfa",
+              _pageTitle,
               style: TextStyle(fontSize: 24),
             ),
           ),
@@ -72,6 +73,14 @@ class _AppNavigatorState extends State<AppNavigator> {
         onTap: (index) {
           setState(() {
             _currentIndex = index;
+            // Sayfa değiştikçe _pageTitle'i güncelle
+            if (index == 0) {
+              _pageTitle = "Ana Sayfa";
+            } else if (index == 1) {
+              _pageTitle = "Profil";
+            } else if (index == 2) {
+              _pageTitle = "Ara";
+            }
           });
         },
         items: const <BottomNavigationBarItem>[
