@@ -51,9 +51,22 @@ class _AppNavigatorState extends State<AppNavigator> {
         ),
         title: const Text("AppBar Örnek"),
         centerTitle: true,
-        backgroundColor: Colors.blue[300],
+        backgroundColor: _getBackgroundColor(), // AppBar'ın arka plan rengi
+        elevation: 2, // Border eklemek için elevation değerini ayarlayabilirsiniz
       ),
-      body: _pages[_currentIndex],
+      body: Stack(
+        children: [
+          Container(
+            color: _getBackgroundColor(), // Ortadaki metinlerin arka plan rengi
+          ),
+          Center(
+            child: Text(
+              "Ana Sayfa",
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -78,13 +91,27 @@ class _AppNavigatorState extends State<AppNavigator> {
       ),
     );
   }
+
+  Color? _getBackgroundColor() {
+    // İstenilen arka plan rengini döndüren işlev
+    switch (_currentIndex) {
+      case 0:
+        return Colors.blue[300];
+      case 1:
+        return Colors.green[300];
+      case 2:
+        return Colors.orange[300];
+      default:
+        return Colors.blue[300];
+    }
+  }
 }
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Ana Sayfa"),
+    return Container(
+      color: Colors.blue[300], // Ana Sayfa içeriğinin arka plan rengi
     );
   }
 }
@@ -92,8 +119,8 @@ class HomePage extends StatelessWidget {
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Profil Sayfası"),
+    return Container(
+      color: Colors.green[300], // Profil Sayfası içeriğinin arka plan rengi
     );
   }
 }
@@ -101,8 +128,8 @@ class ProfilePage extends StatelessWidget {
 class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Ara Sayfası"),
+    return Container(
+      color: Colors.orange[300], // Ara Sayfası içeriğinin arka plan rengi
     );
   }
 }
