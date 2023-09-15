@@ -1,8 +1,7 @@
-// Anasayfa
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(HomePage());
+void main() => runApp(MaterialApp(home: HomePage()));
 
 class HomePage extends StatelessWidget {
   @override
@@ -26,7 +25,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// İkinci sayfa
 class SecondPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
