@@ -5,13 +5,14 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final title = 'GeeksForGeeks';
+    final title = '';
 
     return MaterialApp(
       title: title,
       home: Scaffold(
         appBar: AppBar(
           title: Text(title),
+          centerTitle: true,
           backgroundColor: Colors.green,
         ),
         body: Container(
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                        'assets/images/aquaman.png'),
+                        'assets/images/kapan.jpeg'),
                     fit: BoxFit.fill,
                   ),
                   shape: BoxShape.rectangle,
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                        'assets/images/greenlantern.webp'),
+                        'assets/images/kapan.jpeg'),
                     fit: BoxFit.fill,
                   ),
                   shape: BoxShape.rectangle,
@@ -50,31 +51,7 @@ class MyApp extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                        'assets/images/batman.jpg'),
-                    fit: BoxFit.fill,
-                  ),
-                  shape: BoxShape.rectangle,
-                ),
-              ),
-              Container(
-                height: 480.0,
-                width: 240.0,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        'assets/images/superman.jpg'),
-                    fit: BoxFit.fill,
-                  ),
-                  shape: BoxShape.rectangle,
-                ),
-              ),
-              Container(
-                height: 480.0,
-                width: 240.0,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        'assets/images/wonderwomen.jpg'),
+                        'assets/images/kapan.jpeg'),
                     fit: BoxFit.fill,
                   ),
                   shape: BoxShape.rectangle,
@@ -85,6 +62,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
