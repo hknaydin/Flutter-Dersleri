@@ -29,10 +29,6 @@ class ExtansionCardClass extends StatelessWidget {
         // gölgelendirme
         elevation: 0,
         // baştaki Icon
-        leading: Icon(
-          Icons.menu,
-          color: Color(0xff329D9C),
-        ),
         //Başlık
         title: Text(
           "Expansion Card Kütüphanesi",
@@ -43,6 +39,84 @@ class ExtansionCardClass extends StatelessWidget {
         // Arka plan rengi
         backgroundColor: Color(0xff4D5B5D),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: const EdgeInsets.all(0),
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 0.0),
+              child: const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                ),
+                child: UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(color: Colors.green),
+                  accountName: Text(
+                    "Abhishek Mishra",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  accountEmail: Text("abhishekm977@gmail.com"),
+                  currentAccountPictureSize: Size.square(40),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 165, 255, 137),
+                    child: Text(
+                      "A",
+                      style: TextStyle(fontSize: 20.0, color: Colors.blue),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text(' My Profile '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.book),
+              title: const Text(' My Course '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.workspace_premium),
+              title: const Text(' Go Premium '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.video_label),
+              title: const Text(' Saved Videos '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text(' Edit Profile '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            Divider(height: 1.0, color: Colors.grey),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('LogOut'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+
       body: ListView(
         children: [
           // Expansion Card Fonksiyonu
@@ -86,7 +160,7 @@ class ExtansionCardClass extends StatelessWidget {
         ),
         // İlk başta bulunacak Widget(İstedeiğiniz şeyi ekleyebilirsiniz. Ben resim ekledim.)
         leading: Image.asset(
-          "assets/$logo.png",
+          "assets/images/$logo.png",
           height: 40,
         ),
         // Sonunda bulunacak Widget
@@ -109,7 +183,7 @@ class ExtansionCardClass extends StatelessWidget {
                 // Merkeze bir logo
                 Center(
                   child: Image.asset(
-                    "assets/$logo.png",
+                    "assets/images/$logo.png",
                     height: 100,
                   ),
                 ),
