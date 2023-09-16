@@ -1,0 +1,6 @@
+{
+  "login": "Giriş Yap",,
+  "hello": "Merhaba {kullanici_adi}",
+  "locale": "tr",
+  "helloWorld": "Merhaba, Dünya!"
+}

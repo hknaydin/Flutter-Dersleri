@@ -1,0 +1,5 @@
+{
+  "login": "Login",
+  "hello": "Hello {username}",
+  "locale": "en"
+}

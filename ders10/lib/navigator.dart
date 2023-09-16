@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(home: HomePage()));
+void main() => runApp(HomePage());
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+        title: "appTitle",
+        home: Scaffold(
       appBar: AppBar(
         title: Text('Ana Sayfa'),
       ),
@@ -21,6 +23,7 @@ class HomePage extends StatelessWidget {
           },
         ),
       ),
+    ),
     );
   }
 }
