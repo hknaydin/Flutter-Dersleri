@@ -84,19 +84,37 @@ class GirisSayfasiState extends State<LoginScreen> {
         floatingActionButton:
             Column(mainAxisAlignment: MainAxisAlignment.end, children: [
           FloatingActionButton(
-            child: Icon(Icons.delete),
+            backgroundColor: Colors.white,
+            elevation: 0,
             onPressed: () {
               //...
             },
             heroTag: null,
+            child: Align(
+              alignment: Alignment.center,
+              child: SvgPicture.asset(
+                'assets/images/ic_questions.svg',
+                width: 14.sp,
+                height: 14.sp,
+              ),
+            ),
           ),
           SizedBox(
-            height: 10.sp,
+            height: 6.sp,
           ),
           FloatingActionButton(
-            child: Icon(Icons.star),
+            backgroundColor: Colors.white,
+            elevation: 0,
             onPressed: () => print("object"),
             heroTag: null,
+            child: Align(
+              alignment: Alignment.center,
+              child: SvgPicture.asset(
+                'assets/images/ic_settings.svg',
+                width: 14.sp,
+                height: 14.sp,
+              ),
+            ),
           )
         ]),
         body: SingleChildScrollView(
