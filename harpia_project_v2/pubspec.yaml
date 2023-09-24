@@ -41,6 +41,8 @@ dependencies:
   get_storage: ^2.0.3
   package_info_plus: ^4.1.0
   dropdown_button2: ^2.3.9
+  carousel_slider: ^4.2.1
+  flutter_randomcolor: ^1.0.14
   fluttertoast:
 
   flutter_localizations:

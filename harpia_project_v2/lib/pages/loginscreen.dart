@@ -5,10 +5,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:harpia_project/pages/about_project_and_team.dart';
 import 'package:harpia_project/utils/my_shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../core/ResponsiveDesign.dart';
+import '../utils/CustomSnackBar.dart';
 import '../utils/ProductColor.dart';
 import '../utils/custom_widgets.dart';
 
@@ -32,14 +34,13 @@ class GirisSayfasiState extends State<LoginScreen> {
     buildSignature: 'Unknown',
     installerStore: 'Unknown',
   );
-  String _selected = "1";
+  Icon? selectedIcon;
   final List<Map> _myJson = [
     {"id": '1', "image": "assets/images/countries/flag_tr.png"},
     {"id": '2', "image": "assets/images/countries/flag_australia.png"},
     {"id": '3', "image": "assets/images/countries/flag_france.png"},
     {"id": '4', "image": "assets/images/countries/flag_china.png"},
   ];
-  List<String> dropdownItems = ['', '', '', ''];
 
   TextEditingController tfUsername = TextEditingController();
   TextEditingController tfPassword = TextEditingController();
@@ -87,20 +88,23 @@ class GirisSayfasiState extends State<LoginScreen> {
             backgroundColor: Colors.white,
             elevation: 0,
             onPressed: () {
-              //...
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => About()),
+              );
             },
             heroTag: null,
             child: Align(
               alignment: Alignment.center,
               child: SvgPicture.asset(
                 'assets/images/ic_questions.svg',
-                width: 14.sp,
-                height: 14.sp,
+                width: 35.sp,
+                height: 35.sp,
               ),
             ),
           ),
           SizedBox(
-            height: 6.sp,
+            height: 1.sp,
           ),
           FloatingActionButton(
             backgroundColor: Colors.white,
@@ -111,8 +115,8 @@ class GirisSayfasiState extends State<LoginScreen> {
               alignment: Alignment.center,
               child: SvgPicture.asset(
                 'assets/images/ic_settings.svg',
-                width: 14.sp,
-                height: 14.sp,
+                width: 35.sp,
+                height: 35.sp,
               ),
             ),
           )
@@ -274,34 +278,41 @@ class GirisSayfasiState extends State<LoginScreen> {
           ),
           Expanded(flex: 3, child: Container()),
           Expanded(
-            flex: 1,
-            child: Container(
-              color: Colors
-                  .transparent, // Arka plan rengini veya görüntüsünü kaldırır
-              child: DropdownButton<String>(
-                //value: selectedItem,
-                iconSize: 0.0,
+              flex: 1,
+              child: DropdownButton<Icon>(
+                value: selectedIcon,
                 elevation: 0,
-                items: dropdownItems.map((String item) {
-                  return DropdownMenuItem<String>(
-                    value: item,
+                isDense: false,
+                onChanged: (Icon? newValue) {
+                  selectedIcon = newValue;
+                },
+                items: [
+                  DropdownMenuItem(
+                    value: Icon(Icons.flag),
                     child: Row(
                       children: [
-                        Icon(Icons
-                            .star), // İstediğiniz ikonu burada kullanabilirsiniz
-                        SizedBox(width: 7.0),
+                        Icon(Icons.flag),
                       ],
                     ),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    //selectedItem = newValue!;
-                  });
-                },
-              ),
-            ),
-          )
+                  ),
+                  DropdownMenuItem(
+                    value: Icon(Icons.star),
+                    child: Row(
+                      children: [
+                        Icon(Icons.star),
+                      ],
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: Icon(Icons.favorite),
+                    child: Row(
+                      children: [
+                        Icon(Icons.favorite),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
         ],
       ),
     );
@@ -571,10 +582,13 @@ class LoginButton extends StatelessWidget {
 
   void loginProcess(BuildContext context) async {
     bool controlResult = formKey.currentState!.validate();
+    showInvalidUsernameOrPassword(context: context, msg: "error");
   }
 
   void showInvalidUsernameOrPassword(
-      {required BuildContext context, required String msg}) {}
+      {required BuildContext context, required String msg}) {
+    ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar.getSnackBar(msg));
+  }
 }
 
 class _TextFieldInputLength {
