@@ -10,6 +10,7 @@ import 'package:harpia_project/utils/my_shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../core/ResponsiveDesign.dart';
+import '../setting/setting_admin.dart';
 import '../utils/CustomSnackBar.dart';
 import '../utils/ProductColor.dart';
 import '../utils/custom_widgets.dart';
@@ -109,7 +110,12 @@ class GirisSayfasiState extends State<LoginScreen> {
           FloatingActionButton(
             backgroundColor: Colors.white,
             elevation: 0,
-            onPressed: () => print("object"),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingAdmin()),
+              );
+            },
             heroTag: null,
             child: Align(
               alignment: Alignment.center,

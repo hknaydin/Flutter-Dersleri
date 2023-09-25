@@ -1,6 +1,7 @@
 {
   "locale": "en",
   "login": "Login",
+  "login_successful": "Login Successful",
   "hello": "Hello {username}",
   "app_name": "Harpia",
   "title_activity_splash_screen": "Harpia",

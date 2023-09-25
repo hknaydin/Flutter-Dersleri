@@ -1,6 +1,7 @@
 {
   "locale": "zh",
   "app_name": "Harpia",
+  "login_successful": "登录成功",
   "title_activity_splash_screen": "Harpia",
   "hakan_aydin": "© Copyright All rights reserved",
   "developer": "开发商 : Hakan AYDIN",

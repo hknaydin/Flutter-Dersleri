@@ -1,6 +1,7 @@
 {
   "locale": "fr",
   "app_name": "Harpia",
+  "login_successful": "Connexion réussie",
   "title_activity_splash_screen": "Harpia",
   "hakan_aydin": "Tous droits réservés",
   "developer": "Développeur : Hakan AYDIN",

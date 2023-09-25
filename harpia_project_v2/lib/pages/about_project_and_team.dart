@@ -168,18 +168,7 @@ class AboutState extends State<About> {
                   ],
                 ),
               ),
-              CardField_categories(
-                  size,
-                  Colors.blue,
-                  const Icon(
-                    Icons.person_2,
-                    color: Colors.white,
-                  ),
-                  'UX Design - Android Design',
-                  'Hakan Aydın',
-                  "",
-                  "",
-                  context),
+              CardField_categories(size, 'Hakan Aydın', "", "", context),
               //Alt2(size: size),
             ],
           ),
@@ -512,8 +501,8 @@ CardField_menu(Size size, Color color, Icon icon, String title, String subtitle,
   );
 }
 
-CardField_categories(Size size, Color color, Icon icon, String title,
-    String subtitle, String city, String dateOfStart, BuildContext context) {
+CardField_categories(Size size, String subtitle, String city,
+    String dateOfStart, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 20),
     child: Card(
@@ -533,18 +522,26 @@ CardField_categories(Size size, Color color, Icon icon, String title,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildCategoryItem(icon, "project".tr()),
-                _buildCategoryItem(icon, "SSKM"),
-                _buildCategoryItem(icon, "KRS"),
+                _buildCategoryItem(
+                    'assets/images/categories/ic_school_red_24dp.svg',
+                    "project".tr()),
+                _buildCategoryItem(
+                    'assets/images/categories/ic_public_red_24dp.svg', "SSKM"),
+                _buildCategoryItem(
+                    'assets/images/categories/ic_nature_red_24dp.svg', "KRS"),
               ],
             ),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildCategoryItem(icon, "SPP"),
-                _buildCategoryItem(icon, "Library"),
-                _buildCategoryItem(icon, "Event"),
+                _buildCategoryItem(
+                    'assets/images/categories/ic_local_activity_red_24dp.svg',
+                    "SPP"),
+                _buildCategoryItem(
+                    'assets/images/categories/ic_note_red_24dp.svg', "Library"),
+                _buildCategoryItem(
+                    'assets/images/categories/ic_domain_red_24dp.svg', "Event"),
               ],
             ),
           ],
@@ -554,16 +551,19 @@ CardField_categories(Size size, Color color, Icon icon, String title,
   );
 }
 
-Widget _buildCategoryItem(Icon icon, String title) {
+Widget _buildCategoryItem(String imagePath, String title) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       CircleAvatar(
-        backgroundColor:
-            Colors.grey, // İstediğiniz resmi buraya ekleyebilirsiniz
-        radius: 24,
+        radius: 25,
+        backgroundColor: Colors.white10,
+        child: SvgPicture.asset(
+          imagePath,
+          color: Colors.redAccent,
+        ),
       ),
-      SizedBox(height: 4),
+      const SizedBox(height: 4),
       Text(
         title,
         textAlign: TextAlign.center,
