@@ -48,4 +48,8 @@ class ProductColor {
   final Color linkedinColor = const Color(0xff0085E0);
   final Color githubColor = const Color(0xff202020);
   final Color googleColor = const Color(0xffDF4A32);
+  static final Color buttonColor = Colors.deepOrange.shade600;
+  static final Color buttonHighlightColor = Colors.deepOrange.shade400;
+  static const Color upperGradientColor = Colors.orangeAccent;
+  static final Color lowerGradientColor = Colors.deepOrange.shade800;
 }

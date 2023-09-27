@@ -4,6 +4,9 @@ class MySharedPreferences {
   static String LOCALNAME = "localName";
   static String ADMINUSERNAME = "username";
   static String ADMINUSERNAMEPASSWORD = "userpassword";
+  static String HOSPITALNAME = "hospitalname";
+  static String HOSPITALINTERNALIP = "hospitalinternalip";
+  static String HOSPITALEXTERNALIP = "hospitalexternalip";
 
   static Future<Null> setLocalName(String localName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -38,7 +41,45 @@ class MySharedPreferences {
     String userPassword;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userPassword =
-        prefs.getString(MySharedPreferences.ADMINUSERNAMEPASSWORD) ?? '-1';
+        prefs.getString(MySharedPreferences.ADMINUSERNAMEPASSWORD) ?? 'empty';
     return userPassword;
+  }
+
+  static void setHospitalName(String hospitalName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(MySharedPreferences.HOSPITALNAME, hospitalName);
+  }
+
+  static Future<String> getHospitalName() async {
+    String hospitalName;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    hospitalName = prefs.getString(MySharedPreferences.HOSPITALNAME) ?? 'empty';
+    return hospitalName;
+  }
+
+  static void setHospitalInternalIp(String hospitalInternalIp) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(MySharedPreferences.HOSPITALINTERNALIP, hospitalInternalIp);
+  }
+
+  static Future<String> getHospitalInternalIp() async {
+    String hospitalInternalIp;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    hospitalInternalIp =
+        prefs.getString(MySharedPreferences.HOSPITALINTERNALIP) ?? 'empty';
+    return hospitalInternalIp;
+  }
+
+  static void setHospitalExternalIp(String hospitalExternalIp) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(MySharedPreferences.HOSPITALEXTERNALIP, hospitalExternalIp);
+  }
+
+  static Future<String> getHospitalExteralIp() async {
+    String hospitalExternalIp;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    hospitalExternalIp =
+        prefs.getString(MySharedPreferences.HOSPITALEXTERNALIP) ?? 'empty';
+    return hospitalExternalIp;
   }
 }

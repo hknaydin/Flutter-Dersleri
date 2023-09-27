@@ -1,8 +1,8 @@
-import 'dart:html';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:harpia_project/setting/setting_ip_enter.dart';
 import 'package:harpia_project/utils/Constant.dart';
 
 import '../core/ResponsiveDesign.dart';
@@ -104,17 +104,10 @@ class SettingAdminState extends State<SettingAdmin> {
                                   left: 16.w, right: 16.w, top: 5.w),
                               child: Column(
                                 children: [
-                                  UsernameInputTextField(
-                                      controller: tfUsername),
+                                  UserNameInputField(),
                                   SizedBox(height: 12.h),
-                                  PasswordInputTextField(
-                                    controller: tfPassword,
-                                  ),
-                                  LoginButton(
-                                    formKey: formKey,
-                                    tfUsername: tfUsername,
-                                    tfPassword: tfPassword,
-                                  ),
+                                  PasswordInputField(),
+                                  LoginButtonField(),
                                   SizedBox(height: 16.h),
                                   if (_isLoginSuccessful)
                                     Text(
@@ -158,108 +151,98 @@ class SettingAdminState extends State<SettingAdmin> {
       ),
     );
   }
-}
 
-class UsernameInputTextField extends StatelessWidget {
-  final TextEditingController controller;
+  Padding UserNameInputField() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 4.sp),
+      child: TextFormField(
+        maxLength: Constat.max,
+        validator: (data) {
+          if (data!.isEmpty) {
+            return "username_is_required".tr();
+          }
 
-  UsernameInputTextField({required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return InputTextFieldPadding(
-      widget: InputTextFormField(
-        hint: "Username",
-        textEditController: controller,
-        obscureText: false,
-        type: true,
+          // return null;
+        },
+        decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.person,
+              color: Colors.blue,
+            ),
+            labelText: "UserName",
+            labelStyle: TextStyle(
+                fontSize: ResponsiveDesign.getScreenWidth() / 23,
+                color: ProductColor.black,
+                fontWeight: FontWeight.bold),
+            hintText: "UserName",
+            hintStyle:
+                TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 20),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: ProductColor.darkBlue)),
+            filled: true,
+            fillColor: ProductColor.white,
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+        style: TextStyle(
+            fontSize: ResponsiveDesign.getScreenWidth() / 22,
+            color: ProductColor.darkBlue),
       ),
     );
   }
-}
 
-class PasswordInputTextField extends StatelessWidget {
-  final TextEditingController controller;
-
-  PasswordInputTextField(
-      {required this.controller}); //({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InputTextFieldPadding(
-        widget: InputTextFormField(
-      hint: "Password",
-      textEditController: controller,
-      obscureText: true,
-      type: false,
-    ));
-  }
-}
-
-class InputTextFieldPadding extends StatelessWidget {
-  final StatelessWidget widget;
-
-  const InputTextFieldPadding({super.key, required this.widget});
-
-  @override
-  Widget build(BuildContext context) {
+  Padding PasswordInputField() {
     return Padding(
-      padding: EdgeInsets.only(
-          left: ResponsiveDesign.getScreenWidth() / 30,
-          right: ResponsiveDesign.getScreenWidth() / 30,
-          bottom: ResponsiveDesign.getScreenWidth() / 25),
-      child: widget,
+      padding: EdgeInsets.symmetric(horizontal: 8.sp),
+      child: TextFormField(
+        maxLength: Constat.max,
+        obscureText: isVisible,
+        validator: (data) {
+          if (data!.isEmpty) {
+            return "password_is_required".tr();
+          }
+          // return null;
+        },
+        decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.lock,
+              size: 20.0, // İkon boyutunu belirle
+              color: Colors.blue,
+            ),
+            suffixIcon: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isVisible = !isVisible;
+                  });
+                },
+                child: Icon(Icons.visibility)),
+            labelText: "Password",
+            labelStyle: TextStyle(
+                fontSize: ResponsiveDesign.getScreenWidth() / 23,
+                color: ProductColor.black,
+                fontWeight: FontWeight.bold),
+            hintText: "Password",
+            hintStyle:
+                TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 20),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: ProductColor.darkBlue)),
+            filled: true,
+            fillColor: ProductColor.white,
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+        style: TextStyle(
+            fontSize: ResponsiveDesign.getScreenWidth() / 22,
+            color: ProductColor.darkBlue),
+      ),
     );
   }
-}
 
-class InputTextFormField extends StatelessWidget {
-  final String hint;
-  final TextEditingController textEditController;
-  final bool obscureText;
-  final bool type;
-
-  const InputTextFormField(
-      {required this.hint,
-      required this.textEditController,
-      required this.obscureText,
-      required this.type});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      maxLength: Constat.max,
-      controller: textEditController,
-      obscureText: obscureText,
-      validator: (data) {
-        if (data!.isEmpty) {
-          return "Please enter $hint";
-        }
-        // return null;
-      },
-      decoration: InputDecoration(
-          prefixIcon: Icon(
-            type == true ? Icons.person : Icons.lock,
-            color: Colors.blue,
-          ),
-          labelText: hint,
-          labelStyle: TextStyle(
-              fontSize: ResponsiveDesign.getScreenWidth() / 23,
-              color: ProductColor.black,
-              fontWeight: FontWeight.bold),
-          hintText: hint,
-          hintStyle:
-              TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 20),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              borderSide: BorderSide(color: ProductColor.darkBlue)),
-          filled: true,
-          fillColor: ProductColor.white,
-          border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)))),
-      style: TextStyle(
-          fontSize: ResponsiveDesign.getScreenWidth() / 22,
-          color: ProductColor.darkBlue),
+  LoginButton LoginButtonField() {
+    return LoginButton(
+      formKey: formKey,
+      tfUsername: tfUsername,
+      tfPassword: tfPassword,
     );
   }
 }
@@ -276,24 +259,29 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: ResponsiveDesign.getScreenWidth() / 1.5,
-        height: ResponsiveDesign.getScreenHeight() / 15,
+        width: 100.w,
+        height: 50.h,
         child: ElevatedButton(
             onPressed: () {
               loginProcess(context);
             },
             style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.sp),
+                        side: BorderSide(color: Colors.pink))),
                 backgroundColor:
                     MaterialStateColor.resolveWith((states) => Colors.pink),
                 foregroundColor:
                     MaterialStateColor.resolveWith((states) => Colors.white)),
-            child: Text("login",
+            child: Text('login'.tr(),
                 style: TextStyle(
                     fontSize: ResponsiveDesign.getScreenWidth() / 20))));
   }
 
-  void loginProcess(BuildContext context) async {
+  void loginProcess(BuildContext context) {
     bool controlResult = formKey.currentState!.validate();
+
     String username = tfUsername.text.trim();
     String password = tfPassword.text.trim();
 
@@ -302,6 +290,9 @@ class LoginButton extends StatelessWidget {
           context: context, msg: "login_successful".tr());
       MySharedPreferences.setAdminUserName(username);
       MySharedPreferences.setAdminUserPassword(password);
+
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const SettingIpEnter()));
     }
   }
 
