@@ -9,6 +9,7 @@
   "password": "密码",
   "prompt_email": "邮件",
   "create_new": "点击注册",
+  "username_or_password_error": "用户名或密码无效",
   "forget_password": "<u>我忘记了我的密码?</u>",
   "prompt_password": "密码",
   "login": "入口",

@@ -169,12 +169,12 @@ class SettingAdminState extends State<SettingAdmin> {
               Icons.person,
               color: Colors.blue,
             ),
-            labelText: "UserName",
+            labelText: "prompt_email".tr(),
             labelStyle: TextStyle(
                 fontSize: ResponsiveDesign.getScreenWidth() / 23,
                 color: ProductColor.black,
                 fontWeight: FontWeight.bold),
-            hintText: "UserName",
+            hintText: "prompt_email".tr(),
             hintStyle:
                 TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 20),
             focusedBorder: OutlineInputBorder(
@@ -216,12 +216,12 @@ class SettingAdminState extends State<SettingAdmin> {
                   });
                 },
                 child: Icon(Icons.visibility)),
-            labelText: "Password",
+            labelText: "password".tr(),
             labelStyle: TextStyle(
                 fontSize: ResponsiveDesign.getScreenWidth() / 23,
                 color: ProductColor.black,
                 fontWeight: FontWeight.bold),
-            hintText: "Password",
+            hintText: "password".tr(),
             hintStyle:
                 TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 20),
             focusedBorder: OutlineInputBorder(
@@ -279,20 +279,27 @@ class LoginButton extends StatelessWidget {
                     fontSize: ResponsiveDesign.getScreenWidth() / 20))));
   }
 
-  void loginProcess(BuildContext context) {
+  Future<void> loginProcess(BuildContext context) async {
     bool controlResult = formKey.currentState!.validate();
 
     String username = tfUsername.text.trim();
     String password = tfPassword.text.trim();
+    print("username: " + username);
+    print("pass: " + password);
 
-    if (controlResult && username == "admin" && password == "1234") {
+    showInvalidUsernameOrPassword(context: context, msg: username + password);
+    if (username == "admin" && password == "1234") {
       showInvalidUsernameOrPassword(
           context: context, msg: "login_successful".tr());
       MySharedPreferences.setAdminUserName(username);
       MySharedPreferences.setAdminUserPassword(password);
-
+      // Delayed navigation to the next page
+      await Future.delayed(Duration(seconds: 2)); // Delay for 2 seconds
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const SettingIpEnter()));
+    } else {
+      showInvalidUsernameOrPassword(
+          context: context, msg: "username_or_password_error".tr());
     }
   }
 

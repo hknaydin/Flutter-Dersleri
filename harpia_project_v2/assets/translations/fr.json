@@ -9,6 +9,7 @@
   "password": "Mot de passe",
   "prompt_email": "Poster",
   "create_new": "Appuyez pour vous inscrire",
+  "username_or_password_error": "Le nom d'utilisateur ou le mot de passe n'est pas valide",
   "forget_password": "<u>J'ai oublié mon mot de passe ?</u>",
   "prompt_password": "Mot de passe",
   "login": "Entrée",

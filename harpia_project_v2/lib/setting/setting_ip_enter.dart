@@ -3,8 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:harpia_project/utils/Constant.dart';
+import 'package:harpia_project/utils/Validation.dart';
 
 import '../core/ResponsiveDesign.dart';
+import '../pages/loginscreen.dart';
 import '../utils/CustomSnackBar.dart';
 import '../utils/ProductColor.dart';
 import '../utils/my_shared_preferences.dart';
@@ -49,6 +51,7 @@ class SettingIpEnterState extends State<SettingIpEnter> {
       tfHospitalName.text = hospitalName;
       tfInternalIp.text = internalIp;
       tfExternalIp.text = externalIp;
+      print("tfHospitalName: " + tfHospitalName.text);
     });
   }
 
@@ -364,7 +367,26 @@ class SaveIpInformation extends StatelessWidget {
     String hospitalName = tfHospitalName.text.trim();
     String hospitalInternalIp = tfInternalIp.text.trim();
     String hospitalExternalIp = tfExternalIp.text.trim();
+
+    if (!Validation().validateIpAddress(hospitalInternalIp)) {
+      showInvalidUsernameOrPassword(msg: hospitalExternalIp, context: context);
+      return;
+    }
+
+    if (!Validation().validateIpAddress(hospitalExternalIp)) {
+      showInvalidUsernameOrPassword(msg: hospitalExternalIp, context: context);
+      return;
+    }
+    MySharedPreferences.setHospitalName(hospitalName);
+    MySharedPreferences.setHospitalInternalIp(hospitalInternalIp);
+    MySharedPreferences.setHospitalExternalIp(hospitalExternalIp);
+
     //showInvalidUsernameOrPassword(msg: hospitalExternalIp, context: context);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
   }
 
   void showInvalidUsernameOrPassword(

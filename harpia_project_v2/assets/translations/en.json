@@ -10,6 +10,7 @@
   "step_by_step": "Harpia Danışmanlık ve Mühendislik Hizmetleri",
   "password": "Password",
   "prompt_email": "Email",
+  "username_or_password_error": "Username or password is invalid",
   "create_new": "Click here for register",
   "forget_password": "<u>Forget Password?</u>",
   "prompt_password": "Password",

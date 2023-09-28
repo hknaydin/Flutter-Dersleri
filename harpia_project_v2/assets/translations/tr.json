@@ -13,6 +13,7 @@
   "prompt_password": "Şifre",
   "login": "Giriş",
   "error_invalid_email": "Bu e-posta adresi geçersiz",
+  "username_or_password_error": "Kullanıcı Adı veya şifre geçersiz",
   "name": "Ad",
   "register": "Kayıt Ol",
   "not_register": "Henüz Kayıtlı Değil misiniz?",
