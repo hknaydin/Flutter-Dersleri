@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class RouteGrey extends StatelessWidget {
-  static String routeName = '/routeGrey';
+class RegisterPage extends StatefulWidget {
+  @override
+  State<RegisterPage> createState() => RegisterPageState();
+}
+
+class RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey,
-      appBar: AppBar(title: Text('Route Grey')),
-    );
+    // TODO: implement build
+    throw UnimplementedError();
   }
 }

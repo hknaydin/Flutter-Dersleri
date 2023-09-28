@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:harpia_project/pages/about_project_and_team.dart';
+import 'package:harpia_project/pages/register.dart';
 import 'package:harpia_project/utils/my_shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -167,15 +168,22 @@ class GirisSayfasiState extends State<LoginScreen> {
                                   fontSize: 10.sp,
                                   fontWeight: FontWeight.bold)),
                           Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              "sign_up_now".tr(),
-                              style: GoogleFonts.quicksand(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.pink),
-                            ),
-                          )
+                              padding: const EdgeInsets.only(left: 10),
+                              child: GestureDetector(
+                                onTap: () {
+                                  // Kayıt sayfasına yönlendirme işlemi
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => RegisterPage()));
+                                },
+                                child: Text(
+                                  "sign_up_now".tr(),
+                                  style: GoogleFonts.quicksand(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.pink,
+                                  ),
+                                ),
+                              ))
                         ],
                       ),
                     ),
