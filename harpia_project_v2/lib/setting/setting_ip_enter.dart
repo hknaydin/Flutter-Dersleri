@@ -20,6 +20,7 @@ class SettingIpEnter extends StatefulWidget {
 
 bool isVisible = false;
 bool _isLoginSuccessful = false;
+String hospitalName = "", hospitalInternalIp = "", hospitalExternalIp = "";
 
 class SettingIpEnterState extends State<SettingIpEnter> {
   TextEditingController tfHospitalName = TextEditingController();
@@ -60,20 +61,19 @@ class SettingIpEnterState extends State<SettingIpEnter> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Stack(
-          children: [
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/header_login.png'),
-                  fit: BoxFit.fill,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/header_login.png'),
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
-            ),
-            Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
+              Center(
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -108,14 +108,14 @@ class SettingIpEnterState extends State<SettingIpEnter> {
                             ),
                             Padding(
                               padding: EdgeInsets.only(
-                                  left: 16.w, right: 16.w, top: 5.w),
+                                  left: 5.w, right: 5.w, top: 5.w),
                               child: Column(
                                 children: [
-                                  HospitalNameInputTextField(),
+                                  HospitalNameInputTextField(tfHospitalName),
                                   SizedBox(height: 12.h),
-                                  InternalIpInputTextField(),
+                                  InternalIpInputTextField(tfInternalIp),
                                   SizedBox(height: 12.h),
-                                  ExternalIpInputTextField(),
+                                  ExternalIpInputTextField(tfExternalIp),
                                   SaveIpInformation(
                                     formKey: formKey,
                                     tfHospitalName: tfHospitalName,
@@ -142,34 +142,31 @@ class SettingIpEnterState extends State<SettingIpEnter> {
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Transform.rotate(
-                angle: 3.14159, // Rotate 180 degrees (Pi approximation)
-                child: Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/header_login.png'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Transform.rotate(
+          angle: 3.14159, // Rotate 180 degrees (Pi approximation)
+          child: Container(
+            alignment: Alignment.bottomCenter,
+            height: 200.h,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/header_login.png'),
+                fit: BoxFit.fill,
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Padding HospitalNameInputTextField() {
+  Padding HospitalNameInputTextField(TextEditingController tfHospitalName) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 4.sp),
       child: TextFormField(
+        controller: tfHospitalName,
         maxLength: Constat.max,
         validator: (data) {
           if (data!.isEmpty) {
@@ -177,6 +174,9 @@ class SettingIpEnterState extends State<SettingIpEnter> {
           }
 
           // return null;
+        },
+        onSaved: (newValue) {
+          hospitalName = newValue!;
         },
         decoration: InputDecoration(
             prefixIcon: Container(
@@ -212,10 +212,11 @@ class SettingIpEnterState extends State<SettingIpEnter> {
     );
   }
 
-  Padding InternalIpInputTextField() {
+  Padding InternalIpInputTextField(TextEditingController tfInternalIp) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.sp),
       child: TextFormField(
+        controller: tfInternalIp,
         maxLength: Constat.max,
         obscureText: isVisible,
         validator: (data) {
@@ -223,6 +224,9 @@ class SettingIpEnterState extends State<SettingIpEnter> {
             return "enter_ip_address".tr();
           }
           // return null;
+        },
+        onSaved: (newValue) {
+          hospitalInternalIp = newValue!;
         },
         decoration: InputDecoration(
             prefixIcon: Container(
@@ -265,10 +269,11 @@ class SettingIpEnterState extends State<SettingIpEnter> {
     );
   }
 
-  Padding ExternalIpInputTextField() {
+  Padding ExternalIpInputTextField(TextEditingController tfExternalIp) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.sp),
       child: TextFormField(
+        controller: tfExternalIp,
         maxLength: Constat.max,
         obscureText: isVisible,
         validator: (data) {
@@ -276,6 +281,9 @@ class SettingIpEnterState extends State<SettingIpEnter> {
             return "enter_ip_address".tr();
           }
           // return null;
+        },
+        onSaved: (newValue) {
+          hospitalExternalIp = newValue!;
         },
         decoration: InputDecoration(
             prefixIcon: Container(
@@ -345,7 +353,10 @@ class SaveIpInformation extends StatelessWidget {
         height: 50.h,
         child: ElevatedButton(
             onPressed: () {
-              loginProcess(context);
+              formKey.currentState!
+                  .save(); // Form içindeki onSave metotlarını çağırır.
+              loginProcess(context, hospitalName, hospitalInternalIp,
+                  hospitalExternalIp);
             },
             style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -361,15 +372,15 @@ class SaveIpInformation extends StatelessWidget {
                     fontSize: ResponsiveDesign.getScreenWidth() / 20))));
   }
 
-  void loginProcess(BuildContext context) async {
+  void loginProcess(BuildContext context, String hospitalName,
+      String hospitalInternalIp, String hospitalExternalIp) async {
     bool controlResult = formKey.currentState!.validate();
 
-    String hospitalName = tfHospitalName.text.trim();
-    String hospitalInternalIp = tfInternalIp.text.trim();
-    String hospitalExternalIp = tfExternalIp.text.trim();
-
     if (!Validation().validateIpAddress(hospitalInternalIp)) {
-      showInvalidUsernameOrPassword(msg: hospitalExternalIp, context: context);
+      showInvalidUsernameOrPassword(
+          msg: hospitalExternalIp +
+              Validation().validateIpAddress(hospitalInternalIp).toString(),
+          context: context);
       return;
     }
 

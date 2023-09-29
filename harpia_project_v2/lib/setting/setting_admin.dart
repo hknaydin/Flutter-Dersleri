@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:harpia_project/setting/setting_ip_enter.dart';
 import 'package:harpia_project/utils/Constant.dart';
 
@@ -19,6 +20,7 @@ class SettingAdmin extends StatefulWidget {
 
 bool isVisible = false;
 bool _isLoginSuccessful = false;
+String username = "", password = "";
 
 class SettingAdminState extends State<SettingAdmin> {
   TextEditingController tfUsername = TextEditingController();
@@ -35,38 +37,41 @@ class SettingAdminState extends State<SettingAdmin> {
   @override
   void initState() {
     super.initState();
+    // SharedPreferences'i başlat
     loadSharedPreferences();
   }
 
   void loadSharedPreferences() async {
-    String username = await MySharedPreferences.getAdminUserName();
-    String password = await MySharedPreferences.getAdminUserPassword();
+    String adminUserName = await MySharedPreferences.getAdminUserName();
+    String adminUserPassword = await MySharedPreferences.getAdminUserPassword();
+
+    print("Admin UserName: $adminUserName");
+    print("Admin UserPassword: $adminUserPassword");
 
     setState(() {
-      tfUsername.text = username;
-      tfPassword.text = password;
+      tfUsername.text = adminUserName;
+      tfPassword.text = adminUserPassword;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Stack(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
           children: [
             Container(
               height: 200,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/header_login.png'),
                   fit: BoxFit.fill,
                 ),
               ),
             ),
-            Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
+            SingleChildScrollView(
+              // Ekran küçüldüğünde kaydırma işlemi için yeni SingleChildScrollView ekledik.
+              child: Center(
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -101,12 +106,12 @@ class SettingAdminState extends State<SettingAdmin> {
                             ),
                             Padding(
                               padding: EdgeInsets.only(
-                                  left: 16.w, right: 16.w, top: 5.w),
+                                  left: 5.w, right: 5.w, top: 5.w),
                               child: Column(
                                 children: [
-                                  UserNameInputField(),
+                                  UserNameInputField(tfUsername),
                                   SizedBox(height: 12.h),
-                                  PasswordInputField(),
+                                  PasswordInputField(tfPassword),
                                   LoginButtonField(),
                                   SizedBox(height: 16.h),
                                   if (_isLoginSuccessful)
@@ -129,40 +134,39 @@ class SettingAdminState extends State<SettingAdmin> {
                 ),
               ),
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Transform.rotate(
-                angle: 3.14159, // Rotate 180 degrees (Pi approximation)
-                child: Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/header_login.png'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Transform.rotate(
+        angle: 3.14159, // Rotate 180 degrees (Pi approximation)
+        child: Container(
+          alignment: Alignment.bottomCenter,
+          height: 200.h,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/header_login.png'),
+              fit: BoxFit.fill,
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Padding UserNameInputField() {
+  Padding UserNameInputField(TextEditingController? tfUsername) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 4.sp),
       child: TextFormField(
+        controller: tfUsername,
         maxLength: Constat.max,
         validator: (data) {
           if (data!.isEmpty) {
             return "username_is_required".tr();
           }
-
           // return null;
+        },
+        onSaved: (newValue) {
+          username = newValue!;
         },
         decoration: InputDecoration(
             prefixIcon: Icon(
@@ -191,10 +195,11 @@ class SettingAdminState extends State<SettingAdmin> {
     );
   }
 
-  Padding PasswordInputField() {
+  Padding PasswordInputField(TextEditingController tfPassword) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.sp),
       child: TextFormField(
+        controller: tfPassword,
         maxLength: Constat.max,
         obscureText: isVisible,
         validator: (data) {
@@ -202,6 +207,9 @@ class SettingAdminState extends State<SettingAdmin> {
             return "password_is_required".tr();
           }
           // return null;
+        },
+        onSaved: (newValue) {
+          password = newValue!;
         },
         decoration: InputDecoration(
             prefixIcon: Icon(
@@ -263,7 +271,11 @@ class LoginButton extends StatelessWidget {
         height: 50.h,
         child: ElevatedButton(
             onPressed: () {
-              loginProcess(context);
+              formKey.currentState!
+                  .save(); // Form içindeki onSave metotlarını çağırır.
+              print("username: " + username);
+              print("pass: " + password);
+              loginProcess(context, username, password);
             },
             style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -279,11 +291,10 @@ class LoginButton extends StatelessWidget {
                     fontSize: ResponsiveDesign.getScreenWidth() / 20))));
   }
 
-  Future<void> loginProcess(BuildContext context) async {
+  Future<void> loginProcess(
+      BuildContext context, String username, String password) async {
     bool controlResult = formKey.currentState!.validate();
 
-    String username = tfUsername.text.trim();
-    String password = tfPassword.text.trim();
     print("username: " + username);
     print("pass: " + password);
 

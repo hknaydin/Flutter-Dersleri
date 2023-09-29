@@ -75,11 +75,6 @@ class GirisSayfasiState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //Get Local Name with SharedPreferences
-    MySharedPreferences.getLocalName().then((value) {
-      print("SharedPref Locale Name : >> " + value);
-    });
-
     ResponsiveDesign(mediaQueryData: MediaQuery.of(context));
 
     return SafeArea(
