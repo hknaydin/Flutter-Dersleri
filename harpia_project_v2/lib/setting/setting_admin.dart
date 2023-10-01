@@ -57,11 +57,11 @@ class SettingAdminState extends State<SettingAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: 200,
+      body: Column(
+        children: [
+          Expanded(
+            flex: 1, // İlk satırın boyutu
+            child: Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/header_login.png'),
@@ -69,7 +69,10 @@ class SettingAdminState extends State<SettingAdmin> {
                 ),
               ),
             ),
-            SingleChildScrollView(
+          ),
+          Expanded(
+            flex: 3, // Form ekranının boyutu
+            child: SingleChildScrollView(
               // Ekran küçüldüğünde kaydırma işlemi için yeni SingleChildScrollView ekledik.
               child: Center(
                 child: Form(
@@ -134,21 +137,23 @@ class SettingAdminState extends State<SettingAdmin> {
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Transform.rotate(
-        angle: 3.14159, // Rotate 180 degrees (Pi approximation)
-        child: Container(
-          alignment: Alignment.bottomCenter,
-          height: 200.h,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/header_login.png'),
-              fit: BoxFit.fill,
+          ),
+          Expanded(
+            flex: 1, //
+            child: Transform.rotate(
+              // İlk satırın boyutu
+              angle: 3.14159, // Rotate 180 degrees (Pi approximation)
+              child: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/header_login.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -298,7 +303,6 @@ class LoginButton extends StatelessWidget {
     print("username: " + username);
     print("pass: " + password);
 
-    showInvalidUsernameOrPassword(context: context, msg: username + password);
     if (username == "admin" && password == "1234") {
       showInvalidUsernameOrPassword(
           context: context, msg: "login_successful".tr());

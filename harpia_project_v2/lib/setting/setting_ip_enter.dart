@@ -61,102 +61,110 @@ class SettingIpEnterState extends State<SettingIpEnter> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
+        body: Column(
+          children: [
+            Expanded(
+              flex: 1, // Form ekranının boyutu
+              child: Container(
+                height: 150.h,
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/images/header_login.png'),
                     fit: BoxFit.fill,
                   ),
                 ),
               ),
-              Center(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      SizedBox(height: ScreenUtil().statusBarHeight),
-                      Card(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Theme.of(context).colorScheme.outline,
+            ),
+            Expanded(
+              flex: 3, // Form ekranının boyutu
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        SizedBox(height: ScreenUtil().statusBarHeight),
+                        Card(
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(12)),
                           ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
-                        ),
-                        margin: EdgeInsets.symmetric(horizontal: 16.w),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 12.h),
-                            Text(
-                              'server_information_panel'.tr(),
-                              style: TextStyle(
-                                fontSize:
-                                    ResponsiveDesign.getScreenWidth() / 23,
-                                fontWeight: FontWeight.bold,
+                          margin: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 12.h),
+                              Text(
+                                'server_information_panel'.tr(),
+                                style: TextStyle(
+                                  fontSize:
+                                      ResponsiveDesign.getScreenWidth() / 23,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Container(
-                              height: 1.h,
-                              width: double.infinity,
-                              color: Colors.grey,
-                              margin: EdgeInsets.symmetric(vertical: 16.h),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 5.w, right: 5.w, top: 5.w),
-                              child: Column(
-                                children: [
-                                  HospitalNameInputTextField(tfHospitalName),
-                                  SizedBox(height: 12.h),
-                                  InternalIpInputTextField(tfInternalIp),
-                                  SizedBox(height: 12.h),
-                                  ExternalIpInputTextField(tfExternalIp),
-                                  SaveIpInformation(
-                                    formKey: formKey,
-                                    tfHospitalName: tfHospitalName,
-                                    tfInternalIp: tfInternalIp,
-                                    tfExternalIp: tfExternalIp,
-                                  ),
-                                  SizedBox(height: 16.h),
-                                  if (_isLoginSuccessful)
-                                    Text(
-                                      "login_successful".tr(),
-                                      style: TextStyle(
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                              Container(
+                                height: 1.h,
+                                width: double.infinity,
+                                color: Colors.grey,
+                                margin: EdgeInsets.symmetric(vertical: 16.h),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 5.w, right: 5.w, top: 5.w),
+                                child: Column(
+                                  children: [
+                                    HospitalNameInputTextField(tfHospitalName),
+                                    SizedBox(height: 12.h),
+                                    InternalIpInputTextField(tfInternalIp),
+                                    SizedBox(height: 12.h),
+                                    ExternalIpInputTextField(tfExternalIp),
+                                    SaveIpInformation(
+                                      formKey: formKey,
+                                      tfHospitalName: tfHospitalName,
+                                      tfInternalIp: tfInternalIp,
+                                      tfExternalIp: tfExternalIp,
                                     ),
-                                ],
+                                    SizedBox(height: 16.h),
+                                    if (_isLoginSuccessful)
+                                      Text(
+                                        "login_successful".tr(),
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 20.h),
-                    ],
+                        SizedBox(height: 20.h),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: Transform.rotate(
-          angle: 3.14159, // Rotate 180 degrees (Pi approximation)
-          child: Container(
-            alignment: Alignment.bottomCenter,
-            height: 200.h,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/header_login.png'),
-                fit: BoxFit.fill,
+            ),
+            Expanded(
+              flex: 1, //
+              child: Transform.rotate(
+                // İlk satırın boyutu
+                angle: 3.14159, // Rotate 180 degrees (Pi approximation)
+                child: Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/header_login.png'),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

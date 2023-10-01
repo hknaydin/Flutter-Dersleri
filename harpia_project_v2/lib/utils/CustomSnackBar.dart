@@ -40,6 +40,10 @@ class CustomSnackBar {
       showCloseIcon: true,
       backgroundColor: ProductColor.black,
       duration: Duration(seconds: 5),
+      behavior:
+          SnackBarBehavior.floating, // Altta yüzen bir SnackBar olarak ayarla
+      margin: EdgeInsets.only(
+          left: 5, right: 5, bottom: 20.0), // Alt boşluğu ayarla
     );
   }
 }
