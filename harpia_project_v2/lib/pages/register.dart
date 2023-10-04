@@ -59,6 +59,14 @@ class RegisterPageState extends State<RegisterPage> {
             Tab(text: 'Doctor'),
             Tab(text: 'Patient'),
           ],
+          indicator: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Colors.blue,
+                width: 2.0,
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -77,7 +85,7 @@ class RegisterPageState extends State<RegisterPage> {
           ),
         ),
         Expanded(
-          child:Center(
+          child: Center(
             child: SingleChildScrollView(
               child: Form(
                 key: _formKey,
@@ -89,7 +97,8 @@ class RegisterPageState extends State<RegisterPage> {
                           side: BorderSide(
                             color: Theme.of(context).colorScheme.outline,
                           ),
-                          borderRadius: const BorderRadius.all(Radius.circular(12)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12)),
                         ),
                         margin: EdgeInsets.symmetric(horizontal: 16.w),
                         child: Padding(
@@ -100,7 +109,8 @@ class RegisterPageState extends State<RegisterPage> {
                               Text(
                                 'register_panel'.tr(),
                                 style: TextStyle(
-                                  fontSize: ResponsiveDesign.getScreenWidth() / 23,
+                                  fontSize:
+                                      ResponsiveDesign.getScreenWidth() / 23,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -114,305 +124,95 @@ class RegisterPageState extends State<RegisterPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   children: [
-                                    TextFormField(
-                                      controller: _firstNameController,
-                                      decoration: InputDecoration(
-                                          prefixIcon: const Icon(
-                                            Icons.person,
-                                            color: Colors.blue,
-                                          ),
-                                          labelText: 'name'.tr(),
-                                          labelStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30,
-                                              color: ProductColor.black,
-                                              fontWeight: FontWeight.bold),
-                                          hintText: 'enter_your_name'.tr(),
-                                          hintStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: const BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  color: ProductColor.darkBlue)),
-                                          filled: true,
-                                          fillColor: ProductColor.white,
-                                          border: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)))),
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter your first name';
-                                        }
-                                        return null;
-                                      },
-                                      style: TextStyle(
-                                          fontSize:
-                                              ResponsiveDesign.getScreenWidth() / 30,
-                                          color: ProductColor.darkBlue),
-                                    ),
+                                    DoctorInputFormField(
+                                        _firstNameController,
+                                        Icon(
+                                          Icons.person,
+                                          color: Colors.blue,
+                                        ),
+                                        'name',
+                                        'enter_your_name',
+                                        'Please enter your first name'),
                                     SizedBox(
-                                        height:
-                                            Constat.doctorRegisterPanelWidgetSpace),
-                                    TextFormField(
-                                      controller: _lastNameController,
-                                      decoration: InputDecoration(
-                                          prefixIcon: const Icon(
-                                            Icons.person,
-                                            color: Colors.blue,
-                                          ),
-                                          labelText: 'surname'.tr(),
-                                          labelStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30,
-                                              color: ProductColor.black,
-                                              fontWeight: FontWeight.bold),
-                                          hintText: 'enter_your_surname'.tr(),
-                                          hintStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: const BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  color: ProductColor.darkBlue)),
-                                          filled: true,
-                                          fillColor: ProductColor.white,
-                                          border: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)))),
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter your last name';
-                                        }
-                                        return null;
-                                      },
-                                      style: TextStyle(
-                                          fontSize:
-                                              ResponsiveDesign.getScreenWidth() / 30,
-                                          color: ProductColor.darkBlue),
-                                    ),
+                                        height: Constat
+                                            .doctorRegisterPanelWidgetSpace),
+                                    DoctorInputFormField(
+                                        _lastNameController,
+                                        Icon(
+                                          Icons.person,
+                                          color: Colors.blue,
+                                        ),
+                                        'surname',
+                                        'enter_your_surname',
+                                        'Please enter your last name'),
                                     SizedBox(
-                                        height:
-                                            Constat.doctorRegisterPanelWidgetSpace),
-                                    TextFormField(
-                                      controller: _tcController,
-                                      decoration: InputDecoration(
-                                          prefixIcon: const Icon(
-                                            Icons.password,
-                                            color: Colors.blue,
-                                          ),
-                                          labelText: 'nationality_id'.tr(),
-                                          labelStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30,
-                                              color: ProductColor.black,
-                                              fontWeight: FontWeight.bold),
-                                          hintText: 'enter_your_nationality_id'.tr(),
-                                          hintStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: const BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  color: ProductColor.darkBlue)),
-                                          filled: true,
-                                          fillColor: ProductColor.white,
-                                          border: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)))),
-                                      keyboardType: TextInputType.number,
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter your TC Kimlik No';
-                                        }
-                                        // Diğer doğrulama mantığı burada eklenebilir
-                                        return null;
-                                      },
-                                      inputFormatters: <TextInputFormatter>[
-                                        FilteringTextInputFormatter
-                                            .digitsOnly, // Sadece rakam girişi kabul eder
-                                        LengthLimitingTextInputFormatter(
-                                            11), // Maksimum 11 karakter kabul eder
-                                      ],
-                                    ),
+                                        height: Constat
+                                            .doctorRegisterPanelWidgetSpace),
+                                    DoctorInputFormField(
+                                        _tcController,
+                                        Icon(
+                                          Icons.password,
+                                          color: Colors.blue,
+                                        ),
+                                        'nationality_id',
+                                        'enter_your_nationality_id',
+                                        'Please enter your TC Kimlik No'),
                                     SizedBox(
-                                        height:
-                                            Constat.doctorRegisterPanelWidgetSpace),
-                                    TextFormField(
-                                      controller: _birthDateController,
-                                      decoration: InputDecoration(
-                                          prefixIcon: const Icon(
-                                            Icons.date_range,
-                                            color: Colors.blue,
-                                          ),
-                                          labelStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30,
-                                              color: ProductColor.black,
-                                              fontWeight: FontWeight.bold),
-                                          labelText: 'hasta_dogum_tarihi'.tr(),
-                                          hintText: 'date_of_birth_10_10_1991'.tr(),
-                                          hintStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: const BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  color: ProductColor.darkBlue)),
-                                          filled: true,
-                                          fillColor: ProductColor.white,
-                                          border: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)))),
-                                      keyboardType: TextInputType.datetime,
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter your birth date';
-                                        }
-                                        // Diğer doğrulama mantığı burada eklenebilir
-                                        return null;
-                                      },
-                                    ),
+                                        height: Constat
+                                            .doctorRegisterPanelWidgetSpace),
+                                    DoctorInputFormField(
+                                        _birthDateController,
+                                        Icon(
+                                          Icons.date_range,
+                                          color: Colors.blue,
+                                        ),
+                                        'hasta_dogum_tarihi',
+                                        'date_of_birth_10_10_1991',
+                                        'Please enter your birth date'),
                                     SizedBox(
-                                        height:
-                                            Constat.doctorRegisterPanelWidgetSpace),
-                                    TextFormField(
-                                      controller: _institutionController,
-                                      decoration: InputDecoration(
-                                          prefixIcon: const Icon(
-                                            Icons.location_city,
-                                            color: Colors.blue,
-                                          ),
-                                          labelText: 'institue'.tr(),
-                                          labelStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30,
-                                              color: ProductColor.black,
-                                              fontWeight: FontWeight.bold),
-                                          hintText: 'employed_institution'.tr(),
-                                          hintStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: const BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  color: ProductColor.darkBlue)),
-                                          filled: true,
-                                          fillColor: ProductColor.white,
-                                          border: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)))),
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter the institution you work for';
-                                        }
-                                        return null;
-                                      },
-                                    ),
+                                        height: Constat
+                                            .doctorRegisterPanelWidgetSpace),
+                                    DoctorInputFormField(
+                                        _institutionController,
+                                        Icon(
+                                          Icons.location_city,
+                                          color: Colors.blue,
+                                        ),
+                                        'institue',
+                                        'employed_institution',
+                                        'Please enter the institution you work for'),
                                     SizedBox(
-                                        height:
-                                            Constat.doctorRegisterPanelWidgetSpace),
-                                    TextFormField(
-                                      controller: _emailController,
-                                      decoration: InputDecoration(
-                                          prefixIcon: const Icon(
-                                            Icons.mail_rounded,
-                                            color: Colors.blue,
-                                          ),
-                                          labelText: 'prompt_email'.tr(),
-                                          labelStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30,
-                                              color: ProductColor.black,
-                                              fontWeight: FontWeight.bold),
-                                          hintText: 'prompt_email'.tr(),
-                                          hintStyle: TextStyle(
-                                              fontSize:
-                                                  ResponsiveDesign.getScreenWidth() /
-                                                      30),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: const BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  color: ProductColor.darkBlue)),
-                                          filled: true,
-                                          fillColor: ProductColor.white,
-                                          border: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)))),
-                                      keyboardType: TextInputType.emailAddress,
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter your email address';
-                                        }
-                                        return null;
-                                      },
-                                    ),
+                                        height: Constat
+                                            .doctorRegisterPanelWidgetSpace),
+                                    DoctorInputFormField(
+                                        _emailController,
+                                        Icon(
+                                          Icons.mail_rounded,
+                                          color: Colors.blue,
+                                        ),
+                                        'prompt_email',
+                                        'prompt_email',
+                                        'Please enter your email address'),
                                     SizedBox(
-                                        height:
-                                        Constat.doctorRegisterPanelWidgetSpace),
-
-                                    TextFormField(
-                                      controller: _passwordController,
-                                      decoration: InputDecoration(
-                                        prefixIcon: const Icon(
+                                        height: Constat
+                                            .doctorRegisterPanelWidgetSpace),
+                                    DoctorInputFormField(
+                                        _passwordController,
+                                        Icon(
                                           Icons.password_outlined,
                                           color: Colors.blue,
                                         ),
-                                        labelText: 'prompt_password'.tr(),
-                                        labelStyle: TextStyle(
-                                            fontSize:
-                                                ResponsiveDesign.getScreenWidth() /
-                                                    30,
-                                            color: ProductColor.black,
-                                            fontWeight: FontWeight.bold),
-                                        hintText: 'please_enter_the_password'.tr(),
-                                        hintStyle: TextStyle(
-                                            fontSize:
-                                                ResponsiveDesign.getScreenWidth() /
-                                                    30),
-                                          focusedBorder: OutlineInputBorder(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10.0)),
-                                          borderSide: BorderSide(
-                                              color: ProductColor.darkBlue)),
-                                          filled: true,
-                                          fillColor: ProductColor.white,
-                                          border: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)))
-                                      ),
-                                      obscureText: true,
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter a password';
-                                        }
-                                        return null;
-                                      },
-                                    ),
+                                        'prompt_password',
+                                        'please_enter_the_password',
+                                        'Please enter a password'),
                                     SizedBox(height: 16.0),
                                     SizedBox(
                                       width: 100.w,
                                       height: 50.h,
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          if (_formKey.currentState!.validate()) {
+                                          if (_formKey.currentState!
+                                              .validate()) {
                                             // Doktor kaydı işlemini gerçekleştirin.
                                             // _firstNameController.text, _lastNameController.text,
                                             // _emailController.text, _passwordController.text ve
@@ -425,7 +225,8 @@ class RegisterPageState extends State<RegisterPage> {
                                                     RoundedRectangleBorder>(
                                                 RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(18.sp),
+                                                        BorderRadius.circular(
+                                                            18.sp),
                                                     side: BorderSide(
                                                         color: Colors.pink))),
                                             backgroundColor:
@@ -447,9 +248,42 @@ class RegisterPageState extends State<RegisterPage> {
                 ),
               ),
             ),
-            ),
+          ),
         ),
       ],
+    );
+  }
+
+  TextFormField DoctorInputFormField(TextEditingController controller,
+      Icon icon, String lblTxt, String lblHintTxt, String returnMessage) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+          prefixIcon: icon,
+          labelText: lblTxt.tr(),
+          labelStyle: TextStyle(
+              fontSize: ResponsiveDesign.getScreenWidth() / 30,
+              color: ProductColor.black,
+              fontWeight: FontWeight.bold),
+          hintText: lblHintTxt.tr(),
+          hintStyle:
+              TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 30),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(color: ProductColor.darkBlue)),
+          filled: true,
+          fillColor: ProductColor.white,
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return returnMessage;
+        }
+        return null;
+      },
+      style: TextStyle(
+          fontSize: ResponsiveDesign.getScreenWidth() / 30,
+          color: ProductColor.darkBlue),
     );
   }
 
@@ -479,7 +313,8 @@ class RegisterPageState extends State<RegisterPage> {
                         side: BorderSide(
                           color: Theme.of(context).colorScheme.outline,
                         ),
-                        borderRadius: const BorderRadius.all(Radius.circular(12)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12)),
                       ),
                       margin: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Padding(
@@ -490,7 +325,8 @@ class RegisterPageState extends State<RegisterPage> {
                             Text(
                               'patient_register_panel'.tr(),
                               style: TextStyle(
-                                fontSize: ResponsiveDesign.getScreenWidth() / 23,
+                                fontSize:
+                                    ResponsiveDesign.getScreenWidth() / 23,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -504,207 +340,66 @@ class RegisterPageState extends State<RegisterPage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: [
-                                  TextFormField(
-                                    controller: _firstNameController,
-                                    decoration: InputDecoration(
-                                        prefixIcon: const Icon(
-                                          Icons.person,
-                                          color: Colors.blue,
-                                        ),
-                                        labelText: 'name'.tr(),
-                                        labelStyle: TextStyle(
-                                            fontSize: ResponsiveDesign
-                                                    .getScreenWidth() /
-                                                30,
-                                            color: ProductColor.black,
-                                            fontWeight: FontWeight.bold),
-                                        hintText: 'enter_your_name'.tr(),
-                                        hintStyle: TextStyle(
-                                            fontSize: ResponsiveDesign
-                                                    .getScreenWidth() /
-                                                30),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                            borderSide: BorderSide(
-                                                color: ProductColor.darkBlue)),
-                                        filled: true,
-                                        fillColor: ProductColor.white,
-                                        border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)))),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter your first name';
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                                  DoctorInputFormField(
+                                      _firstNameController,
+                                      Icon(
+                                        Icons.person,
+                                        color: Colors.blue,
+                                      ),
+                                      'name',
+                                      'enter_your_name',
+                                      'Please enter your first name'),
                                   SizedBox(
-                                      height:
-                                          Constat.doctorRegisterPanelWidgetSpace),
-                                  TextFormField(
-                                    controller: _lastNameController,
-                                    decoration: InputDecoration(
-                                        prefixIcon: const Icon(
-                                          Icons.person,
-                                          color: Colors.blue,
-                                        ),
-                                        labelText: 'surname'.tr(),
-                                        labelStyle: TextStyle(
-                                            fontSize: ResponsiveDesign
-                                                    .getScreenWidth() /
-                                                30,
-                                            color: ProductColor.black,
-                                            fontWeight: FontWeight.bold),
-                                        hintText: 'enter_your_surname'.tr(),
-                                        hintStyle: TextStyle(
-                                            fontSize: ResponsiveDesign
-                                                    .getScreenWidth() /
-                                                30),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                            borderSide: BorderSide(
-                                                color: ProductColor.darkBlue)),
-                                        filled: true,
-                                        fillColor: ProductColor.white,
-                                        border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)))),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter your last name';
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                                      height: Constat
+                                          .doctorRegisterPanelWidgetSpace),
+                                  DoctorInputFormField(
+                                      _lastNameController,
+                                      Icon(
+                                        Icons.person,
+                                        color: Colors.blue,
+                                      ),
+                                      'surname',
+                                      'enter_your_surname',
+                                      'Please enter your last name'),
                                   SizedBox(
-                                      height:
-                                          Constat.doctorRegisterPanelWidgetSpace),
-                                  TextFormField(
-                                    controller: _emailController,
-                                    decoration: InputDecoration(
-                                        prefixIcon: const Icon(
-                                          Icons.mail_rounded,
-                                          color: Colors.blue,
-                                        ),
-                                        labelText: 'prompt_email'.tr(),
-                                        labelStyle: TextStyle(
-                                            fontSize:
-                                            ResponsiveDesign.getScreenWidth() /
-                                                30,
-                                            color: ProductColor.black,
-                                            fontWeight: FontWeight.bold),
-                                        hintText: 'prompt_email'.tr(),
-                                        hintStyle: TextStyle(
-                                            fontSize:
-                                            ResponsiveDesign.getScreenWidth() /
-                                                30),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                            borderSide: BorderSide(
-                                                color: ProductColor.darkBlue)),
-                                        filled: true,
-                                        fillColor: ProductColor.white,
-                                        border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)))),
-                                    keyboardType: TextInputType.emailAddress,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter your email address';
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                                      height: Constat
+                                          .doctorRegisterPanelWidgetSpace),
+                                  DoctorInputFormField(
+                                      _emailController,
+                                      Icon(
+                                        Icons.mail_rounded,
+                                        color: Colors.blue,
+                                      ),
+                                      'prompt_email',
+                                      'prompt_email',
+                                      'Please enter your email address'),
                                   SizedBox(
-                                      height:
-                                      Constat.doctorRegisterPanelWidgetSpace),
-                                  TextFormField(
-                                    controller: _phoneNumberController,
-                                    decoration: InputDecoration(
-                                        prefixIcon: Icon(
-                                          Icons.phone_android_outlined,
-                                          color: Colors.blue,
-                                        ),
-                                        labelText: 'phone_number'.tr(),
-                                        labelStyle: TextStyle(
-                                            fontSize: ResponsiveDesign
-                                                    .getScreenWidth() /
-                                                30,
-                                            color: ProductColor.black,
-                                            fontWeight: FontWeight.bold),
-                                        hintText: 'enter_your_phone'.tr(),
-                                        hintStyle: TextStyle(
-                                            fontSize: ResponsiveDesign
-                                                    .getScreenWidth() /
-                                                30),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                            borderSide: BorderSide(
-                                                color: ProductColor.darkBlue)),
-                                        filled: true,
-                                        fillColor: ProductColor.white,
-                                        border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)))),
-                                    keyboardType: TextInputType.phone,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter your phone number';
-                                      }
-                                      // Diğer doğrulama mantığı burada eklenebilir
-                                      return null;
-                                    },
-                                  ),
+                                      height: Constat
+                                          .doctorRegisterPanelWidgetSpace),
+                                  DoctorInputFormField(
+                                      _phoneNumberController,
+                                      Icon(
+                                        Icons.phone_android_outlined,
+                                        color: Colors.blue,
+                                      ),
+                                      'phone_number',
+                                      'enter_your_phone',
+                                      'Please enter your phone number'),
                                   SizedBox(
-                                      height:
-                                          Constat.doctorRegisterPanelWidgetSpace),
-                                  TextFormField(
-                                    controller: _tcController,
-                                    decoration: InputDecoration(
-                                        prefixIcon: const Icon(
-                                          Icons.password,
-                                          color: Colors.blue,
-                                        ),
-                                        labelText: 'nationality_id'.tr(),
-                                        labelStyle: TextStyle(
-                                            fontSize: ResponsiveDesign
-                                                    .getScreenWidth() /
-                                                30,
-                                            color: ProductColor.black,
-                                            fontWeight: FontWeight.bold),
-                                        hintText:
-                                            'enter_your_nationality_id'.tr(),
-                                        hintStyle: TextStyle(
-                                            fontSize: ResponsiveDesign
-                                                    .getScreenWidth() /
-                                                30),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                            borderSide: BorderSide(
-                                                color: ProductColor.darkBlue)),
-                                        filled: true,
-                                        fillColor: ProductColor.white,
-                                        border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)))),
-                                    keyboardType: TextInputType.number,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter your TC No';
-                                      }
-                                      // Diğer doğrulama mantığı burada eklenebilir
-                                      return null;
-                                    },
-                                  ),
+                                      height: Constat
+                                          .doctorRegisterPanelWidgetSpace),
+                                  DoctorInputFormField(
+                                      _tcController,
+                                      Icon(
+                                        Icons.password,
+                                        color: Colors.blue,
+                                      ),
+                                      'nationality_id',
+                                      'enter_your_nationality_id',
+                                      'Please enter your TC Kimlik No'),
                                   SizedBox(
-                                      height:
-                                          Constat.doctorRegisterPanelWidgetSpace),
+                                      height: Constat
+                                          .doctorRegisterPanelWidgetSpace),
                                   DropdownButtonFormField<String>(
                                     value: _selectedDoctor,
                                     items: [
@@ -744,8 +439,9 @@ class RegisterPageState extends State<RegisterPage> {
                                                     .getScreenWidth() /
                                                 30),
                                         focusedBorder: OutlineInputBorder(
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(10.0)),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10.0)),
                                             borderSide: BorderSide(
                                                 color: ProductColor.darkBlue)),
                                         filled: true,
@@ -755,90 +451,32 @@ class RegisterPageState extends State<RegisterPage> {
                                                 Radius.circular(10.0)))),
                                   ),
                                   SizedBox(
-                                      height:
-                                          Constat.doctorRegisterPanelWidgetSpace),
-                                  TextFormField(
-                                    controller: _birthDateController,
-                                    decoration: InputDecoration(
-                                        prefixIcon: const Icon(
-                                          Icons.date_range,
-                                          color: Colors.blue,
-                                        ),
-                                        labelStyle: TextStyle(
-                                            fontSize: ResponsiveDesign
-                                                    .getScreenWidth() /
-                                                30,
-                                            color: ProductColor.black,
-                                            fontWeight: FontWeight.bold),
-                                        labelText: 'hasta_dogum_tarihi'.tr(),
-                                        hintText: 'date_of_birth_10_10_1991'.tr(),
-                                        hintStyle: TextStyle(
-                                            fontSize: ResponsiveDesign
-                                                    .getScreenWidth() /
-                                                30),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                            borderSide: BorderSide(
-                                                color: ProductColor.darkBlue)),
-                                        filled: true,
-                                        fillColor: ProductColor.white,
-                                        border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)))),
-                                    keyboardType: TextInputType.datetime,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter your birth date';
-                                      }
-                                      // Diğer doğrulama mantığı burada eklenebilir
-                                      return null;
-                                    },
-                                  ),
+                                      height: Constat
+                                          .doctorRegisterPanelWidgetSpace),
+                                  DoctorInputFormField(
+                                      _birthDateController,
+                                      Icon(
+                                        Icons.date_range,
+                                        color: Colors.blue,
+                                      ),
+                                      'hasta_dogum_tarihi',
+                                      'date_of_birth_10_10_1991',
+                                      'Please enter your birth date'),
                                   SizedBox(
-                                      height:
-                                          Constat.doctorRegisterPanelWidgetSpace),
-                                  TextFormField(
-                                    controller: _passwordController,
-                                    decoration: InputDecoration(
-                                        prefixIcon: const Icon(
-                                          Icons.password_outlined,
-                                          color: Colors.blue,
-                                        ),
-                                        labelText: 'prompt_password'.tr(),
-                                        labelStyle: TextStyle(
-                                            fontSize:
-                                            ResponsiveDesign.getScreenWidth() /
-                                                30,
-                                            color: ProductColor.black,
-                                            fontWeight: FontWeight.bold),
-                                        hintText: 'please_enter_the_password'.tr(),
-                                        hintStyle: TextStyle(
-                                            fontSize:
-                                            ResponsiveDesign.getScreenWidth() /
-                                                30),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                            borderSide: BorderSide(
-                                                color: ProductColor.darkBlue)),
-                                        filled: true,
-                                        fillColor: ProductColor.white,
-                                        border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)))
-                                    ),
-                                    obscureText: true,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter a password';
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                                      height: Constat
+                                          .doctorRegisterPanelWidgetSpace),
+                                  DoctorInputFormField(
+                                      _passwordController,
+                                      Icon(
+                                        Icons.password_outlined,
+                                        color: Colors.blue,
+                                      ),
+                                      'prompt_password',
+                                      'please_enter_the_password',
+                                      'Please enter a password'),
                                   SizedBox(
-                                      height:
-                                          Constat.doctorRegisterPanelWidgetSpace),
+                                      height: Constat
+                                          .doctorRegisterPanelWidgetSpace),
                                   SizedBox(
                                     width: 100.w,
                                     height: 50.h,

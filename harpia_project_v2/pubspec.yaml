@@ -43,6 +43,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   carousel_slider: ^4.2.1
   flutter_randomcolor: ^1.0.14
+
   fluttertoast:
 
   flutter_localizations:
