@@ -212,6 +212,7 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
             ),
           ),
         ),
+        SizedBox(height: Constat.doctorRegisterPanelWidgetSpace),
       ],
     );
   }

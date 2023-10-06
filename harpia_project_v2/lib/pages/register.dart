@@ -52,13 +52,14 @@ class RegisterPageState extends State<RegisterPage> {
           children: pages,
         ),
         bottomNavigationBar: Container(
-          // decoration: BoxDecoration(
-          //   boxShadow: [
-          //     BoxShadow(
-          //       offset: Offset(10, 10)
-          //     )
-          //   ]
-          // ),
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Colors.grey,
+                width: 0.5,
+              ),
+            ),
+          ),
           margin: EdgeInsets.only(bottom: 5),
           child: TabBar(
             indicator: UnderlineTabIndicator(
