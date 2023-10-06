@@ -15,6 +15,8 @@
   "login": "Entrée",
   "error_invalid_email": "Cette adresse e-mail est invalide",
   "name": "Nom",
+  "doctor": "Médecin",
+  "patient": "Patient",
   "enter_your_name":"Entrez votre nom",
   "enter_your_surname": "Veuillez entrer votre nom de famille",
   "nationality_id": "Numéro d'identification national",

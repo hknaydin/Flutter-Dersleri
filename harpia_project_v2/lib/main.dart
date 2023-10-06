@@ -19,14 +19,14 @@ void main() async {
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(
     EasyLocalization(
-        supportedLocales: [
+        supportedLocales: const [
           Locale('en'),
           Locale('tr'),
           Locale('fr'),
           Locale('zh'),
         ],
         path: 'assets/translations',
-        fallbackLocale: Locale('en'),
+        fallbackLocale: const Locale('en'),
         child: MyApp()),
   );
 }

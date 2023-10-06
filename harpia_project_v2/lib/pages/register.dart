@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:harpia_project/pages/signuppage/DoctorSignUpPage.dart';
 import 'package:harpia_project/pages/signuppage/PatientSignUpPage.dart';
 
@@ -57,14 +59,32 @@ class RegisterPageState extends State<RegisterPage> {
           //     )
           //   ]
           // ),
-          margin: EdgeInsets.only(bottom: 20),
-          child: new TabBar(
+          margin: EdgeInsets.only(bottom: 5),
+          child: TabBar(
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(
+                  width: 4.0,
+                  color: Colors
+                      .blue), // Indicator çizgisi özelliklerini ayarlayabilirsiniz.
+            ),
             tabs: [
               Tab(
-                icon: Icon(Icons.home),
+                icon: SvgPicture.asset(
+                  'assets/images/doctor.svg', // Kullanmak istediğiniz SVG dosyasının yolunu buraya ekleyin
+                  width: 24,
+                  height: 24,
+                  color: Colors.black,
+                ),
+                text: 'doctor'.tr(),
               ),
               Tab(
-                icon: Icon(Icons.search),
+                icon: SvgPicture.asset(
+                  'assets/images/patient.svg', // Kullanmak istediğiniz SVG dosyasının yolunu buraya ekleyin
+                  width: 24,
+                  height: 24,
+                  color: Colors.black,
+                ),
+                text: 'patient'.tr(),
               )
             ],
             unselectedLabelColor: Colors.black,
