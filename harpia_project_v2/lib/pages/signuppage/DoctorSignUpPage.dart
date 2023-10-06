@@ -272,8 +272,8 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
           userInstitue,
           userMail,
           userPassword,
-          "Doctor",
-          "10.10.1991");
+          "DOCTOR",
+          true);
       request.signUp(doctor).then((resp) async {
         // debugPrint(resp.body);
         Map<String, dynamic> jsonData = json.decode(resp.body);

@@ -9,7 +9,7 @@ class Doctor {
   late int tc;
   late String dataofBirth;
   late String employedInstitution;
-  late String loggedIn;
+  late bool loggedIn;
 
   Doctor(
       this.id,
@@ -36,7 +36,7 @@ class Doctor {
       'usermail': usermail,
       'password': password,
       'role': role,
-      'loggedIn': "10.10.1991",
+      'loggedIn': "true",
     };
   }
 }
