@@ -11,6 +11,7 @@ import '../../core/ResponsiveDesign.dart';
 import '../../model/user/Doctor.dart';
 import '../../network/HttpRequestDoctor.dart';
 import '../../utils/Constant.dart';
+import '../../utils/CustomAlertDialog.dart';
 import '../../utils/ProductColor.dart';
 
 class DoctorSignUpPage extends StatefulWidget {
@@ -18,6 +19,14 @@ class DoctorSignUpPage extends StatefulWidget {
 
   @override
   State<DoctorSignUpPage> createState() => _DoctorSignUpPageState();
+}
+
+class Gender {
+  String name;
+  IconData icon;
+  bool isSelected;
+
+  Gender(this.name, this.icon, this.isSelected);
 }
 
 class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
@@ -29,6 +38,15 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
   final TextEditingController tcController = TextEditingController();
   final TextEditingController birthDateController = TextEditingController();
   final TextEditingController institutionController = TextEditingController();
+
+  List<Gender> genders = [];
+
+  @override
+  void initState() {
+    super.initState();
+    genders.add(Gender('cinsiyet_male'.tr(), Icons.male, true));
+    genders.add(Gender('cinsiyet_female'.tr(), Icons.female, false));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +193,48 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                 'please_enter_the_password',
                                                 'please_enter_password_that_is_difficult_to_guess',
                                                 TextInputType.text),
-                                            SizedBox(height: 16.0),
+                                            SizedBox(
+                                                height: Constat
+                                                    .doctorRegisterPanelWidgetSpace),
+                                            SizedBox(
+                                              width: 250.w,
+                                              height: 70.h,
+                                              child: Align(
+                                                alignment: Alignment
+                                                    .center, // Ortalamayı sağlar
+                                                child: ListView.builder(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  shrinkWrap: true,
+                                                  itemCount: genders.length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    final gender =
+                                                        genders[index];
+                                                    return InkWell(
+                                                      splashColor:
+                                                          Colors.pinkAccent,
+                                                      onTap: () {
+                                                        setState(() {
+                                                          genders.forEach(
+                                                              (gender) => gender
+                                                                      .isSelected =
+                                                                  false);
+                                                          genders[index]
+                                                                  .isSelected =
+                                                              true;
+                                                          selectGender(
+                                                              genders[index]);
+                                                        });
+                                                      },
+                                                      child: CustomRadio(
+                                                          genders[index]),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            )
                                           ],
                                         ),
                                       ),
@@ -266,6 +325,10 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
           return 'number_of_entered_password_characters_must_be_greater_than_6'
               .tr();
         }
+        if (lblTxt == 'nationality_id' &&
+            value.replaceAll(' ', '').length < Validation.tcCharacterSize) {
+          return "11 haneli tc numaranızı giriniz";
+        }
         return null;
       },
       style: TextStyle(
@@ -274,28 +337,46 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
     );
   }
 
+  void selectGender(Gender selectedGender) {
+    setState(() {
+      genders.forEach((gender) => gender.isSelected = false);
+      selectedGender.isSelected = true;
+    });
+  }
+
   void signUpProcess(BuildContext context) {
+    showAlertDialogInvalidUsernameOrPassword(
+        context: context,
+        msg: genders.firstWhere((gender) => gender.isSelected).name);
     bool controlResult = formKey.currentState!.validate();
     if (controlResult) {
-      String userName = firstNameController.text;
-      String userLastName = lastNameController.text;
-      String userMail = emailController.text;
-      String userPassword = passwordController.text;
-      String userTC = tcController.text;
-      String userBirtTime = birthDateController.text;
-      String userInstitue = institutionController.text;
-
+      String DoctorUserName = firstNameController.text;
+      String DoctoruserLastName = lastNameController.text;
+      String DoctorUserMail = emailController.text;
+      String DoctorUserPassword = passwordController.text;
+      String DoctorUserTC = tcController.text;
+      String DoctorUserBirtTime = birthDateController.text;
+      String DoctorUserInstitue = institutionController.text;
+      String selectedGender = genders
+          .firstWhere((gender) => gender.isSelected)
+          .name; // Seçilen cinsiyeti alıyoruz
+      if (!Validation().isEmailValid(DoctorUserMail)) {
+        showAlertDialogInvalidUsernameOrPassword(
+            context: context,
+            msg: 'please_enter_mail_address_in_the_appropriate_format'.tr());
+        return;
+      }
       var request = HttpRequestDoctor();
-      Doctor doctor = new Doctor(
+      Doctor doctor = Doctor(
           0,
-          userName,
-          userLastName,
-          "erkek",
-          int.parse(userTC),
-          userBirtTime,
-          userInstitue,
-          userMail,
-          userPassword,
+          DoctorUserName,
+          DoctoruserLastName,
+          selectedGender, // Seçilen cinsiyeti burada kullanıyoruz
+          int.parse(DoctorUserTC),
+          DoctorUserBirtTime,
+          DoctorUserInstitue,
+          DoctorUserMail,
+          DoctorUserPassword,
           "DOCTOR",
           true);
       request.signUp(doctor).then((resp) async {
@@ -305,5 +386,52 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
         //var respEntity = ResponseEntity.fromJson(jsonData);
       });
     }
+  }
+
+  void showAlertDialogInvalidUsernameOrPassword(
+      {required BuildContext context, required String msg}) {
+    showDialog(
+        context: context,
+        builder: (builder) => CustomAlertDialog.getAlertDialogUserSignUp(
+            success: false,
+            context: context,
+            title: "Sign-Up",
+            subTitle: "Failed :",
+            msg: msg,
+            roleId: 0));
+  }
+}
+
+class CustomRadio extends StatelessWidget {
+  Gender _gender;
+
+  CustomRadio(this._gender);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        color: _gender.isSelected ? Color(0xFF3B4257) : Colors.white,
+        child: Container(
+          height: 40,
+          width: 80,
+          alignment: Alignment.center,
+          margin: new EdgeInsets.only(left: 10.0, right: 10.0),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                _gender.icon,
+                color: _gender.isSelected ? Colors.white : Colors.grey,
+                size: 35,
+              ),
+              SizedBox(height: 5),
+              Text(
+                _gender.name,
+                style: TextStyle(
+                    fontSize: ResponsiveDesign.getScreenWidth() / 30,
+                    color: _gender.isSelected ? Colors.white : Colors.grey),
+              )
+            ],
+          ),
+        ));
   }
 }

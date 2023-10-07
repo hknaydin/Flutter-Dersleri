@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/ResponsiveDesign.dart';
 
 import '../../utils/Constant.dart';
+import '../../utils/CustomAlertDialog.dart';
 import '../../utils/ProductColor.dart';
 import '../../utils/Validation.dart';
 
@@ -34,14 +35,19 @@ class DoctorPicklistItem {
 }
 
 class _PatientSignUpPageState extends State<PatientSignUpPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _tcController = TextEditingController();
-  final TextEditingController _birthDateController = TextEditingController();
+  final GlobalKey<FormState> formPatientKey = GlobalKey<FormState>();
+  final TextEditingController patientFirstNameController =
+      TextEditingController();
+  final TextEditingController patientLastNameController =
+      TextEditingController();
+  final TextEditingController patientEmailController = TextEditingController();
+  final TextEditingController patientPasswordController =
+      TextEditingController();
+  final TextEditingController patietPhoneNumberController =
+      TextEditingController();
+  final TextEditingController patientTcController = TextEditingController();
+  final TextEditingController patientBirthDateController =
+      TextEditingController();
   String? _selectedDoctor;
 
   @override
@@ -88,7 +94,7 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                     child: SingleChildScrollView(
                       padding: EdgeInsets.all(0.0),
                       child: Form(
-                        key: _formKey,
+                        key: formPatientKey,
                         child: Column(
                           children: <Widget>[
                             Card(
@@ -103,8 +109,8 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                       child: Column(
                                         children: [
                                           PatientInputFormField(
-                                              _firstNameController,
-                                              Icon(
+                                              patientFirstNameController,
+                                              const Icon(
                                                 Icons.person,
                                                 color: Colors.blue,
                                               ),
@@ -116,8 +122,8 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
                                           PatientInputFormField(
-                                              _lastNameController,
-                                              Icon(
+                                              patientLastNameController,
+                                              const Icon(
                                                 Icons.person,
                                                 color: Colors.blue,
                                               ),
@@ -129,7 +135,7 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
                                           PatientInputFormField(
-                                              _emailController,
+                                              patientEmailController,
                                               const Icon(
                                                 Icons.mail_rounded,
                                                 color: Colors.blue,
@@ -142,7 +148,7 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
                                           PatientInputFormField(
-                                              _phoneNumberController,
+                                              patietPhoneNumberController,
                                               const Icon(
                                                 Icons.phone_android_outlined,
                                                 color: Colors.blue,
@@ -155,8 +161,8 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
                                           PatientInputFormField(
-                                              _tcController,
-                                              Icon(
+                                              patientTcController,
+                                              const Icon(
                                                 Icons.password,
                                                 color: Colors.blue,
                                               ),
@@ -222,8 +228,8 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
                                           PatientInputFormField(
-                                              _birthDateController,
-                                              Icon(
+                                              patientBirthDateController,
+                                              const Icon(
                                                 Icons.date_range,
                                                 color: Colors.blue,
                                               ),
@@ -235,8 +241,8 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
                                           PatientInputFormField(
-                                              _passwordController,
-                                              Icon(
+                                              patientPasswordController,
+                                              const Icon(
                                                 Icons.password_outlined,
                                                 color: Colors.blue,
                                               ),
@@ -270,11 +276,8 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                     height: 50.h,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          // Hasta kaydı işlemini gerçekleştirin.
-                          // _firstNameController.text, _lastNameController.text,
-                          // _emailController.text, _passwordController.text ve
-                          // diğer gerekli alanlardan gelen verileri kullanabilirsiniz.
+                        if (formPatientKey.currentState!.validate()) {
+                          signUpProcess(context);
                         }
                       },
                       style: ButtonStyle(
@@ -349,5 +352,36 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
           fontSize: ResponsiveDesign.getScreenWidth() / 30,
           color: ProductColor.darkBlue),
     );
+  }
+
+  void signUpProcess(BuildContext context) {
+    bool controlResult = formPatientKey.currentState!.validate();
+    if (controlResult) {
+      String patientUserName = patientFirstNameController.text;
+      String patientUserLastName = patientLastNameController.text;
+      String patientUserMail = patientEmailController.text;
+      String patientUserPassword = patientPasswordController.text;
+      String patientUserTC = patientTcController.text;
+      String patientUserBirtTime = patientBirthDateController.text;
+      if (!Validation().isEmailValid(patientUserMail)) {
+        showAlertDialogInvalidUsernameOrPassword(
+            context: context,
+            msg: 'please_enter_mail_address_in_the_appropriate_format'.tr());
+        return;
+      }
+    }
+  }
+
+  void showAlertDialogInvalidUsernameOrPassword(
+      {required BuildContext context, required String msg}) {
+    showDialog(
+        context: context,
+        builder: (builder) => CustomAlertDialog.getAlertDialogUserSignUp(
+            success: false,
+            context: context,
+            title: "Sign-Up",
+            subTitle: "Failed :",
+            msg: msg,
+            roleId: 0));
   }
 }

@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:harpia_project/pages/about_project_and_team.dart';
 import 'package:harpia_project/pages/register.dart';
+import 'package:harpia_project/utils/Validation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../core/ResponsiveDesign.dart';
@@ -368,7 +369,7 @@ class GirisSayfasiState extends State<LoginScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.sp),
       child: TextFormField(
-        maxLength: _TextFieldInputLength.max,
+        maxLength: Validation.maxPasswordCharacterSize,
         obscureText: isVisible,
         validator: (data) {
           if (data!.isEmpty) {
@@ -383,7 +384,7 @@ class GirisSayfasiState extends State<LoginScreen> {
           // return null;
         },
         decoration: InputDecoration(
-            prefixIcon: Icon(
+            prefixIcon: const Icon(
               Icons.lock,
               color: Colors.blue,
             ),
@@ -393,7 +394,7 @@ class GirisSayfasiState extends State<LoginScreen> {
                     isVisible = !isVisible;
                   });
                 },
-                child: Icon(Icons.visibility)),
+                child: const Icon(Icons.visibility)),
             labelText: 'prompt_password'.tr(),
             labelStyle: TextStyle(
                 fontSize: ResponsiveDesign.getScreenWidth() / 23,
