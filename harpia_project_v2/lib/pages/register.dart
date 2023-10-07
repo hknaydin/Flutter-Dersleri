@@ -44,53 +44,55 @@ class RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      initialIndex: 0,
-      child: Scaffold(
-        body: TabBarView(
-          children: pages,
-        ),
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Colors.grey,
-                width: 0.5,
-              ),
-            ),
+    return SafeArea(
+      child: DefaultTabController(
+        length: 2,
+        initialIndex: 0,
+        child: Scaffold(
+          body: TabBarView(
+            children: pages,
           ),
-          margin: EdgeInsets.only(bottom: 5),
-          child: TabBar(
-            indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(
-                  width: 4.0,
-                  color: Colors
-                      .blue), // Indicator çizgisi özelliklerini ayarlayabilirsiniz.
-            ),
-            tabs: [
-              Tab(
-                icon: SvgPicture.asset(
-                  'assets/images/doctor.svg', // Kullanmak istediğiniz SVG dosyasının yolunu buraya ekleyin
-                  width: 24,
-                  height: 24,
-                  color: Colors.black,
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Colors.grey,
+                  width: 0.5,
                 ),
-                text: 'doctor'.tr(),
               ),
-              Tab(
-                icon: SvgPicture.asset(
-                  'assets/images/patient.svg', // Kullanmak istediğiniz SVG dosyasının yolunu buraya ekleyin
-                  width: 24,
-                  height: 24,
-                  color: Colors.black,
+            ),
+            margin: EdgeInsets.only(bottom: 1),
+            child: TabBar(
+              indicator: UnderlineTabIndicator(
+                borderSide: BorderSide(
+                    width: 4.0,
+                    color: Colors
+                        .blue), // Indicator çizgisi özelliklerini ayarlayabilirsiniz.
+              ),
+              tabs: [
+                Tab(
+                  icon: SvgPicture.asset(
+                    'assets/images/doctor.svg', // Kullanmak istediğiniz SVG dosyasının yolunu buraya ekleyin
+                    width: 24,
+                    height: 24,
+                    color: Colors.black,
+                  ),
+                  text: 'doctor'.tr(),
                 ),
-                text: 'patient'.tr(),
-              )
-            ],
-            unselectedLabelColor: Colors.black,
-            labelColor: Colors.blue,
-            indicatorColor: Colors.transparent,
+                Tab(
+                  icon: SvgPicture.asset(
+                    'assets/images/patient.svg', // Kullanmak istediğiniz SVG dosyasının yolunu buraya ekleyin
+                    width: 24,
+                    height: 24,
+                    color: Colors.black,
+                  ),
+                  text: 'patient'.tr(),
+                )
+              ],
+              unselectedLabelColor: Colors.black,
+              labelColor: Colors.blue,
+              indicatorColor: Colors.transparent,
+            ),
           ),
         ),
       ),

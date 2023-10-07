@@ -94,7 +94,8 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                 ),
                                                 'name',
                                                 'enter_your_name',
-                                                'Please enter your first name'),
+                                                'please_enter_your_first_name',
+                                                TextInputType.text),
                                             SizedBox(
                                                 height: Constat
                                                     .doctorRegisterPanelWidgetSpace),
@@ -106,7 +107,8 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                 ),
                                                 'surname',
                                                 'enter_your_surname',
-                                                'Please enter your last name'),
+                                                'please_enter_your_last_name',
+                                                TextInputType.text),
                                             SizedBox(
                                                 height: Constat
                                                     .doctorRegisterPanelWidgetSpace),
@@ -118,7 +120,8 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                 ),
                                                 'nationality_id',
                                                 'enter_your_nationality_id',
-                                                'Please enter your TC Kimlik No'),
+                                                'please_enter_your_nationality_TC_number',
+                                                TextInputType.number),
                                             SizedBox(
                                                 height: Constat
                                                     .doctorRegisterPanelWidgetSpace),
@@ -130,7 +133,8 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                 ),
                                                 'hasta_dogum_tarihi',
                                                 'date_of_birth_10_10_1991',
-                                                'Please enter your birth date'),
+                                                'please_enter_your_birtday_time',
+                                                TextInputType.text),
                                             SizedBox(
                                                 height: Constat
                                                     .doctorRegisterPanelWidgetSpace),
@@ -142,7 +146,8 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                 ),
                                                 'institue',
                                                 'employed_institution',
-                                                'Please enter the institution you work for'),
+                                                'please_enter_your_institution',
+                                                TextInputType.text),
                                             SizedBox(
                                                 height: Constat
                                                     .doctorRegisterPanelWidgetSpace),
@@ -154,7 +159,8 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                 ),
                                                 'prompt_email',
                                                 'prompt_email',
-                                                'Please enter your email address'),
+                                                'please_enter_mail_address_in_the_appropriate_format',
+                                                TextInputType.text),
                                             SizedBox(
                                                 height: Constat
                                                     .doctorRegisterPanelWidgetSpace),
@@ -166,7 +172,8 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                 ),
                                                 'prompt_password',
                                                 'please_enter_the_password',
-                                                'Please enter a password'),
+                                                'please_enter_password_that_is_difficult_to_guess',
+                                                TextInputType.text),
                                             SizedBox(height: 16.0),
                                           ],
                                         ),
@@ -217,10 +224,17 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
     );
   }
 
-  TextFormField DoctorInputFormField(TextEditingController controller,
-      Icon icon, String lblTxt, String lblHintTxt, String returnMessage) {
+  TextFormField DoctorInputFormField(
+      TextEditingController controller,
+      Icon icon,
+      String lblTxt,
+      String lblHintTxt,
+      String returnMessage,
+      TextInputType keyboardType) {
     return TextFormField(
       controller: controller,
+      keyboardType:
+          keyboardType, // keyboardType'ı ilgili parametre olarak ayarlayın
       decoration: InputDecoration(
           prefixIcon: icon,
           labelText: lblTxt.tr(),
@@ -240,7 +254,7 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
               borderRadius: BorderRadius.all(Radius.circular(10.0)))),
       validator: (value) {
         if (value!.isEmpty) {
-          return returnMessage;
+          return returnMessage.tr();
         }
         return null;
       },

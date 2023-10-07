@@ -570,7 +570,7 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
         width: 100.w,
-        height: 50.h,
+        height: 60.h,
         child: ElevatedButton(
             onPressed: () {
               loginProcess(context);
@@ -584,9 +584,14 @@ class LoginButton extends StatelessWidget {
                     MaterialStateColor.resolveWith((states) => Colors.pink),
                 foregroundColor:
                     MaterialStateColor.resolveWith((states) => Colors.white)),
-            child: Text('login'.tr(),
-                style: TextStyle(
-                    fontSize: ResponsiveDesign.getScreenWidth() / 20))));
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center, // Dikeyde ortalama
+              children: [
+                Text('login'.tr(),
+                    style: TextStyle(
+                        fontSize: ResponsiveDesign.getScreenWidth() / 20)),
+              ],
+            )));
   }
 
   void loginProcess(BuildContext context) async {
