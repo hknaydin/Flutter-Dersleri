@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:harpia_project/utils/Validation.dart';
 
 import '../../core/ResponsiveDesign.dart';
 import '../../model/user/Doctor.dart';
@@ -210,7 +211,7 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                               (states) => Colors.pink),
                           foregroundColor: MaterialStateColor.resolveWith(
                               (states) => Colors.white)),
-                      child: Text('Register as Doctor'),
+                      child: Text('register'.tr()),
                     ),
                   ),
                   SizedBox(height: 10.h),
@@ -233,6 +234,11 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
       TextInputType keyboardType) {
     return TextFormField(
       controller: controller,
+      maxLength: lblTxt == 'nationality_id'
+          ? Validation.tcCharacterSize
+          : lblTxt == 'prompt_password'
+              ? Validation.maxPasswordCharacterSize
+              : Validation.maxNumberCharacterSize,
       keyboardType:
           keyboardType, // keyboardType'ı ilgili parametre olarak ayarlayın
       decoration: InputDecoration(
@@ -255,6 +261,10 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
       validator: (value) {
         if (value!.isEmpty) {
           return returnMessage.tr();
+        }
+        if (lblTxt == 'prompt_password' && value.length < 6) {
+          return 'number_of_entered_password_characters_must_be_greater_than_6'
+              .tr();
         }
         return null;
       },

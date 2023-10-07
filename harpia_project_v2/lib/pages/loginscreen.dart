@@ -7,7 +7,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:harpia_project/pages/about_project_and_team.dart';
 import 'package:harpia_project/pages/register.dart';
-import 'package:harpia_project/utils/my_shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../core/ResponsiveDesign.dart';
@@ -334,13 +333,7 @@ class GirisSayfasiState extends State<LoginScreen> {
         maxLength: _TextFieldInputLength.max,
         validator: (data) {
           if (data!.isEmpty) {
-            return "Please enter password";
-          }
-          if (data.length < _TextFieldInputLength.min) {
-            return "Please enter ${_TextFieldInputLength.min} or more  character";
-          }
-          if (data.length > _TextFieldInputLength.max) {
-            return "Please enter ${_TextFieldInputLength.max} or less  character";
+            return 'please_enter_username'.tr();
           }
           // return null;
         },
@@ -349,12 +342,12 @@ class GirisSayfasiState extends State<LoginScreen> {
               Icons.person,
               color: Colors.blue,
             ),
-            labelText: "UserName",
+            labelText: 'username'.tr(),
             labelStyle: TextStyle(
                 fontSize: ResponsiveDesign.getScreenWidth() / 23,
                 color: ProductColor.black,
                 fontWeight: FontWeight.bold),
-            hintText: "UserName",
+            hintText: 'please_enter_username'.tr(),
             hintStyle:
                 TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 20),
             focusedBorder: OutlineInputBorder(
@@ -379,7 +372,7 @@ class GirisSayfasiState extends State<LoginScreen> {
         obscureText: isVisible,
         validator: (data) {
           if (data!.isEmpty) {
-            return "Please enter password";
+            return 'please_enter_password_that_is_difficult_to_guess'.tr();
           }
           if (data.length < _TextFieldInputLength.min) {
             return "Please enter ${_TextFieldInputLength.min} or more  character";
@@ -401,12 +394,12 @@ class GirisSayfasiState extends State<LoginScreen> {
                   });
                 },
                 child: Icon(Icons.visibility)),
-            labelText: "Password",
+            labelText: 'prompt_password'.tr(),
             labelStyle: TextStyle(
                 fontSize: ResponsiveDesign.getScreenWidth() / 23,
                 color: ProductColor.black,
                 fontWeight: FontWeight.bold),
-            hintText: "Password",
+            hintText: 'please_enter_the_password'.tr(),
             hintStyle:
                 TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 20),
             focusedBorder: OutlineInputBorder(
@@ -569,8 +562,8 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: 100.w,
-        height: 60.h,
+        width: 130.w,
+        height: 50.h,
         child: ElevatedButton(
             onPressed: () {
               loginProcess(context);

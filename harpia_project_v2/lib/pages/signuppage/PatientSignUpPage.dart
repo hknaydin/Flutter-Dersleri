@@ -7,6 +7,7 @@ import '../../../core/ResponsiveDesign.dart';
 
 import '../../utils/Constant.dart';
 import '../../utils/ProductColor.dart';
+import '../../utils/Validation.dart';
 
 class PatientSignUpPage extends StatefulWidget {
   const PatientSignUpPage({Key? key}) : super(key: key);
@@ -123,7 +124,7 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                               'surname',
                                               'enter_your_surname',
                                               'please_enter_your_last_name',
-                                              TextInputType.number),
+                                              TextInputType.text),
                                           SizedBox(
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
@@ -136,7 +137,7 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                               'prompt_email',
                                               'prompt_email',
                                               'please_enter_mail_address_in_the_appropriate_format',
-                                              TextInputType.number),
+                                              TextInputType.text),
                                           SizedBox(
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
@@ -229,7 +230,7 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                               'hasta_dogum_tarihi',
                                               'date_of_birth_10_10_1991',
                                               'please_enter_your_birtday_time',
-                                              TextInputType.number),
+                                              TextInputType.datetime),
                                           SizedBox(
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
@@ -242,7 +243,7 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                               'prompt_password',
                                               'please_enter_the_password',
                                               'please_enter_password_that_is_difficult_to_guess',
-                                              TextInputType.number),
+                                              TextInputType.text),
                                           SizedBox(
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
@@ -287,7 +288,7 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                               (states) => Colors.pink),
                           foregroundColor: MaterialStateColor.resolveWith(
                               (states) => Colors.white)),
-                      child: Text('Register as Patient'),
+                      child: Text('register'.tr()),
                     ),
                   ),
                   SizedBox(height: 10.h),
@@ -310,6 +311,11 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
       TextInputType keyboardType) {
     return TextFormField(
       controller: controller,
+      maxLength: lblTxt == 'nationality_id'
+          ? Validation.tcCharacterSize
+          : lblTxt == 'prompt_password'
+              ? Validation.maxPasswordCharacterSize
+              : Validation.maxNumberCharacterSize,
       keyboardType:
           keyboardType, // keyboardType'ı ilgili parametre olarak ayarlayın
       decoration: InputDecoration(
@@ -332,6 +338,10 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
       validator: (value) {
         if (value!.isEmpty) {
           return returnMessage.tr();
+        }
+        if (lblTxt == 'prompt_password' && value.length < 6) {
+          return 'number_of_entered_password_characters_must_be_greater_than_6'
+              .tr();
         }
         return null;
       },
