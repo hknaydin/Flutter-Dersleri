@@ -9,7 +9,7 @@ import 'package:harpia_project/utils/Constant.dart';
 import '../core/ResponsiveDesign.dart';
 import '../utils/CustomSnackBar.dart';
 import '../utils/ProductColor.dart';
-import '../utils/my_shared_preferences.dart';
+import '../utils/MySharedPreferences.dart';
 
 class SettingAdmin extends StatefulWidget {
   const SettingAdmin({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:harpia_project/utils/my_shared_preferences.dart';
+import 'package:harpia_project/utils/MySharedPreferences.dart';
 
 import '../model/user/Doctor.dart';
 import '../utils/HttpUtil.dart';

@@ -16,4 +16,34 @@ class Validation {
 
     return regExp.hasMatch(email);
   }
+
+  bool isStrongPassword(String password) {
+    // Parola uzunluğu kontrolü
+    if (password.length < 8) {
+      return false;
+    }
+
+    // En az bir büyük harf kontrolü
+    if (!password.contains(RegExp(r'[A-Z]'))) {
+      return false;
+    }
+
+    // En az bir küçük harf kontrolü
+    if (!password.contains(RegExp(r'[a-z]'))) {
+      return false;
+    }
+
+    // Rakam kontrolü
+    if (!password.contains(RegExp(r'[0-9]'))) {
+      return false;
+    }
+
+    // Özel karakter kontrolü
+    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+      return false;
+    }
+
+    // Tüm kontrolleri geçtiyse parola güçlüdür
+    return true;
+  }
 }

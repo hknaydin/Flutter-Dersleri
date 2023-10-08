@@ -10,6 +10,7 @@ import 'package:harpia_project/utils/Validation.dart';
 import '../../core/ResponsiveDesign.dart';
 import '../../model/user/Doctor.dart';
 import '../../network/HttpRequestDoctor.dart';
+import '../../result/DataResult.dart';
 import '../../utils/Constant.dart';
 import '../../utils/CustomAlertDialog.dart';
 import '../../utils/ProductColor.dart';
@@ -345,9 +346,6 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
   }
 
   void signUpProcess(BuildContext context) {
-    showAlertDialogInvalidUsernameOrPassword(
-        context: context,
-        msg: genders.firstWhere((gender) => gender.isSelected).name);
     bool controlResult = formKey.currentState!.validate();
     if (controlResult) {
       String DoctorUserName = firstNameController.text;
@@ -360,12 +358,23 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
       String selectedGender = genders
           .firstWhere((gender) => gender.isSelected)
           .name; // Seçilen cinsiyeti alıyoruz
+
       if (!Validation().isEmailValid(DoctorUserMail)) {
         showAlertDialogInvalidUsernameOrPassword(
             context: context,
-            msg: 'please_enter_mail_address_in_the_appropriate_format'.tr());
+            msg: 'please_enter_mail_address_in_the_appropriate_format'.tr(),
+            title: 'warning'.tr());
         return;
       }
+
+      if (!Validation().isStrongPassword(DoctorUserPassword)) {
+        showAlertDialogInvalidUsernameOrPassword(
+            context: context,
+            msg: 'password_appropriate_message'.tr(),
+            title: 'warning'.tr());
+        return;
+      }
+
       var request = HttpRequestDoctor();
       Doctor doctor = Doctor(
           0,
@@ -382,20 +391,27 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
       request.signUp(doctor).then((resp) async {
         // debugPrint(resp.body);
         Map<String, dynamic> jsonData = json.decode(resp.body);
-        // print("res.body : ${resp.body}");
-        //var respEntity = ResponseEntity.fromJson(jsonData);
+        print("res.body : ${resp.body}");
+        var respEntity = DataResult.fromJson(jsonData);
+
+        if (!respEntity.success) {
+          showAlertDialogInvalidUsernameOrPassword(
+              context: context, msg: respEntity.message, title: 'warning'.tr());
+        }
       });
     }
   }
 
   void showAlertDialogInvalidUsernameOrPassword(
-      {required BuildContext context, required String msg}) {
+      {required BuildContext context,
+      required String title,
+      required String msg}) {
     showDialog(
         context: context,
         builder: (builder) => CustomAlertDialog.getAlertDialogUserSignUp(
             success: false,
             context: context,
-            title: "Sign-Up",
+            title: title,
             subTitle: "Failed :",
             msg: msg,
             roleId: 0));

@@ -9,7 +9,7 @@ import '../core/ResponsiveDesign.dart';
 import '../pages/loginscreen.dart';
 import '../utils/CustomSnackBar.dart';
 import '../utils/ProductColor.dart';
-import '../utils/my_shared_preferences.dart';
+import '../utils/MySharedPreferences.dart';
 
 class SettingIpEnter extends StatefulWidget {
   const SettingIpEnter({Key? key}) : super(key: key);
