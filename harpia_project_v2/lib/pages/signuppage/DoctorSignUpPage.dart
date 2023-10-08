@@ -41,6 +41,7 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
   final TextEditingController institutionController = TextEditingController();
 
   List<Gender> genders = [];
+  bool checkedValue = false;
 
   @override
   void initState() {
@@ -235,7 +236,99 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                   },
                                                 ),
                                               ),
-                                            )
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 20.h,
+                                              ),
+                                              child: CheckboxListTile(
+                                                title: RichText(
+                                                  textAlign: TextAlign.left,
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text:
+                                                            "By creating an account, you agree to our ",
+                                                        style: TextStyle(
+                                                          color: const Color(
+                                                              0xffADA4A5),
+                                                          fontSize: ResponsiveDesign
+                                                                  .getScreenWidth() /
+                                                              30,
+                                                        ),
+                                                      ),
+                                                      WidgetSpan(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            // ignore: avoid_print
+                                                            print(
+                                                                'Conditions of Use');
+                                                          },
+                                                          child: Text(
+                                                            "Conditions of Use",
+                                                            style: TextStyle(
+                                                              color: const Color(
+                                                                  0xffADA4A5),
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .underline,
+                                                              fontSize:
+                                                                  ResponsiveDesign
+                                                                          .getScreenWidth() /
+                                                                      30,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: " and ",
+                                                        style: TextStyle(
+                                                          color: const Color(
+                                                              0xffADA4A5),
+                                                          fontSize: ResponsiveDesign
+                                                                  .getScreenWidth() /
+                                                              30,
+                                                        ),
+                                                      ),
+                                                      WidgetSpan(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            // ignore: avoid_print
+                                                            print(
+                                                                'Privacy Notice');
+                                                          },
+                                                          child: Text(
+                                                            "Privacy Notice",
+                                                            style: TextStyle(
+                                                              color: const Color(
+                                                                  0xffADA4A5),
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .underline,
+                                                              fontSize:
+                                                                  ResponsiveDesign
+                                                                          .getScreenWidth() /
+                                                                      30,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                activeColor:
+                                                    const Color(0xff7B6F72),
+                                                value: checkedValue,
+                                                onChanged: (newValue) {
+                                                  setState(() {
+                                                    checkedValue = newValue!;
+                                                  });
+                                                },
+                                                controlAffinity:
+                                                    ListTileControlAffinity
+                                                        .leading,
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -374,7 +467,12 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
             title: 'warning'.tr());
         return;
       }
+      if (checkedValue == false) {
+        buildSnackError(
+            'Accept our Privacy Policy and Term Of Use', context, "");
 
+        return;
+      }
       var request = HttpRequestDoctor();
       Doctor doctor = Doctor(
           0,
@@ -415,6 +513,22 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
             subTitle: "Failed :",
             msg: msg,
             roleId: 0));
+  }
+
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> buildSnackError(
+      String error, context, String size) {
+    return ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        backgroundColor: Colors.black,
+        content: SizedBox(
+          height: 10.w,
+          child: Center(
+            child: Text(error),
+          ),
+        ),
+      ),
+    );
   }
 }
 
