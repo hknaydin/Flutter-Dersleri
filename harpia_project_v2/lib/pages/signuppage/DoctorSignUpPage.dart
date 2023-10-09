@@ -30,6 +30,8 @@ class Gender {
   Gender(this.name, this.icon, this.isSelected);
 }
 
+bool isVisible = true;
+
 class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController firstNameController = TextEditingController();
@@ -146,7 +148,7 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                             SizedBox(
                                                 height: Constat
                                                     .doctorRegisterPanelWidgetSpace),
-                                            DoctorInputFormField(
+                                            DoctorInputFormFieldDataPicker(
                                                 birthDateController,
                                                 Icon(
                                                   Icons.date_range,
@@ -237,13 +239,12 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                vertical: 20.h,
-                                              ),
+                                            Align(
                                               child: CheckboxListTile(
+                                                contentPadding: EdgeInsets
+                                                    .zero, // Boşluğu kaldırmak için bu satırı ekledik
                                                 title: RichText(
-                                                  textAlign: TextAlign.left,
+                                                  textAlign: TextAlign.justify,
                                                   text: TextSpan(
                                                     children: [
                                                       TextSpan(
@@ -257,27 +258,15 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                               30,
                                                         ),
                                                       ),
-                                                      WidgetSpan(
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            // ignore: avoid_print
-                                                            print(
-                                                                'Conditions of Use');
-                                                          },
-                                                          child: Text(
+                                                      TextSpan(
+                                                        text:
                                                             "Conditions of Use",
-                                                            style: TextStyle(
-                                                              color: const Color(
-                                                                  0xffADA4A5),
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .underline,
-                                                              fontSize:
-                                                                  ResponsiveDesign
-                                                                          .getScreenWidth() /
-                                                                      30,
-                                                            ),
-                                                          ),
+                                                        style: TextStyle(
+                                                          color: const Color(
+                                                              0xffADA4A5),
+                                                          fontSize: ResponsiveDesign
+                                                                  .getScreenWidth() /
+                                                              30,
                                                         ),
                                                       ),
                                                       TextSpan(
@@ -290,27 +279,14 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                               30,
                                                         ),
                                                       ),
-                                                      WidgetSpan(
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            // ignore: avoid_print
-                                                            print(
-                                                                'Privacy Notice');
-                                                          },
-                                                          child: Text(
-                                                            "Privacy Notice",
-                                                            style: TextStyle(
-                                                              color: const Color(
-                                                                  0xffADA4A5),
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .underline,
-                                                              fontSize:
-                                                                  ResponsiveDesign
-                                                                          .getScreenWidth() /
-                                                                      30,
-                                                            ),
-                                                          ),
+                                                      TextSpan(
+                                                        text: "Privacy Notice",
+                                                        style: TextStyle(
+                                                          color: const Color(
+                                                              0xffADA4A5),
+                                                          fontSize: ResponsiveDesign
+                                                                  .getScreenWidth() /
+                                                              30,
                                                         ),
                                                       ),
                                                     ],
@@ -387,6 +363,71 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
       TextInputType keyboardType) {
     return TextFormField(
       controller: controller,
+      obscureText: lblTxt == 'prompt_password' ? isVisible : false,
+      maxLength: lblTxt == 'nationality_id'
+          ? Validation.tcCharacterSize
+          : lblTxt == 'prompt_password'
+              ? Validation.maxPasswordCharacterSize
+              : Validation.maxNumberCharacterSize,
+      keyboardType:
+          keyboardType, // keyboardType'ı ilgili parametre olarak ayarlayın
+      decoration: InputDecoration(
+          prefixIcon: icon,
+          suffixIcon: lblTxt == 'prompt_password'
+              ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isVisible = !isVisible;
+                    });
+                  },
+                  child:
+                      Icon(isVisible ? Icons.visibility : Icons.visibility_off))
+              : null,
+          labelText: lblTxt.tr(),
+          labelStyle: TextStyle(
+              fontSize: ResponsiveDesign.getScreenWidth() / 30,
+              color: ProductColor.black,
+              fontWeight: FontWeight.bold),
+          hintText: lblHintTxt.tr(),
+          hintStyle:
+              TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 30),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(color: ProductColor.darkBlue)),
+          filled: true,
+          fillColor: ProductColor.white,
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return returnMessage.tr();
+        }
+        if (lblTxt == 'prompt_password' && value.length < 6) {
+          return 'number_of_entered_password_characters_must_be_greater_than_6'
+              .tr();
+        }
+        if (lblTxt == 'nationality_id' &&
+            value.replaceAll(' ', '').length < Validation.tcCharacterSize) {
+          return "11 haneli tc numaranızı giriniz";
+        }
+        return null;
+      },
+      style: TextStyle(
+          fontSize: ResponsiveDesign.getScreenWidth() / 30,
+          color: ProductColor.darkBlue),
+    );
+  }
+
+  TextFormField DoctorInputFormFieldDataPicker(
+      TextEditingController controller,
+      Icon icon,
+      String lblTxt,
+      String lblHintTxt,
+      String returnMessage,
+      TextInputType keyboardType) {
+    return TextFormField(
+      controller: controller,
+      readOnly: true,
       maxLength: lblTxt == 'nationality_id'
           ? Validation.tcCharacterSize
           : lblTxt == 'prompt_password'
@@ -411,6 +452,30 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
           fillColor: ProductColor.white,
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+      onTap: () async {
+        DateTime? pickedDate = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(
+                2000), //DateTime.now() - not to allow to choose before today.
+            lastDate: DateTime(2101));
+
+        if (pickedDate != null) {
+          print(
+              pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+          String formattedDate = DateFormat('dd.MM.yyyy').format(pickedDate);
+          print(
+              formattedDate); //formatted date output using intl package =>  2021-03-16
+          //you can implement different kind of Date Format here according to your requirement
+
+          setState(() {
+            controller.text =
+                formattedDate; //set output date to TextField value.
+          });
+        } else {
+          print("Date is not selected");
+        }
+      },
       validator: (value) {
         if (value!.isEmpty) {
           return returnMessage.tr();
@@ -492,7 +557,10 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
         print("res.body : ${resp.body}");
         var respEntity = DataResult.fromJson(jsonData);
 
-        if (!respEntity.success) {
+        if (respEntity.success) {
+          showAlertDialogInvalidUsernameOrPassword(
+              context: context, msg: respEntity.message, title: 'warning'.tr());
+        } else {
           showAlertDialogInvalidUsernameOrPassword(
               context: context, msg: respEntity.message, title: 'warning'.tr());
         }

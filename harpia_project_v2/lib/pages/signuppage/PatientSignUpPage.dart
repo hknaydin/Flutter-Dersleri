@@ -17,8 +17,7 @@ class PatientSignUpPage extends StatefulWidget {
   State<PatientSignUpPage> createState() => _PatientSignUpPageState();
 }
 
-final _formKey = GlobalKey<FormState>();
-// final _diseaseKey = GlobalKey<FormFieldState>();
+bool isVisible = true;
 
 class DoctorPicklistItem {
   int index;
@@ -227,7 +226,7 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                           SizedBox(
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
-                                          PatientInputFormField(
+                                          PatientInputFormFieldDataPicker(
                                               patientBirthDateController,
                                               const Icon(
                                                 Icons.date_range,
@@ -314,6 +313,67 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
       TextInputType keyboardType) {
     return TextFormField(
       controller: controller,
+      obscureText: lblTxt == 'prompt_password' ? isVisible : false,
+      maxLength: lblTxt == 'nationality_id'
+          ? Validation.tcCharacterSize
+          : lblTxt == 'prompt_password'
+              ? Validation.maxPasswordCharacterSize
+              : Validation.maxNumberCharacterSize,
+      keyboardType:
+          keyboardType, // keyboardType'ı ilgili parametre olarak ayarlayın
+      decoration: InputDecoration(
+          prefixIcon: icon,
+          suffixIcon: lblTxt == 'prompt_password'
+              ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isVisible = !isVisible;
+                    });
+                  },
+                  child:
+                      Icon(isVisible ? Icons.visibility : Icons.visibility_off))
+              : null,
+          labelText: lblTxt.tr(),
+          labelStyle: TextStyle(
+              fontSize: ResponsiveDesign.getScreenWidth() / 30,
+              color: ProductColor.black,
+              fontWeight: FontWeight.bold),
+          hintText: lblHintTxt.tr(),
+          hintStyle:
+              TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 30),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(color: ProductColor.darkBlue)),
+          filled: true,
+          fillColor: ProductColor.white,
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return returnMessage.tr();
+        }
+        if (lblTxt == 'prompt_password' && value.length < 6) {
+          return 'number_of_entered_password_characters_must_be_greater_than_6'
+              .tr();
+        }
+        return null;
+      },
+      style: TextStyle(
+          fontSize: ResponsiveDesign.getScreenWidth() / 30,
+          color: ProductColor.darkBlue),
+    );
+  }
+
+  TextFormField PatientInputFormFieldDataPicker(
+      TextEditingController controller,
+      Icon icon,
+      String lblTxt,
+      String lblHintTxt,
+      String returnMessage,
+      TextInputType keyboardType) {
+    return TextFormField(
+      controller: controller,
+      readOnly: true,
       maxLength: lblTxt == 'nationality_id'
           ? Validation.tcCharacterSize
           : lblTxt == 'prompt_password'
@@ -338,6 +398,30 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
           fillColor: ProductColor.white,
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+      onTap: () async {
+        DateTime? pickedDate = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(
+                2000), //DateTime.now() - not to allow to choose before today.
+            lastDate: DateTime(2101));
+
+        if (pickedDate != null) {
+          print(
+              pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+          String formattedDate = DateFormat('dd.MM.yyyy').format(pickedDate);
+          print(
+              formattedDate); //formatted date output using intl package =>  2021-03-16
+          //you can implement different kind of Date Format here according to your requirement
+
+          setState(() {
+            controller.text =
+                formattedDate; //set output date to TextField value.
+          });
+        } else {
+          print("Date is not selected");
+        }
+      },
       validator: (value) {
         if (value!.isEmpty) {
           return returnMessage.tr();
@@ -345,6 +429,10 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
         if (lblTxt == 'prompt_password' && value.length < 6) {
           return 'number_of_entered_password_characters_must_be_greater_than_6'
               .tr();
+        }
+        if (lblTxt == 'nationality_id' &&
+            value.replaceAll(' ', '').length < Validation.tcCharacterSize) {
+          return "11 haneli tc numaranızı giriniz";
         }
         return null;
       },

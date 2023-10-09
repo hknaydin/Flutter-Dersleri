@@ -23,7 +23,7 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => GirisSayfasiState();
 }
 
-bool isVisible = false;
+bool isVisible = true;
 
 class GirisSayfasiState extends State<LoginScreen> {
   GetStorage box = GetStorage();
@@ -132,7 +132,7 @@ class GirisSayfasiState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    LoginPageLogo(),
+                    const LoginPageLogo(),
                     SizedBox(
                       height: 5.sp,
                     ),
@@ -285,42 +285,49 @@ class GirisSayfasiState extends State<LoginScreen> {
                   )),
             ),
           ),
-          Expanded(flex: 3, child: Container()),
+          Expanded(flex: 3, child: SizedBox()),
           Expanded(
               flex: 1,
-              child: DropdownButton<Icon>(
-                value: selectedIcon,
-                elevation: 0,
-                isDense: false,
-                onChanged: (Icon? newValue) {
-                  selectedIcon = newValue;
-                },
-                items: [
-                  DropdownMenuItem(
-                    value: Icon(Icons.flag),
-                    child: Row(
-                      children: [
-                        Icon(Icons.flag),
-                      ],
-                    ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 20.h, 0, 0),
+                child: Align(
+                  alignment: Alignment
+                      .topCenter, // Burada Alignment.topCenter kullanıyoruz
+                  child: DropdownButton<Icon>(
+                    value: selectedIcon,
+                    elevation: 1,
+                    isDense: false,
+                    onChanged: (Icon? newValue) {
+                      selectedIcon = newValue;
+                    },
+                    items: [
+                      DropdownMenuItem(
+                        value: Icon(Icons.flag),
+                        child: Row(
+                          children: [
+                            Icon(Icons.flag),
+                          ],
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: Icon(Icons.star),
+                        child: Row(
+                          children: [
+                            Icon(Icons.star),
+                          ],
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: Icon(Icons.favorite),
+                        child: Row(
+                          children: [
+                            Icon(Icons.favorite),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  DropdownMenuItem(
-                    value: Icon(Icons.star),
-                    child: Row(
-                      children: [
-                        Icon(Icons.star),
-                      ],
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: Icon(Icons.favorite),
-                    child: Row(
-                      children: [
-                        Icon(Icons.favorite),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               )),
         ],
       ),
@@ -394,7 +401,8 @@ class GirisSayfasiState extends State<LoginScreen> {
                     isVisible = !isVisible;
                   });
                 },
-                child: const Icon(Icons.visibility)),
+                child:
+                    Icon(isVisible ? Icons.visibility : Icons.visibility_off)),
             labelText: 'prompt_password'.tr(),
             labelStyle: TextStyle(
                 fontSize: ResponsiveDesign.getScreenWidth() / 23,
