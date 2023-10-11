@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:harpia_project/pages/network/network_error.dart';
 import 'package:harpia_project/utils/MySharedPreferences.dart';
 import 'pages/loginscreen.dart';
 import 'package:get_storage/get_storage.dart';
@@ -64,7 +65,7 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToLoginPage();
+    _checkInternetAndNavigate();
   }
 
   @override
@@ -161,6 +162,24 @@ class SplashScreenState extends State<SplashScreen> {
     );
   }
 
+  Future<void> _checkInternetAndNavigate() async {
+    bool hasInternet = await _checkInternetConnection();
+    if (hasInternet) {
+      _navigateToLoginPage();
+    } else {
+      _navigateToNetworkErrorPage();
+    }
+  }
+
+  Future<bool> _checkInternetConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } on SocketException catch (_) {
+      return false;
+    }
+  }
+
   void _navigateToLoginPage() {
     Timer(
       const Duration(seconds: 3),
@@ -168,6 +187,13 @@ class SplashScreenState extends State<SplashScreen> {
         context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),
       ),
+    );
+  }
+
+  void _navigateToNetworkErrorPage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => NetworkErrorPage()),
     );
   }
 }

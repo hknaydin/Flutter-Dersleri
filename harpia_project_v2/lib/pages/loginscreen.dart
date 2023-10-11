@@ -12,7 +12,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../core/ResponsiveDesign.dart';
 import '../setting/setting_admin.dart';
-import '../utils/CustomSnackBar.dart';
+import '../utils/CustomAlertDialog.dart';
 import '../utils/ProductColor.dart';
 import '../utils/custom_widgets.dart';
 
@@ -27,7 +27,10 @@ bool isVisible = true;
 
 class GirisSayfasiState extends State<LoginScreen> {
   GetStorage box = GetStorage();
-  var formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController tfUsername = TextEditingController();
+  TextEditingController tfPassword = TextEditingController();
+
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
     packageName: 'Unknown',
@@ -37,15 +40,6 @@ class GirisSayfasiState extends State<LoginScreen> {
     installerStore: 'Unknown',
   );
   Icon? selectedIcon;
-  final List<Map> _myJson = [
-    {"id": '1', "image": "assets/images/countries/flag_tr.png"},
-    {"id": '2', "image": "assets/images/countries/flag_australia.png"},
-    {"id": '3', "image": "assets/images/countries/flag_france.png"},
-    {"id": '4', "image": "assets/images/countries/flag_china.png"},
-  ];
-
-  TextEditingController tfUsername = TextEditingController();
-  TextEditingController tfPassword = TextEditingController();
 
   List<List> diller = [
     ["tr", "Türkçe"],
@@ -136,12 +130,61 @@ class GirisSayfasiState extends State<LoginScreen> {
                     SizedBox(
                       height: 5.sp,
                     ),
-                    UserNameInputField(),
-                    PasswordInputField(),
-                    SizedBox(
-                      height: 5.h,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: UserNameInputFormField(
+                          tfUsername,
+                          Icon(
+                            Icons.person,
+                            color: Colors.blue,
+                          ),
+                          'name',
+                          'enter_your_name',
+                          'please_enter_your_first_name',
+                          TextInputType.text),
                     ),
-                    LoginButtonField(),
+                    SizedBox(height: 30.h),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: PasswordInputFormField(
+                          tfPassword,
+                          Icon(
+                            Icons.password_outlined,
+                            color: Colors.blue,
+                          ),
+                          'prompt_password',
+                          'please_enter_the_password',
+                          'please_enter_password_that_is_difficult_to_guess',
+                          TextInputType.text),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    SizedBox(
+                      width: 180.w,
+                      height: 50.h,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            signinProcess(context);
+                          });
+                        },
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.sp),
+                                    side: BorderSide(color: Colors.pink))),
+                            backgroundColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.pink),
+                            foregroundColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.white)),
+                        child: Text('login'.tr(),
+                            style: TextStyle(
+                                fontSize:
+                                    ResponsiveDesign.getScreenWidth() / 20)),
+                      ),
+                    ),
                     SizedBox(
                       height: 20.h,
                     ),
@@ -252,14 +295,6 @@ class GirisSayfasiState extends State<LoginScreen> {
     );
   }
 
-  LoginButton LoginButtonField() {
-    return LoginButton(
-      formKey: formKey,
-      tfUsername: tfUsername,
-      tfPassword: tfPassword,
-    );
-  }
-
   Container topField() {
     return Container(
       width: 300.w,
@@ -334,94 +369,125 @@ class GirisSayfasiState extends State<LoginScreen> {
     );
   }
 
-  Padding UserNameInputField() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 4.sp),
-      child: TextFormField(
-        maxLength: _TextFieldInputLength.max,
-        validator: (data) {
-          if (data!.isEmpty) {
-            return 'please_enter_username'.tr();
-          }
-          // return null;
-        },
-        decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.person,
-              color: Colors.blue,
-            ),
-            labelText: 'username'.tr(),
-            labelStyle: TextStyle(
-                fontSize: ResponsiveDesign.getScreenWidth() / 23,
-                color: ProductColor.black,
-                fontWeight: FontWeight.bold),
-            hintText: 'please_enter_username'.tr(),
-            hintStyle:
-                TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 20),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                borderSide: BorderSide(color: ProductColor.darkBlue)),
-            filled: true,
-            fillColor: ProductColor.white,
-            border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)))),
-        style: TextStyle(
-            fontSize: ResponsiveDesign.getScreenWidth() / 22,
-            color: ProductColor.darkBlue),
-      ),
+  void signinProcess(BuildContext context) {
+    bool controlResult = formKey.currentState!.validate();
+    if (controlResult) {
+      showAlertDialogInvalidUsernameOrPassword(
+          context: context, msg: tfUsername.text, title: 'warning'.tr());
+    }
+  }
+
+  void showAlertDialogInvalidUsernameOrPassword(
+      {required BuildContext context,
+      required String title,
+      required String msg}) {
+    showDialog(
+        context: context,
+        builder: (builder) => CustomAlertDialog.getAlertDialogUserSignUp(
+            success: false,
+            context: context,
+            title: title,
+            subTitle: "Failed :",
+            msg: msg,
+            roleId: 0));
+  }
+
+  TextFormField UserNameInputFormField(
+      TextEditingController controller,
+      Icon icon,
+      String lblTxt,
+      String lblHintTxt,
+      String returnMessage,
+      TextInputType keyboardType) {
+    return TextFormField(
+      controller: controller,
+      keyboardType:
+          keyboardType, // keyboardType'ı ilgili parametre olarak ayarlayın
+      decoration: InputDecoration(
+          prefixIcon: icon,
+          labelText: lblTxt.tr(),
+          labelStyle: TextStyle(
+              fontSize: ResponsiveDesign.getScreenWidth() / 30,
+              color: ProductColor.black,
+              fontWeight: FontWeight.bold),
+          hintText: lblHintTxt.tr(),
+          hintStyle:
+              TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 30),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(color: ProductColor.darkBlue)),
+          filled: true,
+          fillColor: ProductColor.white,
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return returnMessage.tr();
+        }
+        return null;
+      },
+      style: TextStyle(
+          fontSize: ResponsiveDesign.getScreenWidth() / 30,
+          color: ProductColor.darkBlue),
     );
   }
 
-  Padding PasswordInputField() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.sp),
-      child: TextFormField(
-        maxLength: Validation.maxPasswordCharacterSize,
-        obscureText: isVisible,
-        validator: (data) {
-          if (data!.isEmpty) {
-            return 'please_enter_password_that_is_difficult_to_guess'.tr();
-          }
-          if (data.length < _TextFieldInputLength.min) {
-            return "Please enter ${_TextFieldInputLength.min} or more  character";
-          }
-          if (data.length > _TextFieldInputLength.max) {
-            return "Please enter ${_TextFieldInputLength.max} or less  character";
-          }
-          // return null;
-        },
-        decoration: InputDecoration(
-            prefixIcon: const Icon(
-              Icons.lock,
-              color: Colors.blue,
-            ),
-            suffixIcon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isVisible = !isVisible;
-                  });
-                },
-                child:
-                    Icon(isVisible ? Icons.visibility : Icons.visibility_off)),
-            labelText: 'prompt_password'.tr(),
-            labelStyle: TextStyle(
-                fontSize: ResponsiveDesign.getScreenWidth() / 23,
-                color: ProductColor.black,
-                fontWeight: FontWeight.bold),
-            hintText: 'please_enter_the_password'.tr(),
-            hintStyle:
-                TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 20),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                borderSide: BorderSide(color: ProductColor.darkBlue)),
-            filled: true,
-            fillColor: ProductColor.white,
-            border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)))),
-        style: TextStyle(
-            fontSize: ResponsiveDesign.getScreenWidth() / 22,
-            color: ProductColor.darkBlue),
-      ),
+  TextFormField PasswordInputFormField(
+      TextEditingController controller,
+      Icon icon,
+      String lblTxt,
+      String lblHintTxt,
+      String returnMessage,
+      TextInputType keyboardType) {
+    return TextFormField(
+      controller: controller,
+      obscureText: isVisible,
+      keyboardType:
+          keyboardType, // keyboardType'ı ilgili parametre olarak ayarlayın
+      decoration: InputDecoration(
+          prefixIcon: icon,
+          suffixIcon: lblTxt == 'prompt_password'
+              ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isVisible = !isVisible;
+                    });
+                  },
+                  child:
+                      Icon(isVisible ? Icons.visibility : Icons.visibility_off))
+              : null,
+          labelText: lblTxt.tr(),
+          labelStyle: TextStyle(
+              fontSize: ResponsiveDesign.getScreenWidth() / 30,
+              color: ProductColor.black,
+              fontWeight: FontWeight.bold),
+          hintText: lblHintTxt.tr(),
+          hintStyle:
+              TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 30),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(color: ProductColor.darkBlue)),
+          filled: true,
+          fillColor: ProductColor.white,
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return returnMessage.tr();
+        }
+        if (lblTxt == 'prompt_password' && value.length < 6) {
+          return 'number_of_entered_password_characters_must_be_greater_than_6'
+              .tr();
+        }
+        if (lblTxt == 'nationality_id' &&
+            value.replaceAll(' ', '').length < Validation.tcCharacterSize) {
+          return "11 haneli tc numaranızı giriniz";
+        }
+        return null;
+      },
+      style: TextStyle(
+          fontSize: ResponsiveDesign.getScreenWidth() / 30,
+          color: ProductColor.darkBlue),
     );
   }
 }
@@ -438,172 +504,6 @@ class LoginPageLogo extends StatelessWidget {
         height: 50,
       ),
     );
-  }
-}
-
-class UsernameInputTextField extends StatelessWidget {
-  final TextEditingController controller;
-
-  UsernameInputTextField({required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return InputTextFieldPadding(
-      widget: InputTextFormField(
-        hint: "Username",
-        state: 1,
-        textEditController: controller,
-        obscureText: false,
-      ),
-    );
-  }
-}
-
-class InputTextFieldPadding extends StatelessWidget {
-  final StatelessWidget widget;
-
-  const InputTextFieldPadding({super.key, required this.widget});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-          left: ResponsiveDesign.getScreenWidth() / 30,
-          right: ResponsiveDesign.getScreenWidth() / 30,
-          bottom: ResponsiveDesign.getScreenWidth() / 25),
-      child: widget,
-    );
-  }
-}
-
-class InputTextFormField extends StatelessWidget {
-  final String hint;
-  final TextEditingController textEditController;
-  final bool obscureText;
-  final int state;
-
-  const InputTextFormField(
-      {required this.hint,
-      required this.state,
-      required this.textEditController,
-      required this.obscureText});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      maxLength: _TextFieldInputLength.max,
-      controller: textEditController,
-      obscureText: obscureText,
-      validator: (data) {
-        if (data!.isEmpty) {
-          return "Please enter $hint";
-        }
-        if (data.length < _TextFieldInputLength.min) {
-          return "Please enter ${_TextFieldInputLength.min} or more  character";
-        }
-        if (data.length > _TextFieldInputLength.max) {
-          return "Please enter ${_TextFieldInputLength.max} or less  character";
-        }
-        // return null;
-      },
-      decoration: InputDecoration(
-          prefixIcon: state == 1
-              ? Icon(
-                  Icons.person,
-                  color: Colors.blue,
-                )
-              : Icon(
-                  Icons.lock,
-                  color: Colors.blue,
-                ),
-          suffixIcon: state == 0
-              ? GestureDetector(onTap: () {}, child: Icon(Icons.visibility))
-              : null,
-          labelText: hint,
-          labelStyle: TextStyle(
-              fontSize: ResponsiveDesign.getScreenWidth() / 23,
-              color: ProductColor.black,
-              fontWeight: FontWeight.bold),
-          hintText: hint,
-          hintStyle:
-              TextStyle(fontSize: ResponsiveDesign.getScreenWidth() / 20),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              borderSide: BorderSide(color: ProductColor.darkBlue)),
-          filled: true,
-          fillColor: ProductColor.white,
-          border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)))),
-      style: TextStyle(
-          fontSize: ResponsiveDesign.getScreenWidth() / 22,
-          color: ProductColor.darkBlue),
-    );
-  }
-}
-
-class PasswordInputTextField extends StatelessWidget {
-  final TextEditingController controller;
-
-  PasswordInputTextField(
-      {required this.controller}); //({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InputTextFieldPadding(
-        widget: InputTextFormField(
-      state: 0,
-      hint: "Password",
-      textEditController: controller,
-      obscureText: isVisible,
-    ));
-  }
-}
-
-class LoginButton extends StatelessWidget {
-  final TextEditingController tfUsername, tfPassword;
-  GlobalKey<FormState> formKey;
-
-  LoginButton(
-      {required this.formKey,
-      required this.tfUsername,
-      required this.tfPassword}); //({super.key /*,required this.screenInfo*/});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-        width: 130.w,
-        height: 50.h,
-        child: ElevatedButton(
-            onPressed: () {
-              loginProcess(context);
-            },
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.sp),
-                        side: BorderSide(color: Colors.pink))),
-                backgroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.pink),
-                foregroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.white)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, // Dikeyde ortalama
-              children: [
-                Text('login'.tr(),
-                    style: TextStyle(
-                        fontSize: ResponsiveDesign.getScreenWidth() / 20)),
-              ],
-            )));
-  }
-
-  void loginProcess(BuildContext context) async {
-    bool controlResult = formKey.currentState!.validate();
-    showInvalidUsernameOrPassword(context: context, msg: "error");
-  }
-
-  void showInvalidUsernameOrPassword(
-      {required BuildContext context, required String msg}) {
-    ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar.getSnackBar(msg));
   }
 }
 

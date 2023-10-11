@@ -44,6 +44,7 @@ dependencies:
   carousel_slider: ^4.2.1
   flutter_randomcolor: ^1.0.14
   provider: ^6.0.5
+  crypto: ^3.0.1
   fluttertoast:
 
   flutter_localizations:

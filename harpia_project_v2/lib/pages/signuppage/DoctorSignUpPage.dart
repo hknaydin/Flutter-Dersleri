@@ -1,3 +1,4 @@
+import 'package:crypto/crypto.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -548,7 +549,7 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
           DoctorUserBirtTime,
           DoctorUserInstitue,
           DoctorUserMail,
-          DoctorUserPassword,
+          md5.convert(utf8.encode(DoctorUserPassword)).toString(),
           "DOCTOR",
           true);
       request.signUp(doctor).then((resp) async {
@@ -558,13 +559,59 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
         var respEntity = DataResult.fromJson(jsonData);
 
         if (respEntity.success) {
-          showAlertDialogInvalidUsernameOrPassword(
-              context: context, msg: respEntity.message, title: 'warning'.tr());
+          // Simulate a successful registration
+          showSignUpResultDialog(context, true);
         } else {
-          showAlertDialogInvalidUsernameOrPassword(
-              context: context, msg: respEntity.message, title: 'warning'.tr());
+          showSignUpResultDialog(context, false);
         }
       });
+    }
+  }
+
+  Future<void> showSignUpResultDialog(
+      BuildContext context, bool isSuccess) async {
+    String title = isSuccess ? 'Success' : 'Failed';
+    String subTitle =
+        isSuccess ? 'Registration Successful' : 'Registration Failed';
+    String msg = isSuccess
+        ? 'You have successfully registered.'
+        : 'Registration failed. Please try again.';
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(subTitle, style: TextStyle(fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
+              Text(msg),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+
+    await Future.delayed(Duration(seconds: 2));
+
+    Navigator.of(context).pop();
+
+    if (isSuccess) {
+      showSignUpResultDialog(context, true);
+    } else {
+      showSignUpResultDialog(context, false);
     }
   }
 

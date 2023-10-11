@@ -18,7 +18,7 @@ class SettingAdmin extends StatefulWidget {
   SettingAdminState createState() => SettingAdminState();
 }
 
-bool isVisible = false;
+bool isVisible = true;
 bool _isLoginSuccessful = false;
 String username = "", password = "";
 
@@ -116,7 +116,7 @@ class SettingAdminState extends State<SettingAdmin> {
                                   SizedBox(height: 12.h),
                                   PasswordInputField(tfPassword),
                                   LoginButtonField(),
-                                  SizedBox(height: 16.h),
+                                  SizedBox(height: 20.h),
                                   if (_isLoginSuccessful)
                                     Text(
                                       "login_successful".tr(),
@@ -228,7 +228,8 @@ class SettingAdminState extends State<SettingAdmin> {
                     isVisible = !isVisible;
                   });
                 },
-                child: Icon(Icons.visibility)),
+                child:
+                    Icon(isVisible ? Icons.visibility : Icons.visibility_off)),
             labelText: "password".tr(),
             labelStyle: TextStyle(
                 fontSize: ResponsiveDesign.getScreenWidth() / 23,
