@@ -9,10 +9,12 @@ import 'package:harpia_project/pages/about_project_and_team.dart';
 import 'package:harpia_project/pages/register.dart';
 import 'package:harpia_project/utils/Validation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../core/ResponsiveDesign.dart';
 import '../setting/setting_admin.dart';
 import '../utils/CustomAlertDialog.dart';
+import '../utils/MySharedPreferences.dart';
 import '../utils/ProductColor.dart';
 import '../utils/custom_widgets.dart';
 
@@ -58,6 +60,12 @@ class GirisSayfasiState extends State<LoginScreen> {
     // TODO: implement initState
     super.initState();
     _initPackageInfo();
+    // İzin kontrolünü başlat
+    checkPermissions();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      // initState tamamlandıktan sonra çağrılacak
+      informationMessage();
+    });
   }
 
   Future<void> _initPackageInfo() async {
@@ -369,11 +377,43 @@ class GirisSayfasiState extends State<LoginScreen> {
     );
   }
 
-  void signinProcess(BuildContext context) {
+  Future<void> signinProcess(BuildContext context) async {
     bool controlResult = formKey.currentState!.validate();
+    String userMail = tfUsername.text;
+    String userPassword = tfPassword.text;
     if (controlResult) {
-      showAlertDialogInvalidUsernameOrPassword(
-          context: context, msg: tfUsername.text, title: 'warning'.tr());
+      if (!Validation().isEmailValid(userMail)) {
+        showAlertDialogInvalidUsernameOrPassword(
+            context: context,
+            msg: 'please_enter_mail_address_in_the_appropriate_format'.tr(),
+            title: 'warning'.tr());
+        return;
+      }
+      String hospitalInternalIp =
+          await MySharedPreferences.getHospitalInternalIp();
+
+      if (hospitalInternalIp != "empty") {
+        showAlertDialogInvalidUsernameOrPassword(
+            context: context, msg: "haarr", title: 'warning'.tr());
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Hospital Internal IP is empty.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 
@@ -490,6 +530,79 @@ class GirisSayfasiState extends State<LoginScreen> {
           color: ProductColor.darkBlue),
     );
   }
+
+  Future<void> checkPermissions() async {
+    final locationStatus = await Permission.location.status;
+    final bleScanStatus = await Permission.bluetoothScan.status;
+    final bleConnectStatus = await Permission.bluetoothConnect.status;
+    // Location permission
+    if (locationStatus.isDenied) {
+      await Permission.location.request();
+    }
+
+    // Bluetooth scanning permission
+    if (bleScanStatus.isDenied) {
+      await Permission.bluetoothScan.request();
+    }
+
+    // Bluetooth connection permission
+    if (bleConnectStatus.isDenied) {
+      await Permission.bluetoothConnect.request();
+    }
+  }
+
+  void informationMessage() {
+    final snackBar = SnackBar(
+      content: Expanded(
+        child: Row(
+          children: [
+            SvgPicture.asset('assets/images/ic_dikey_1.svg',
+                width: 24, height: 24),
+            SizedBox(
+              width: 20.w,
+            ), // Resim ekleyin
+            Expanded(
+              child: Column(
+                children: [
+                  Text(
+                      textAlign: TextAlign.justify,
+                      'tedavi_icin_degil'.tr(),
+                      style: TextStyle(
+                          fontSize: ResponsiveDesign.getScreenWidth() / 25,
+                          fontWeight: FontWeight.bold)),
+                  Text(
+                      textAlign: TextAlign.justify,
+                      'bu_uygulamada_sunulan'.tr(),
+                      style: TextStyle(
+                          fontSize: ResponsiveDesign.getScreenWidth() / 30)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      action: SnackBarAction(
+        label: 'Kapat',
+        onPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+      ),
+      duration: Duration(seconds: 10), // Süre tanımlaması
+    );
+
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar)
+        .closed
+        .then((SnackBarClosedReason reason) {
+      if (reason == SnackBarClosedReason.action) {
+        // Kullanıcı Kapat eylemini tıkladı
+        // İstediğiniz bir işlemi gerçekleştirebilirsiniz
+      } else if (reason == SnackBarClosedReason.timeout) {
+        // Zaman aşımı nedeniyle SnackBar otomatik olarak kapandı
+        // İstediğiniz bir işlemi gerçekleştirebilirsiniz
+      }
+    });
+  }
 }
 
 class LoginPageLogo extends StatelessWidget {
@@ -505,9 +618,4 @@ class LoginPageLogo extends StatelessWidget {
       ),
     );
   }
-}
-
-class _TextFieldInputLength {
-  static int min = 6;
-  static int max = 20;
 }

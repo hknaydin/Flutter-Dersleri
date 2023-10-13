@@ -186,10 +186,14 @@ class NetworkErrorPageState extends State<NetworkErrorPage> {
       context: context,
       builder: (BuildContext context) {
         return const AlertDialog(
+          backgroundColor: Colors.white,
+          shadowColor: Colors.white,
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircularProgressIndicator(),
+              CircularProgressIndicator(
+                backgroundColor: Colors.white,
+              ),
               SizedBox(height: 10),
               Text('Loading...'),
             ],
