@@ -552,7 +552,7 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
           md5.convert(utf8.encode(DoctorUserPassword)).toString(),
           "DOCTOR",
           true);
-      request.signUp(doctor).then((resp) async {
+      request.signUp(doctor, context).then((resp) async {
         // debugPrint(resp.body);
         Map<String, dynamic> jsonData = json.decode(resp.body);
         print("res.body : ${resp.body}");
@@ -570,12 +570,12 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
 
   Future<void> showSignUpResultDialog(
       BuildContext context, bool isSuccess) async {
-    String title = isSuccess ? 'Success' : 'Failed';
+    String title = isSuccess ? 'success'.tr() : 'failed'.tr();
     String subTitle =
-        isSuccess ? 'Registration Successful' : 'Registration Failed';
+        isSuccess ? 'registration_successful'.tr() : 'registration_failed'.tr();
     String msg = isSuccess
-        ? 'You have successfully registered.'
-        : 'Registration failed. Please try again.';
+        ? 'you_have_successfully_registered'.tr()
+        : 'registration_failed_please_try_again'.tr();
 
     showDialog(
       context: context,

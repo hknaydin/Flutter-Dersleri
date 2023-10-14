@@ -237,7 +237,7 @@ class SettingIpEnterState extends State<SettingIpEnter> {
       child: TextFormField(
         controller: tfInternalIp,
         maxLength: Constat.max,
-        obscureText: isVisibleInternal,
+        obscureText: false,
         validator: (data) {
           if (data!.isEmpty) {
             return "enter_ip_address".tr();
@@ -260,15 +260,6 @@ class SettingIpEnterState extends State<SettingIpEnter> {
                 color: Colors.blue, // Renk
               ),
             ),
-            suffixIcon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isVisibleInternal = !isVisibleInternal;
-                  });
-                },
-                child: Icon(isVisibleInternal
-                    ? Icons.visibility
-                    : Icons.visibility_off)),
             labelText: "internal_ip".tr(),
             labelStyle: TextStyle(
                 fontSize: ResponsiveDesign.getScreenWidth() / 23,
@@ -297,7 +288,7 @@ class SettingIpEnterState extends State<SettingIpEnter> {
       child: TextFormField(
         controller: tfExternalIp,
         maxLength: Constat.max,
-        obscureText: isVisibleExternal,
+        obscureText: false,
         validator: (data) {
           if (data!.isEmpty) {
             return "enter_ip_address".tr();
@@ -319,15 +310,6 @@ class SettingIpEnterState extends State<SettingIpEnter> {
                 color: Colors.blue, // Renk
               ),
             ),
-            suffixIcon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isVisibleExternal = !isVisibleExternal;
-                  });
-                },
-                child: Icon(isVisibleExternal
-                    ? Icons.visibility
-                    : Icons.visibility_off)),
             labelText: "external_ip".tr(),
             labelStyle: TextStyle(
                 fontSize: ResponsiveDesign.getScreenWidth() / 23,

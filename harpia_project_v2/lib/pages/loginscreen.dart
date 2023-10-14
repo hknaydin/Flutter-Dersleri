@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:harpia_project/model/userrole/userRole.dart';
 import 'package:harpia_project/pages/about_project_and_team.dart';
 import 'package:harpia_project/pages/register.dart';
 import 'package:harpia_project/utils/Validation.dart';
@@ -12,6 +16,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../core/ResponsiveDesign.dart';
+import '../model/user/Doctor.dart';
+import '../network/HttpRequestDoctor.dart';
 import '../setting/setting_admin.dart';
 import '../utils/CustomAlertDialog.dart';
 import '../utils/MySharedPreferences.dart';
@@ -66,6 +72,7 @@ class GirisSayfasiState extends State<LoginScreen> {
       // initState tamamlandıktan sonra çağrılacak
       informationMessage();
     });
+    initUserNameAndUserPassword();
   }
 
   Future<void> _initPackageInfo() async {
@@ -89,7 +96,7 @@ class GirisSayfasiState extends State<LoginScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => About()),
+                MaterialPageRoute(builder: (context) => const About()),
               );
             },
             heroTag: null,
@@ -111,7 +118,7 @@ class GirisSayfasiState extends State<LoginScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingAdmin()),
+                MaterialPageRoute(builder: (context) => const SettingAdmin()),
               );
             },
             heroTag: null,
@@ -236,7 +243,7 @@ class GirisSayfasiState extends State<LoginScreen> {
                     SizedBox(
                       height: 30.h,
                     ),
-                    OtherMethodField(),
+                    otherMethodField(),
                     SizedBox(
                       height: 20.h,
                     ),
@@ -271,7 +278,7 @@ class GirisSayfasiState extends State<LoginScreen> {
     );
   }
 
-  Row OtherMethodField() {
+  Row otherMethodField() {
     return Row(
       children: [
         Expanded(
@@ -393,15 +400,43 @@ class GirisSayfasiState extends State<LoginScreen> {
           await MySharedPreferences.getHospitalInternalIp();
 
       if (hospitalInternalIp != "empty") {
-        showAlertDialogInvalidUsernameOrPassword(
-            context: context, msg: "haarr", title: 'warning'.tr());
+        MySharedPreferences.setLoginUserName(userMail);
+        MySharedPreferences.setLoginUserPassword(userPassword);
+
+        // Progres çubuğunu göster
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Dialog(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 20.0),
+                    Text('signing'.tr()),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+
+        // Backend tarafından cevap gelene kadar bekleyin
+        await performLogin(userMail, userPassword, context);
+
+        // Progres çubuğunu kaldır
+        // Navigator.of(context).pop();
       } else {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('Error'),
-              content: Text('Hospital Internal IP is empty.'),
+              content:
+                  Text('please_enter_the_hospital_internal_ip_address'.tr()),
               actions: <Widget>[
                 TextButton(
                   child: Text('OK'),
@@ -559,7 +594,7 @@ class GirisSayfasiState extends State<LoginScreen> {
             SvgPicture.asset('assets/images/ic_dikey_1.svg',
                 width: 24, height: 24),
             SizedBox(
-              width: 20.w,
+              width: 15.w,
             ), // Resim ekleyin
             Expanded(
               child: Column(
@@ -603,6 +638,101 @@ class GirisSayfasiState extends State<LoginScreen> {
       }
     });
   }
+
+  Future<void> initUserNameAndUserPassword() async {
+    if (MySharedPreferences.getAdminUserName() != "empty") {
+      tfUsername.text = await MySharedPreferences.getLoginUserName();
+    }
+    if (MySharedPreferences.getAdminUserName() != "empty") {
+      tfPassword.text = await MySharedPreferences.getLoginUserPassword();
+    }
+  }
+}
+
+Future<void> performLogin(
+    String userMail, String userPassword, BuildContext context) async {
+  var request = HttpRequestDoctor();
+
+  String userRole = await request.getRole(userMail, userPassword);
+
+  Navigator.of(context).pop();
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('warning'.tr()),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Text('login_successful'.tr(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+      );
+    },
+  );
+  await Future.delayed(const Duration(seconds: 2));
+
+  Navigator.of(context).pop();
+  // Role göre işlem yapılabilir
+  // Örnek olarak:
+  if (userRole == UserRole.ADMIN.roleName) {
+    login(UserRole.ADMIN.roleName, userMail, userPassword);
+  } else if (userRole == UserRole.DOCTOR.roleName) {
+    login(UserRole.DOCTOR.roleName, userMail, userPassword);
+  } else if (userRole == UserRole.PATIENT.roleName) {
+    login(UserRole.PATIENT.roleName, userMail, userPassword);
+  }
+}
+
+Future<void> login(
+    String roleName, String userMail, String userPassword) async {
+  var request = HttpRequestDoctor();
+  if (roleName == UserRole.DOCTOR.roleName) {
+    Doctor doctor = Doctor(
+        0,
+        "userName",
+        "userLastName",
+        "gender", // Seçilen cinsiyeti burada kullanıyoruz
+        111111111,
+        "10.10.1991",
+        "ktu",
+        userMail,
+        md5.convert(utf8.encode(userPassword)).toString(),
+        roleName,
+        true);
+
+    await request.loginDr(doctor);
+  }
+}
+
+Future<dynamic> showDialogFunction(
+    BuildContext context, String userRole) async {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('warning'.tr()),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+                child: Text(userRole,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold))),
+            const SizedBox(height: 10),
+          ],
+        ),
+      );
+    },
+  );
 }
 
 class LoginPageLogo extends StatelessWidget {

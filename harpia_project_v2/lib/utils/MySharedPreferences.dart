@@ -7,6 +7,8 @@ class MySharedPreferences {
   static String HOSPITALNAME = "hospitalname";
   static String HOSPITALINTERNALIP = "hospitalinternalip";
   static String HOSPITALEXTERNALIP = "hospitalexternalip";
+  static String LOGINUSERNAME = "loginUserName";
+  static String LOGINUSERPASSWORD = "loginUserPassword";
 
   static Future<Null> setLocalName(String localName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -32,6 +34,18 @@ class MySharedPreferences {
     return userName;
   }
 
+  static void setLoginUserName(String userName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(MySharedPreferences.LOGINUSERNAME, userName);
+  }
+
+  static Future<String> getLoginUserName() async {
+    String userName;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userName = prefs.getString(MySharedPreferences.LOGINUSERNAME) ?? '-1';
+    return userName;
+  }
+
   static void setAdminUserPassword(String userPassword) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(MySharedPreferences.ADMINUSERNAMEPASSWORD, userPassword);
@@ -42,6 +56,19 @@ class MySharedPreferences {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userPassword =
         prefs.getString(MySharedPreferences.ADMINUSERNAMEPASSWORD) ?? 'empty';
+    return userPassword;
+  }
+
+  static void setLoginUserPassword(String userPassword) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(MySharedPreferences.LOGINUSERPASSWORD, userPassword);
+  }
+
+  static Future<String> getLoginUserPassword() async {
+    String userPassword;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userPassword =
+        prefs.getString(MySharedPreferences.LOGINUSERPASSWORD) ?? 'empty';
     return userPassword;
   }
 
