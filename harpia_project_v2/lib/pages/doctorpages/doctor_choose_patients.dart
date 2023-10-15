@@ -82,13 +82,16 @@ class DoctorChoosePatientState extends State<DoctorChoosePatient> {
           ),
           Container(
             margin: EdgeInsets.only(bottom: 10, right: 10),
-            child: ElevatedButton(
-              onPressed: fetchPatients,
-              child: Icon(Icons.refresh),
-              style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(10),
-                primary: Colors.blue, // İstediğiniz rengi ayarlayabilirsiniz
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: ElevatedButton(
+                onPressed: fetchPatients,
+                child: Icon(Icons.refresh),
+                style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(),
+                  padding: EdgeInsets.all(10),
+                  primary: Colors.blue, // İstediğiniz rengi ayarlayabilirsiniz
+                ),
               ),
             ),
           ),
