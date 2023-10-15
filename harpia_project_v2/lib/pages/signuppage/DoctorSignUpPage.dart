@@ -11,7 +11,7 @@ import 'package:harpia_project/utils/Validation.dart';
 import '../../core/ResponsiveDesign.dart';
 import '../../model/user/Doctor.dart';
 import '../../network/HttpRequestDoctor.dart';
-import '../../result/DataResult.dart';
+import '../../result/dataResult.dart';
 import '../../utils/Constant.dart';
 import '../../utils/CustomAlertDialog.dart';
 import '../../utils/ProductColor.dart';
@@ -541,17 +541,17 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
       }
       var request = HttpRequestDoctor();
       Doctor doctor = Doctor(
-          0,
-          DoctorUserName,
-          DoctoruserLastName,
-          selectedGender, // Seçilen cinsiyeti burada kullanıyoruz
-          int.parse(DoctorUserTC),
-          DoctorUserBirtTime,
-          DoctorUserInstitue,
-          DoctorUserMail,
-          md5.convert(utf8.encode(DoctorUserPassword)).toString(),
-          "DOCTOR",
-          true);
+          id: 0,
+          username: DoctorUserName,
+          userlastname: DoctoruserLastName,
+          gender: selectedGender, // Seçilen cinsiyeti burada kullanıyoruz
+          tc: int.parse(DoctorUserTC),
+          dataofBirth: DoctorUserBirtTime,
+          employedInstitution: DoctorUserInstitue,
+          usermail: DoctorUserMail,
+          password: md5.convert(utf8.encode(DoctorUserPassword)).toString(),
+          role: "DOCTOR",
+          loggedIn: true);
       request.signUp(doctor, context).then((resp) async {
         // debugPrint(resp.body);
         Map<String, dynamic> jsonData = json.decode(resp.body);
@@ -607,12 +607,6 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
     await Future.delayed(Duration(seconds: 2));
 
     Navigator.of(context).pop();
-
-    if (isSuccess) {
-      showSignUpResultDialog(context, true);
-    } else {
-      showSignUpResultDialog(context, false);
-    }
   }
 
   void showAlertDialogInvalidUsernameOrPassword(

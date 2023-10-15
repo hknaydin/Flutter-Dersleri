@@ -43,7 +43,7 @@
   "title_activity_dashboard": "DashboardActivity",
   "registration_successful": "Kayıt Başarılı",
   "you_have_successfully_registered": "Başarılı bir şekilde kayıt oldunuz.",
-  "registration_failed_please_try_again.": "Kayıt başarısız. Lütfen tekrar deneyin.",
+  "registration_failed_please_try_again": "Kayıt başarısız. Lütfen tekrar deneyin.",
   "cancel": "İptal",
   "recover": "Kurtar",
   "recover_password": "Şifreyi Kurtar",

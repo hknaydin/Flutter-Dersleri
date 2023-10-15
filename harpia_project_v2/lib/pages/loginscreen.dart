@@ -23,6 +23,7 @@ import '../utils/CustomAlertDialog.dart';
 import '../utils/MySharedPreferences.dart';
 import '../utils/ProductColor.dart';
 import '../utils/custom_widgets.dart';
+import 'doctorpages/doctor_choose_patients.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -653,7 +654,35 @@ Future<void> performLogin(
     String userMail, String userPassword, BuildContext context) async {
   var request = HttpRequestDoctor();
 
-  String userRole = await request.getRole(userMail, userPassword);
+  String userRole;
+
+  try {
+    userRole = await request.getRole(userMail, userPassword);
+  } catch (e) {
+    // An exception occurred, handle it as an error
+    Navigator.of(context).pop(); // Close the "Signing" dialog
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content:
+              Text('Failed to connect to the server. Please try again later.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the error dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    return; // Exit the function to prevent further execution
+  }
 
   Navigator.of(context).pop();
 
@@ -677,38 +706,50 @@ Future<void> performLogin(
       );
     },
   );
-  await Future.delayed(const Duration(seconds: 2));
 
-  Navigator.of(context).pop();
   // Role göre işlem yapılabilir
   // Örnek olarak:
   if (userRole == UserRole.ADMIN.roleName) {
-    login(UserRole.ADMIN.roleName, userMail, userPassword);
+    login(context, UserRole.ADMIN.roleName, userMail, userPassword);
   } else if (userRole == UserRole.DOCTOR.roleName) {
-    login(UserRole.DOCTOR.roleName, userMail, userPassword);
+    login(context, UserRole.DOCTOR.roleName, userMail, userPassword);
   } else if (userRole == UserRole.PATIENT.roleName) {
-    login(UserRole.PATIENT.roleName, userMail, userPassword);
+    login(context, UserRole.PATIENT.roleName, userMail, userPassword);
   }
 }
 
-Future<void> login(
-    String roleName, String userMail, String userPassword) async {
+Future<void> login(BuildContext context, String roleName, String userMail,
+    String userPassword) async {
   var request = HttpRequestDoctor();
   if (roleName == UserRole.DOCTOR.roleName) {
     Doctor doctor = Doctor(
-        0,
-        "userName",
-        "userLastName",
-        "gender", // Seçilen cinsiyeti burada kullanıyoruz
-        111111111,
-        "10.10.1991",
-        "ktu",
-        userMail,
-        md5.convert(utf8.encode(userPassword)).toString(),
-        roleName,
-        true);
+        id: 0,
+        username: "userName",
+        userlastname: "userLastName",
+        gender: "gender",
+        usermail: userMail,
+        password: md5.convert(utf8.encode(userPassword)).toString(),
+        role: roleName,
+        tc: 111111111,
+        dataofBirth: "10.10.1991",
+        employedInstitution: "ktu",
+        loggedIn: true);
 
-    await request.loginDr(doctor);
+    var responseData = await request.loginDr(doctor);
+
+    if (responseData['success']) {
+      // JSON verisini ayrıştırın ve "data" bölümünü alın
+      Map<String, dynamic> jsonMap = responseData;
+      Map<String, dynamic> dataMap = jsonMap['data'];
+
+      // Doctor sınıfına dönüştürün
+      Doctor doctor = Doctor.fromJson(dataMap);
+
+      print(doctor.username); // Hakan
+      print(doctor.userlastname); // Aydin
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => DoctorChoosePatient()));
+    }
   }
 }
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:harpia_project/result/dataResult.dart';
 import 'package:harpia_project/utils/MySharedPreferences.dart';
 
 import '../model/user/Doctor.dart';
@@ -82,7 +83,7 @@ class HttpRequestDoctor {
     }
   }
 
-  Future<String> loginDr(Doctor doctor) async {
+  Future<Map<String, dynamic>> loginDr(Doctor doctor) async {
     try {
       // Kullanıcı adı ve şifreyi kullanarak backend'e istek gönderin
       String hospitalInternalIp =
@@ -102,10 +103,45 @@ class HttpRequestDoctor {
       if (response.statusCode == 200) {
         // İstek başarılı olduysa rolü alın
         var responseData = jsonDecode(response.body);
-        String role = responseData;
 
         // Rolü geri döndürün
-        return role;
+        return responseData;
+      } else {
+        // İstek başarısız olduysa hata mesajını alın
+        var errorMessage = response.body;
+        throw Exception('Login error: $errorMessage');
+      }
+    } catch (error) {
+      throw Exception('An error occurred while performing login: $error');
+    }
+  }
+
+  Future<http.Response> getPatient(String userMail) async {
+    try {
+      // Kullanıcı adı ve şifreyi kullanarak backend'e istek gönderin
+      String hospitalInternalIp =
+          await MySharedPreferences.getHospitalInternalIp();
+
+      Map<String, dynamic> requestData = {
+        "usermail": userMail,
+      };
+
+      Uri url = Uri.parse('http://$hospitalInternalIp:8080/users/getPatient')
+          .replace(queryParameters: requestData);
+
+      var response = await http.post(url,
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(requestData));
+
+      print('resp : $response');
+      print('resp.body : ${response.body}');
+
+      if (response.statusCode == 200) {
+        // İstek başarılı olduysa rolü alın
+        var responseData = jsonDecode(response.body);
+        Doctor doctor = Doctor.fromJson(responseData['data']);
+        // Rolü geri döndürün
+        return responseData;
       } else {
         // İstek başarısız olduysa hata mesajını alın
         var errorMessage = response.body;

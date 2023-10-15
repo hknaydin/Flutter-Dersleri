@@ -37,7 +37,7 @@
   "registration_successful": "Inscription réussie",
   "registration_failed": "Inscription échouée",
   "you_have_successfully_registered": "Vous vous êtes inscrit avec succès.",
-  "registration_failed_please_try_again.": "L'inscription a échoué. Veuillez réessayer.",
+  "registration_failed_please_try_again": "L'inscription a échoué. Veuillez réessayer.",
   "institue": "Institution",
   "enter_your_nationality_id": "Veuillez entrer votre numéro d'identification national",
   "register": "Enregistrer",

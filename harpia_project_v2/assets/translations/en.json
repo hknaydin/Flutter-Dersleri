@@ -62,7 +62,7 @@
   "registration_successful": "Registration Successful",
   "registration_failed": "Registration Failed",
   "you_have_successfully_registered": "You have successfully registered.",
-  "registration_failed_please_try_again.": "Registration failed. Please try again.",
+  "registration_failed_please_try_again": "Registration failed. Please try again.",
   "project_researcher": "Project Researcher",
   "view_all": "View All",
   "bluetooth": "Bluetooth Initiated",
