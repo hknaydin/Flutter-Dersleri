@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,40 +6,28 @@ import 'package:harpia_project/model/user/Doctor.dart';
 import '../../model/user/Patient.dart';
 import '../../network/HttpRequestDoctor.dart';
 
-class DoctorChoosePatient extends StatefulWidget {
+class PatientForDoctor extends StatefulWidget {
   final Doctor doctor;
 
-  const DoctorChoosePatient({super.key, required this.doctor});
+  const PatientForDoctor({super.key, required this.doctor});
 
   @override
-  State<DoctorChoosePatient> createState() =>
-      DoctorChoosePatientState(doctor: doctor);
+  State<PatientForDoctor> createState() =>
+      PatientPageForDoctorState(doctor: doctor);
 }
 
-class DoctorChoosePatientState extends State<DoctorChoosePatient>
+class PatientPageForDoctorState extends State<PatientForDoctor>
     with SingleTickerProviderStateMixin {
   late String doctorName = "";
   final Doctor doctor;
   late List<Patient> patients = []; // Hasta bilgilerini tutmak için bir liste
-  late AnimationController animationController;
-  late Animation<double> animation;
 
-  DoctorChoosePatientState({required this.doctor});
+  PatientPageForDoctorState({required this.doctor});
 
   @override
   void initState() {
     super.initState();
     fetchPatients(doctor);
-    animationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 500),
-    );
-    animation = Tween<double>(begin: 1, end: 1.2).animate(
-      CurvedAnimation(
-        parent: animationController,
-        curve: Curves.easeInOut,
-      ),
-    );
   }
 
   @override
@@ -114,36 +100,6 @@ class DoctorChoosePatientState extends State<DoctorChoosePatient>
               },
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(bottom: 10, right: 10),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: ElevatedButton(
-                onPressed: () {
-                  startAnimation(); // Animasyonu başlat
-                  fetchPatients(doctor); // Hasta listesini güncelle
-                },
-                child: AnimatedBuilder(
-                  animation: animationController,
-                  builder: (context, child) {
-                    return Transform.scale(
-                      scale: animation.value,
-                      child: Transform.rotate(
-                        angle:
-                            animationController.value * 2 * 3.141592653589793,
-                        child: Icon(Icons.refresh, color: Colors.white),
-                      ),
-                    );
-                  },
-                ),
-                style: ElevatedButton.styleFrom(
-                  shape: CircleBorder(),
-                  padding: EdgeInsets.all(10),
-                  primary: Colors.blue, // İstediğiniz rengi ayarlayabilirsiniz
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     ));
@@ -161,10 +117,5 @@ class DoctorChoosePatientState extends State<DoctorChoosePatient>
     setState(() {
       patients = patientsFromDoctor; // Hastaları güncelle
     });
-  }
-
-  void startAnimation() {
-    animationController.reset();
-    animationController.forward();
   }
 }
