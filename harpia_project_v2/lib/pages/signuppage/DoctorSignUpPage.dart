@@ -539,7 +539,7 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
 
         return;
       }
-      var request = HttpRequestDoctor();
+      var request = DoctorApi();
       Doctor doctor = Doctor(
           id: 0,
           username: DoctorUserName,

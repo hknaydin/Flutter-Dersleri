@@ -1,89 +1,76 @@
-import 'User.dart';
-
-class Patient extends User {
-  late int id;
-  late String username;
-  late String userlastname;
-  late String gender;
-  late String usermail;
-  late String password;
-  late String role;
-  int tcNo;
-  String bloodInformation;
+class Patient {
+  int id;
+  String username;
+  String userlastname;
+  String gender;
+  String usermail;
+  String password;
+  String role;
+  int tc_no;
+  String blood_information;
   String weight;
   String length;
   String nationality;
-  String placeOfBirth;
-  String dataOfBirth;
-  String telNo;
-  int doctorId;
-  String sensorPeriod;
-  int hipoGlisemi;
-  int hiperGlisemi;
+  String place_of_birth;
+  String data_of_birth;
+  String tel_no;
+  int doctor_id;
+  String sensor_period;
+  int hipo_glisemi;
+  int hiper_glisemi;
   int authorized;
 
   Patient({
-    required int id,
-    required String username,
-    required String userlastname,
-    required String gender,
-    required this.tcNo,
-    required this.bloodInformation,
+    required this.id,
+    required this.username,
+    required this.userlastname,
+    required this.gender,
+    required this.tc_no,
+    required this.blood_information,
     required this.weight,
     required this.length,
     required this.nationality,
-    required this.placeOfBirth,
-    required this.dataOfBirth,
-    required this.telNo,
-    required String usermail,
-    required String password,
-    required String role,
-    required this.doctorId,
-    required this.sensorPeriod,
-    required this.hipoGlisemi,
-    required this.hiperGlisemi,
+    required this.place_of_birth,
+    required this.data_of_birth,
+    required this.tel_no,
+    required this.usermail,
+    required this.password,
+    required this.role,
+    required this.doctor_id,
+    required this.sensor_period,
+    required this.hipo_glisemi,
+    required this.hiper_glisemi,
     required this.authorized,
-  }) : super(
-          id: id,
-          username: username,
-          userlastname: userlastname,
-          gender: gender,
-          usermail: usermail,
-          password: password,
-          role: role,
-        );
-
-  Patient.fromMap(Map<String, dynamic> map)
-      : tcNo = map['tc_no'],
-        bloodInformation = map['blood_information'],
-        weight = map['weight'],
-        length = map['length'],
-        nationality = map['nationality'],
-        placeOfBirth = map['place_of_birth'],
-        dataOfBirth = map['data_of_birth'],
-        telNo = map['tel_no'],
-        doctorId = map['doctor_id'],
-        sensorPeriod = map['sensor_period'],
-        hipoGlisemi = map['hipo_glisemi'],
-        hiperGlisemi = map['hiper_glisemi'],
-        authorized = map['authorized'],
-        super.fromMap(map);
-
-  Map<String, dynamic> toMap() {
-    final map = super.toMap();
-    map['tc_no'] = tcNo;
-    map['blood_information'] = bloodInformation;
-    map['weight'] = weight;
-    map['length'] = length;
-    map['nationality'] = nationality;
-    map['place_of_birth'] = placeOfBirth;
-    map['data_of_birth'] = dataOfBirth;
-    map['tel_no'] = telNo;
-    map['doctor_id'] = doctorId;
-    map['sensor_period'] = sensorPeriod;
-    map['hipo_glisemi'] = hipoGlisemi;
-    map['hiper_glisemi'] = hiperGlisemi;
-    map['authorized'] = authorized;
-    return map;
+  });
+  factory Patient.fromJson(Map<String, dynamic> json) {
+    return Patient(
+      id: json['id'],
+      username: json['username'],
+      userlastname: json['userlastname'],
+      gender: json['gender'],
+      tc_no: json['tc_no'],
+      blood_information: json['blood_information'],
+      weight: json['weight'],
+      length: json['length'],
+      nationality: json['nationality'],
+      place_of_birth: json['place_of_birth'],
+      data_of_birth: json['data_of_birth'],
+      tel_no: json['tel_no'],
+      usermail: json['usermail'],
+      password: json['password'],
+      role: json['role'],
+      doctor_id: json['doctor_id'],
+      sensor_period: json['sensor_period'],
+      hipo_glisemi: json['hipo_glisemi'],
+      hiper_glisemi: json['hiper_glisemi'],
+      authorized: json['authorized'],
+    );
+  }
+  static List<Patient> fromMap(List<dynamic> jsonList) {
+    List<Patient> patients = [];
+    for (Map<String, dynamic> json in jsonList) {
+      patients.add(Patient.fromJson(json));
+    }
+    return patients;
   }
 }

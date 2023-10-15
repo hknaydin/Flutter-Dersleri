@@ -652,7 +652,7 @@ class GirisSayfasiState extends State<LoginScreen> {
 
 Future<void> performLogin(
     String userMail, String userPassword, BuildContext context) async {
-  var request = HttpRequestDoctor();
+  var request = DoctorApi();
 
   String userRole;
 
@@ -720,7 +720,7 @@ Future<void> performLogin(
 
 Future<void> login(BuildContext context, String roleName, String userMail,
     String userPassword) async {
-  var request = HttpRequestDoctor();
+  var request = DoctorApi();
   if (roleName == UserRole.DOCTOR.roleName) {
     Doctor doctor = Doctor(
         id: 0,
@@ -743,12 +743,16 @@ Future<void> login(BuildContext context, String roleName, String userMail,
       Map<String, dynamic> dataMap = jsonMap['data'];
 
       // Doctor sınıfına dönüştürün
-      Doctor doctor = Doctor.fromJson(dataMap);
+      Doctor loggedInDoctor = Doctor.fromJson(dataMap);
 
-      print(doctor.username); // Hakan
-      print(doctor.userlastname); // Aydin
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => DoctorChoosePatient()));
+      print(loggedInDoctor.username); // Hakan
+      print(loggedInDoctor.userlastname); // Aydin
+// DoctorChoosePatient sayfasına doktor nesnesini iletmek için Navigator ile geçirin
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  DoctorChoosePatient(doctor: loggedInDoctor)));
     }
   }
 }

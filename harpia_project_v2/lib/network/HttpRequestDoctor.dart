@@ -3,13 +3,12 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:harpia_project/result/dataResult.dart';
 import 'package:harpia_project/utils/MySharedPreferences.dart';
 
 import '../model/user/Doctor.dart';
 import 'package:http/http.dart' as http;
 
-class HttpRequestDoctor {
+class DoctorApi {
   Future<http.Response> signUp(Doctor doctor, BuildContext context) async {
     String hospitalInternalIp =
         await MySharedPreferences.getHospitalInternalIp();
@@ -116,7 +115,7 @@ class HttpRequestDoctor {
     }
   }
 
-  Future<http.Response> getPatient(String userMail) async {
+  Future<String> getPatientListForDoctor(String userMail) async {
     try {
       // Kullanıcı adı ve şifreyi kullanarak backend'e istek gönderin
       String hospitalInternalIp =
@@ -138,9 +137,8 @@ class HttpRequestDoctor {
 
       if (response.statusCode == 200) {
         // İstek başarılı olduysa rolü alın
-        var responseData = jsonDecode(response.body);
-        Doctor doctor = Doctor.fromJson(responseData['data']);
-        // Rolü geri döndürün
+        var responseData = response.body;
+
         return responseData;
       } else {
         // İstek başarısız olduysa hata mesajını alın
