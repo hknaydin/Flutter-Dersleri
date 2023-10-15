@@ -7,6 +7,8 @@
   "developer": "开发商 : Hakan AYDIN",
   "step_by_step": "Harpia Danışmanlık ve Mühendislik Hizmetleri",
   "password": "密码",
+  "error": "错误",
+  "failed_to_connect_to_the_server_please_try_again": "无法连接到服务器，请稍后重试。",
   "prompt_email": "邮件",
   "create_new": "点击注册",
   "username_or_password_error": "用户名或密码无效",

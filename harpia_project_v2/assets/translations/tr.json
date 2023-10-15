@@ -3,6 +3,8 @@
   "login_successful": "Giriş Başarılı",
   "success":"Başarılı",
   "failed":"Başarısız",
+  "error": "Hata",
+  "failed_to_connect_to_the_server_please_try_again": "Sunucuya bağlanılamadı. Lütfen daha sonra tekrar deneyin.",
   "app_name": "Harpia",
   "title_activity_splash_screen": "Harpia",
   "hakan_aydin": "Tüm hakları saklıdır",

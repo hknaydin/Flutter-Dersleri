@@ -666,9 +666,9 @@ Future<void> performLogin(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
+          title: Text('error'.tr()),
           content:
-              Text('Failed to connect to the server. Please try again later.'),
+              Text('failed_to_connect_to_the_server_please_try_again'.tr()),
           actions: <Widget>[
             TextButton(
               child: Text('OK'),

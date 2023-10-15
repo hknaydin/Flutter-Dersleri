@@ -7,6 +7,8 @@
   "developer": "Développeur : Hakan AYDIN",
   "step_by_step": "Harpia Danışmanlık ve Mühendislik Hizmetleri",
   "password": "Mot de passe",
+  "error": "Erreur",
+  "failed_to_connect_to_the_server_please_try_again": "Échec de la connexion au serveur. Veuillez réessayer ultérieurement.",
   "prompt_email": "Poster",
   "create_new": "Appuyez pour vous inscrire",
   "username_or_password_error": "Le nom d'utilisateur ou le mot de passe n'est pas valide",
