@@ -110,7 +110,7 @@ class DoctorChoosePatientState extends State<DoctorChoosePatient> {
       Patient(name: "Jane Smith", gender: Gender.female),
       Patient(name: "Jane Smith", gender: Gender.female),
       Patient(name: "Jane Smith", gender: Gender.female),
-      Patient(name: "Jane Smith", gender: Gender.female),
+      Patient(name: "Jane Smithx", gender: Gender.female),
       Patient(name: "Jane Smith", gender: Gender.female),
       Patient(name: "Jane Smith", gender: Gender.female),
       Patient(name: "Jane Smith", gender: Gender.female),
