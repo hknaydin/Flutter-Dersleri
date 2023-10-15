@@ -696,7 +696,10 @@ Future<void> performLogin(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Text('login_successful'.tr(),
+              child: Text(
+                  userRole == UserRole.NO_ROLE.roleName
+                      ? 'no_account_with_such_a_username_was_found'.tr()
+                      : 'login_successful'.tr(),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),

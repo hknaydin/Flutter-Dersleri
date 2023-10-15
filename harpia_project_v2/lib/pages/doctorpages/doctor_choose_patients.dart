@@ -18,19 +18,30 @@ class DoctorChoosePatient extends StatefulWidget {
       DoctorChoosePatientState(doctor: doctor);
 }
 
-class DoctorChoosePatientState extends State<DoctorChoosePatient> {
+class DoctorChoosePatientState extends State<DoctorChoosePatient>
+    with SingleTickerProviderStateMixin {
   late String doctorName = "";
   final Doctor doctor;
   late List<Patient> patients = []; // Hasta bilgilerini tutmak için bir liste
+  late AnimationController animationController;
+  late Animation<double> animation;
 
   DoctorChoosePatientState({required this.doctor});
+
   @override
   void initState() {
     super.initState();
     fetchPatients(doctor);
-    // Kullanmak istediğiniz doktor nesnesi burada mevcut olacak
-    print(
-        'Doctor Name: ${doctor.username}'); // Hasta bilgilerini çeken fonksiyonu çağır
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+    animation = Tween<double>(begin: 1, end: 1.2).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
   }
 
   @override
@@ -79,18 +90,19 @@ class DoctorChoosePatientState extends State<DoctorChoosePatient> {
             child: ListView.builder(
               itemCount: patients.length,
               itemBuilder: (context, index) {
-                // Her bir hasta için bir ListTile oluştur
                 Patient patient = patients[index];
                 IconData genderIcon =
                     patient.gender == "male" ? Icons.male : Icons.female;
 
-                return ListTile(
-                  leading: Icon(genderIcon),
-                  title: Text("${patient.username} ${patient.userlastname}"),
-                  trailing: Icon(Icons.arrow_forward),
-                  onTap: () {
-                    // Hasta detay sayfasına yönlendirme işlemlerini burada gerçekleştirin
-                  },
+                return Card(
+                  child: ListTile(
+                    leading: Icon(genderIcon),
+                    title: Text("${patient.username} ${patient.userlastname}"),
+                    trailing: Icon(Icons.arrow_forward),
+                    onTap: () {
+                      // Hasta detay sayfasına yönlendirme işlemlerini burada gerçekleştirin
+                    },
+                  ),
                 );
               },
             ),
@@ -101,9 +113,22 @@ class DoctorChoosePatientState extends State<DoctorChoosePatient> {
               alignment: Alignment.bottomRight,
               child: ElevatedButton(
                 onPressed: () {
-                  fetchPatients(doctor);
+                  startAnimation(); // Animasyonu başlat
+                  fetchPatients(doctor); // Hasta listesini güncelle
                 },
-                child: Icon(Icons.refresh),
+                child: AnimatedBuilder(
+                  animation: animationController,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: animation.value,
+                      child: Transform.rotate(
+                        angle:
+                            animationController.value * 2 * 3.141592653589793,
+                        child: Icon(Icons.refresh),
+                      ),
+                    );
+                  },
+                ),
                 style: ElevatedButton.styleFrom(
                   shape: CircleBorder(),
                   padding: EdgeInsets.all(10),
@@ -121,19 +146,18 @@ class DoctorChoosePatientState extends State<DoctorChoosePatient> {
     // Burada backend tarafından hasta bilgilerini çekme işlemini gerçekleştirirsiniz
     // Örnek olarak, sabit bir liste kullanalım
     var request = DoctorApi();
-    var responseData = await request.getPatientListForDoctor(doctor.usermail);
+    List<Patient> patientsFromDoctor =
+        await request.getPatientListForDoctor(doctor.usermail);
 
-    print(responseData);
+    print(patientsFromDoctor);
 
-    List<dynamic> jsonList = jsonDecode(responseData)['data'];
-
-    List<Patient> patientsFromDoctor = Patient.fromMap(jsonList);
-    for (Patient patient in patientsFromDoctor) {
-      print('ID: ${patient.id}, Username: ${patient.username}');
-      // Diğer özelliklere erişmek için aynı şekilde kullanabilirsiniz.
-    }
     setState(() {
       patients = patientsFromDoctor; // Hastaları güncelle
     });
+  }
+
+  void startAnimation() {
+    animationController.reset();
+    animationController.forward();
   }
 }

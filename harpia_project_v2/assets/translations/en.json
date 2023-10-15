@@ -4,6 +4,7 @@
   "login_successful": "Login Successful",
   "hello": "Hello {username}",
   "error": "Error",
+  "no_account_with_such_a_username_was_found":"No account with such a username was found.",
   "failed_to_connect_to_the_server_please_try_again":"Failed to connect to the server. Please try again later.",
   "app_name": "Harpia",
   "title_activity_splash_screen": "Harpia",

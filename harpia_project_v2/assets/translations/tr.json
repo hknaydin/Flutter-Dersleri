@@ -31,6 +31,7 @@
   "phone_number": "Telefon",
   "doctor": "Doktor",
   "patient":"Hasta",
+  "no_account_with_such_a_username_was_found": "Bu kullanıcı adıyla ilgili bir hesap bulunamadı.",
   "please_enter_your_first_name": "Lütfen adınızı girin",
   "please_enter_your_last_name": "Lütfen soyadınızı girin",
   "please_enter_your_nationality_TC_number": "Vatandaşlık TC numaranızı giriniz",

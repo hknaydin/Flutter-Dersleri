@@ -8,6 +8,7 @@
   "step_by_step": "Harpia Danışmanlık ve Mühendislik Hizmetleri",
   "password": "密码",
   "error": "错误",
+  "no_account_with_such_a_username_was_found": "找不到带有此用户名的帐户。",
   "failed_to_connect_to_the_server_please_try_again": "无法连接到服务器，请稍后重试。",
   "prompt_email": "邮件",
   "create_new": "点击注册",

@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:core';
+import 'dart:core';
 
 import 'package:crypto/crypto.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -7,6 +9,8 @@ import 'package:harpia_project/utils/MySharedPreferences.dart';
 
 import '../model/user/Doctor.dart';
 import 'package:http/http.dart' as http;
+
+import '../model/user/Patient.dart';
 
 class DoctorApi {
   Future<http.Response> signUp(Doctor doctor, BuildContext context) async {
@@ -115,7 +119,7 @@ class DoctorApi {
     }
   }
 
-  Future<String> getPatientListForDoctor(String userMail) async {
+  Future<List<Patient>> getPatientListForDoctor(String userMail) async {
     try {
       // Kullanıcı adı ve şifreyi kullanarak backend'e istek gönderin
       String hospitalInternalIp =
@@ -139,7 +143,11 @@ class DoctorApi {
         // İstek başarılı olduysa rolü alın
         var responseData = response.body;
 
-        return responseData;
+        List<dynamic> jsonList = jsonDecode(responseData)['data'];
+
+        List<Patient> patientsFromDoctor = Patient.fromMap(jsonList);
+
+        return patientsFromDoctor;
       } else {
         // İstek başarısız olduysa hata mesajını alın
         var errorMessage = response.body;
