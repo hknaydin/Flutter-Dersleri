@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../component/bottom_user_info.dart';
 import '../component/custom_list_tile.dart';
@@ -22,7 +24,7 @@ class MainDrawerState extends State<PatientDrawer> {
         curve: Curves.easeInOutCubic,
         duration: const Duration(milliseconds: 500),
         width: _isCollapsed ? 300 : 100,
-        margin: const EdgeInsets.only(bottom: 10, top: 10),
+        margin: const EdgeInsets.only(bottom: 0, top: 0),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(10),
@@ -42,59 +44,57 @@ class MainDrawerState extends State<PatientDrawer> {
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
-                icon: Icons.home_outlined,
-                title: 'Home',
-                infoCount: 0,
-              ),
-              CustomListTile(
-                isCollapsed: _isCollapsed,
-                icon: Icons.calendar_today,
-                title: 'Calender',
-                infoCount: 0,
-              ),
-              CustomListTile(
-                isCollapsed: _isCollapsed,
-                icon: Icons.pin_drop,
-                title: 'Destinations',
+                icon: Icons.settings,
+                title: 'settings'.tr(),
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
-                icon: Icons.message_rounded,
-                title: 'Messages',
-                infoCount: 8,
-              ),
-              CustomListTile(
-                isCollapsed: _isCollapsed,
-                icon: Icons.cloud,
-                title: 'Weather',
+                icon: Icons.app_blocking_outlined,
+                title: 'about_device'.tr(),
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
-                icon: Icons.airplane_ticket,
-                title: 'Flights',
+                icon: Icons.bug_report,
+                title: 'report_bug'.tr(),
+                infoCount: 0,
+                doHaveMoreOptions: Icons.arrow_forward_ios,
+              ),
+              CustomListTile(
+                isCollapsed: _isCollapsed,
+                icon: Icons.question_mark_outlined,
+                title: 's.s.s'.tr(),
+                infoCount: 0,
+                doHaveMoreOptions: Icons.arrow_forward_ios,
+              ),
+              CustomListTile(
+                isCollapsed: _isCollapsed,
+                icon: Icons.share,
+                title: 'share'.tr(),
+                infoCount: 0,
+                doHaveMoreOptions: Icons.arrow_forward_ios,
+              ),
+              CustomListTile(
+                isCollapsed: _isCollapsed,
+                icon: Icons.app_shortcut,
+                title: 'Harpia',
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
               ),
               const Divider(color: Colors.grey),
-              const Spacer(),
+              SizedBox(height: 10.h),
               CustomListTile(
                 isCollapsed: _isCollapsed,
-                icon: Icons.notifications,
-                title: 'Notifications',
-                infoCount: 2,
-              ),
-              CustomListTile(
-                isCollapsed: _isCollapsed,
-                icon: Icons.settings,
-                title: 'Settings',
+                icon: Icons.logout,
+                title: 'logout'.tr(),
                 infoCount: 0,
+                doHaveMoreOptions: Icons.arrow_forward_ios,
               ),
+              const Spacer(),
               const SizedBox(height: 10),
-              BottomUserInfo(isCollapsed: _isCollapsed),
               Align(
                 alignment: _isCollapsed
                     ? Alignment.bottomRight
