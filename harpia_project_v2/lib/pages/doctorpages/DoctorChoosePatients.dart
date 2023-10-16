@@ -7,18 +7,19 @@ import 'package:harpia_project/model/user/Doctor.dart';
 
 import '../../model/user/Patient.dart';
 import '../../network/HttpRequestDoctor.dart';
+import 'PatientInformationPage.dart';
 
-class DoctorChoosePatient extends StatefulWidget {
+class ListviewBuilderPatient extends StatefulWidget {
   final Doctor doctor;
 
-  const DoctorChoosePatient({super.key, required this.doctor});
+  const ListviewBuilderPatient({super.key, required this.doctor});
 
   @override
-  State<DoctorChoosePatient> createState() =>
-      DoctorChoosePatientState(doctor: doctor);
+  State<ListviewBuilderPatient> createState() =>
+      ListviewBuilderPatientState(doctor: doctor);
 }
 
-class DoctorChoosePatientState extends State<DoctorChoosePatient>
+class ListviewBuilderPatientState extends State<ListviewBuilderPatient>
     with SingleTickerProviderStateMixin {
   late String doctorName = "";
   final Doctor doctor;
@@ -26,7 +27,7 @@ class DoctorChoosePatientState extends State<DoctorChoosePatient>
   late AnimationController animationController;
   late Animation<double> animation;
 
-  DoctorChoosePatientState({required this.doctor});
+  ListviewBuilderPatientState({required this.doctor});
 
   @override
   void initState() {
@@ -107,7 +108,12 @@ class DoctorChoosePatientState extends State<DoctorChoosePatient>
                     title: Text("${patient.username} ${patient.userlastname}"),
                     trailing: Icon(Icons.arrow_forward),
                     onTap: () {
-                      // Hasta detay sayfasına yönlendirme işlemlerini burada gerçekleştirin
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PatientInformationView(
+                                patient: patient, doctor: doctor)),
+                      );
                     },
                   ),
                 );

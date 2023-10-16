@@ -23,7 +23,7 @@ import '../utils/CustomAlertDialog.dart';
 import '../utils/MySharedPreferences.dart';
 import '../utils/ProductColor.dart';
 import '../utils/custom_widgets.dart';
-import 'doctorpages/doctor_choose_patients.dart';
+import 'doctorpages/DoctorChoosePatients.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -755,7 +755,7 @@ Future<void> login(BuildContext context, String roleName, String userMail,
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  DoctorChoosePatient(doctor: loggedInDoctor)));
+                  ListviewBuilderPatient(doctor: loggedInDoctor)));
     }
   }
 }
