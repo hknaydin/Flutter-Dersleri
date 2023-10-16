@@ -1,27 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../component/bottom_user_info.dart';
-import '../component/custom_list_tile.dart';
-import '../component/header.dart';
+import 'bottom_user_info.dart';
+import 'custom_list_tile.dart';
+import 'header.dart';
 
-class PatientDrawer extends StatefulWidget {
-  const PatientDrawer({Key? key}) : super(key: key);
+class CustomDrawer extends StatefulWidget {
+  const CustomDrawer({Key? key}) : super(key: key);
 
   @override
-  State<PatientDrawer> createState() => MainDrawerState();
+  State<CustomDrawer> createState() => _CustomDrawerState();
 }
 
-class MainDrawerState extends State<PatientDrawer> {
-  // var pageList = [const PatientProfile()];
+class _CustomDrawerState extends State<CustomDrawer> {
   bool _isCollapsed = false;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: AnimatedContainer(
         curve: Curves.easeInOutCubic,
         duration: const Duration(milliseconds: 500),
-        width: _isCollapsed ? 300 : 100,
+        width: _isCollapsed ? 300 : 70,
         margin: const EdgeInsets.only(bottom: 10, top: 10),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
