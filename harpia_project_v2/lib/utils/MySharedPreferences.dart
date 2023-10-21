@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MySharedPreferences {
@@ -9,6 +10,19 @@ class MySharedPreferences {
   static String HOSPITALEXTERNALIP = "hospitalexternalip";
   static String LOGINUSERNAME = "loginUserName";
   static String LOGINUSERPASSWORD = "loginUserPassword";
+  static String BACKGROUNDCOLOR = "backgroundcolor";
+
+  static Future<Null> setBackgroundColor(Color color) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt(MySharedPreferences.BACKGROUNDCOLOR, color.value);
+  }
+
+  static Future<int> getBackgroundColor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getInt(MySharedPreferences.BACKGROUNDCOLOR) ??
+        Colors.white.value;
+  }
 
   static Future<Null> setLocalName(String localName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

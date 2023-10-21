@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:harpia_project/views/doctorpages/doctornavigator/DrSettings.dart';
 
+import '../../views/doctorpages/doctornavigator/DrAboutDevice.dart';
 import '../component/bottom_user_info.dart';
 import '../component/custom_list_tile.dart';
 import '../component/header.dart';
@@ -23,17 +25,17 @@ class MainDrawerState extends State<PatientDrawer> {
       child: AnimatedContainer(
         curve: Curves.easeInOutCubic,
         duration: const Duration(milliseconds: 500),
-        width: _isCollapsed ? 300 : 100,
+        width: _isCollapsed ? 280 : 100,
         margin: const EdgeInsets.only(bottom: 0, top: 0),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(10),
             topRight: Radius.circular(10),
           ),
-          color: Color.fromRGBO(20, 20, 20, 1),
+          color: Color.fromRGBO(25, 25, 25, 1),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,6 +50,16 @@ class MainDrawerState extends State<PatientDrawer> {
                 title: 'settings'.tr(),
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
+                onTap: () {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(
+                            builder: (context) => DoctorSetting()),
+                      )
+                      .then((value) => (value) {
+                            setState(() {});
+                          });
+                },
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
@@ -55,6 +67,16 @@ class MainDrawerState extends State<PatientDrawer> {
                 title: 'about_device'.tr(),
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
+                onTap: () {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(
+                            builder: (context) => DoctorAboutDevice()),
+                      )
+                      .then((value) => (value) {
+                            setState(() {});
+                          });
+                },
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
@@ -62,6 +84,7 @@ class MainDrawerState extends State<PatientDrawer> {
                 title: 'report_bug'.tr(),
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
+                onTap: () {},
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
@@ -69,6 +92,7 @@ class MainDrawerState extends State<PatientDrawer> {
                 title: 's.s.s'.tr(),
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
+                onTap: () {},
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
@@ -76,6 +100,7 @@ class MainDrawerState extends State<PatientDrawer> {
                 title: 'share'.tr(),
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
+                onTap: () {},
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
@@ -83,6 +108,7 @@ class MainDrawerState extends State<PatientDrawer> {
                 title: 'Harpia',
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
+                onTap: () {},
               ),
               const Divider(color: Colors.grey),
               SizedBox(height: 10.h),
@@ -92,6 +118,7 @@ class MainDrawerState extends State<PatientDrawer> {
                 title: 'logout'.tr(),
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
+                onTap: () {},
               ),
               const Spacer(),
               const SizedBox(height: 10),

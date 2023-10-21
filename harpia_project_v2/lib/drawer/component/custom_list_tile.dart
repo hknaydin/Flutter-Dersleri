@@ -6,7 +6,7 @@ class CustomListTile extends StatelessWidget {
   final String title;
   final IconData? doHaveMoreOptions;
   final int infoCount;
-
+  final VoidCallback? onTap;
   const CustomListTile({
     Key? key,
     required this.isCollapsed,
@@ -14,12 +14,13 @@ class CustomListTile extends StatelessWidget {
     required this.title,
     this.doHaveMoreOptions,
     required this.infoCount,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         width: isCollapsed ? 300 : 80,

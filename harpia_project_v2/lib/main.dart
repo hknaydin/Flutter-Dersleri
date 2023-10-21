@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:harpia_project/pages/network/network_error.dart';
+import 'package:harpia_project/views/network/network_error.dart';
 import 'package:harpia_project/utils/MySharedPreferences.dart';
-import 'pages/loginscreen.dart';
+import 'package:harpia_project/views/preview.dart';
+import 'views/loginscreen.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {
@@ -185,7 +186,7 @@ class SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 3),
       () => Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        MaterialPageRoute(builder: (context) => const PreviewPage()),
       ),
     );
   }

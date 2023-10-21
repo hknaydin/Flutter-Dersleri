@@ -6,7 +6,7 @@ import 'package:harpia_project/utils/Constant.dart';
 import 'package:harpia_project/utils/Validation.dart';
 
 import '../core/ResponsiveDesign.dart';
-import '../pages/loginscreen.dart';
+import '../views/loginscreen.dart';
 import '../utils/CustomSnackBar.dart';
 import '../utils/ProductColor.dart';
 import '../utils/MySharedPreferences.dart';

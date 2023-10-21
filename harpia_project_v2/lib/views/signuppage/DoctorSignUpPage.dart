@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,6 +46,7 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
 
   List<Gender> genders = [];
   bool checkedValue = false;
+  bool success = false;
 
   @override
   void initState() {
@@ -198,6 +200,30 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                 'please_enter_the_password',
                                                 'please_enter_password_that_is_difficult_to_guess',
                                                 TextInputType.text),
+                                            FlutterPwValidator(
+                                              defaultColor:
+                                                  Colors.grey.shade300,
+                                              controller: passwordController,
+                                              successColor:
+                                                  Colors.green.shade700,
+                                              minLength: 8,
+                                              uppercaseCharCount: 2,
+                                              numericCharCount: 3,
+                                              specialCharCount: 1,
+                                              normalCharCount: 3,
+                                              width: 250,
+                                              height: 100,
+                                              onSuccess: () {
+                                                setState(() {
+                                                  success = true;
+                                                });
+                                              },
+                                              onFail: () {
+                                                setState(() {
+                                                  success = false;
+                                                });
+                                              },
+                                            ),
                                             SizedBox(
                                                 height: Constat
                                                     .doctorRegisterPanelWidgetSpace),

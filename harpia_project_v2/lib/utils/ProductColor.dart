@@ -39,7 +39,8 @@ class ProductColor {
   static get appBarBackgroundColor => _appBarBackgroundColor;
 
   static get bodyBackground => _bodyBackground;
-
+  static const Color btnColor = Color(0xFF4786ec);
+  static const Color btnBorderColor = Color.fromARGB(255, 183, 181, 252);
   static get alertBoxBackgroundColor => _alertBoxBackgroundColor;
   final Color facebookColor = const Color(0xff39579A);
   final Color twitterColor = const Color(0xff00ABEA);

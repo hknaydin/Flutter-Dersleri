@@ -71,7 +71,7 @@ class DoctorApi {
 
       if (response.statusCode == 200) {
         // İstek başarılı olduysa rolü alın
-        var responseData = jsonDecode(response.body);
+        var responseData = jsonDecode(utf8.decode(response.bodyBytes));
         String role = responseData;
 
         // Rolü geri döndürün
@@ -96,16 +96,16 @@ class DoctorApi {
       Map<String, dynamic> requestData = doctor.toJson();
       print("to json  $requestData");
       var response = await http.post(url,
-          headers: {'Content-Type': 'application/json'},
+          headers: {'Content-Type': 'application/json; charset=utf-8'},
           body: jsonEncode(requestData));
       print('requestData : $requestData');
 
       print('resp : $response');
-      print('resp.body : ${response.body}');
+      print('resp.body : ${jsonDecode(utf8.decode(response.bodyBytes))}');
 
       if (response.statusCode == 200) {
         // İstek başarılı olduysa rolü alın
-        var responseData = jsonDecode(response.body);
+        var responseData = jsonDecode(utf8.decode(response.bodyBytes));
 
         // Rolü geri döndürün
         return responseData;
@@ -133,17 +133,18 @@ class DoctorApi {
           .replace(queryParameters: requestData);
 
       var response = await http.post(url,
-          headers: {'Content-Type': 'application/json'},
+          headers: {'Content-Type': 'application/json; charset=utf-8'},
           body: jsonEncode(requestData));
 
       print('resp : $response');
-      print('resp.body : ${response.body}');
+      print('resp.body : ${jsonDecode(utf8.decode(response.bodyBytes))}');
 
       if (response.statusCode == 200) {
         // İstek başarılı olduysa rolü alın
         var responseData = response.body;
 
-        List<dynamic> jsonList = jsonDecode(responseData)['data'];
+        List<dynamic> jsonList =
+            jsonDecode(utf8.decode(response.bodyBytes))['data'];
 
         List<Patient> patientsFromDoctor = Patient.fromMap(jsonList);
 

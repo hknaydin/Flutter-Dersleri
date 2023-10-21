@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:harpia_project/pages/signuppage/DoctorSignUpPage.dart';
-import 'package:harpia_project/pages/signuppage/PatientSignUpPage.dart';
+import 'package:harpia_project/views/signuppage/DoctorSignUpPage.dart';
+import 'package:harpia_project/views/signuppage/PatientSignUpPage.dart';
 
 enum UserType {
   Doctor,

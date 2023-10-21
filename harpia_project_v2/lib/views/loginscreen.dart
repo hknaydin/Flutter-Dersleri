@@ -9,8 +9,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:harpia_project/model/userrole/userRole.dart';
-import 'package:harpia_project/pages/about_project_and_team.dart';
-import 'package:harpia_project/pages/register.dart';
+import 'package:harpia_project/views/about_project_and_team.dart';
+import 'package:harpia_project/views/register.dart';
 import 'package:harpia_project/utils/Validation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -49,6 +49,8 @@ class GirisSayfasiState extends State<LoginScreen> {
     installerStore: 'Unknown',
   );
   Icon? selectedIcon;
+// Snackbar değişkeni
+  SnackBar? snackBar;
 
   List<List> diller = [
     ["tr", "Türkçe"],
@@ -95,6 +97,9 @@ class GirisSayfasiState extends State<LoginScreen> {
             backgroundColor: Colors.white,
             elevation: 0,
             onPressed: () {
+              if (snackBar != null) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              }
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const About()),
@@ -117,6 +122,9 @@ class GirisSayfasiState extends State<LoginScreen> {
             backgroundColor: Colors.white,
             elevation: 0,
             onPressed: () {
+              if (snackBar != null) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              }
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const SettingAdmin()),
@@ -225,6 +233,10 @@ class GirisSayfasiState extends State<LoginScreen> {
                               padding: const EdgeInsets.only(left: 10),
                               child: GestureDetector(
                                 onTap: () {
+                                  if (snackBar != null) {
+                                    ScaffoldMessenger.of(context)
+                                        .hideCurrentSnackBar();
+                                  }
                                   // Kayıt sayfasına yönlendirme işlemi
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => RegisterPage()));
@@ -588,7 +600,7 @@ class GirisSayfasiState extends State<LoginScreen> {
   }
 
   void informationMessage() {
-    final snackBar = SnackBar(
+    snackBar = SnackBar(
       content: Expanded(
         child: Row(
           children: [
@@ -618,7 +630,7 @@ class GirisSayfasiState extends State<LoginScreen> {
         ),
       ),
       action: SnackBarAction(
-        label: 'Kapat',
+        label: 'close'.tr(),
         onPressed: () {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
         },
@@ -627,7 +639,7 @@ class GirisSayfasiState extends State<LoginScreen> {
     );
 
     ScaffoldMessenger.of(context)
-        .showSnackBar(snackBar)
+        .showSnackBar(snackBar!)
         .closed
         .then((SnackBarClosedReason reason) {
       if (reason == SnackBarClosedReason.action) {
@@ -648,114 +660,119 @@ class GirisSayfasiState extends State<LoginScreen> {
       tfPassword.text = await MySharedPreferences.getLoginUserPassword();
     }
   }
-}
 
-Future<void> performLogin(
-    String userMail, String userPassword, BuildContext context) async {
-  var request = DoctorApi();
+  Future<void> performLogin(
+      String userMail, String userPassword, BuildContext context) async {
+    var request = DoctorApi();
 
-  String userRole;
+    String userRole;
+    // Snackbar'ı kapat
+    try {
+      userRole = await request.getRole(userMail, userPassword);
+    } catch (e) {
+      // An exception occurred, handle it as an error
+      Navigator.of(context).pop(); // Close the "Signing" dialog
 
-  try {
-    userRole = await request.getRole(userMail, userPassword);
-  } catch (e) {
-    // An exception occurred, handle it as an error
-    Navigator.of(context).pop(); // Close the "Signing" dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('error'.tr()),
+            content:
+                Text('failed_to_connect_to_the_server_please_try_again'.tr()),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the error dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+
+      return; // Exit the function to prevent further execution
+    }
+
+    Navigator.of(context).pop();
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('error'.tr()),
-          content:
-              Text('failed_to_connect_to_the_server_please_try_again'.tr()),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the error dialog
-              },
-            ),
-          ],
+          title: Text('warning'.tr()),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Text(
+                    userRole == UserRole.NO_ROLE.roleName
+                        ? 'no_account_with_such_a_username_was_found'.tr()
+                        : 'login_successful'.tr(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+              ),
+              SizedBox(height: 10),
+            ],
+          ),
         );
       },
     );
 
-    return; // Exit the function to prevent further execution
+    // Role göre işlem yapılabilir
+    // Örnek olarak:
+    if (userRole == UserRole.ADMIN.roleName) {
+      login(context, UserRole.ADMIN.roleName, userMail, userPassword);
+    } else if (userRole == UserRole.DOCTOR.roleName) {
+      login(context, UserRole.DOCTOR.roleName, userMail, userPassword);
+    } else if (userRole == UserRole.PATIENT.roleName) {
+      login(context, UserRole.PATIENT.roleName, userMail, userPassword);
+    }
   }
 
-  Navigator.of(context).pop();
+  Future<void> login(BuildContext context, String roleName, String userMail,
+      String userPassword) async {
+    var request = DoctorApi();
+    if (roleName == UserRole.DOCTOR.roleName) {
+      Doctor doctor = Doctor(
+          id: 0,
+          username: "userName",
+          userlastname: "userLastName",
+          gender: "gender",
+          usermail: userMail,
+          password: md5.convert(utf8.encode(userPassword)).toString(),
+          role: roleName,
+          tc: 111111111,
+          dataofBirth: "10.10.1991",
+          employedInstitution: "ktu",
+          loggedIn: true);
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('warning'.tr()),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Text(
-                  userRole == UserRole.NO_ROLE.roleName
-                      ? 'no_account_with_such_a_username_was_found'.tr()
-                      : 'login_successful'.tr(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            SizedBox(height: 10),
-          ],
-        ),
-      );
-    },
-  );
+      var responseData = await request.loginDr(doctor);
 
-  // Role göre işlem yapılabilir
-  // Örnek olarak:
-  if (userRole == UserRole.ADMIN.roleName) {
-    login(context, UserRole.ADMIN.roleName, userMail, userPassword);
-  } else if (userRole == UserRole.DOCTOR.roleName) {
-    login(context, UserRole.DOCTOR.roleName, userMail, userPassword);
-  } else if (userRole == UserRole.PATIENT.roleName) {
-    login(context, UserRole.PATIENT.roleName, userMail, userPassword);
-  }
-}
+      if (responseData['success']) {
+        // JSON verisini ayrıştırın ve "data" bölümünü alın
+        Map<String, dynamic> jsonMap = responseData;
+        Map<String, dynamic> dataMap = jsonMap['data'];
 
-Future<void> login(BuildContext context, String roleName, String userMail,
-    String userPassword) async {
-  var request = DoctorApi();
-  if (roleName == UserRole.DOCTOR.roleName) {
-    Doctor doctor = Doctor(
-        id: 0,
-        username: "userName",
-        userlastname: "userLastName",
-        gender: "gender",
-        usermail: userMail,
-        password: md5.convert(utf8.encode(userPassword)).toString(),
-        role: roleName,
-        tc: 111111111,
-        dataofBirth: "10.10.1991",
-        employedInstitution: "ktu",
-        loggedIn: true);
+        // Doctor sınıfına dönüştürün
+        Doctor loggedInDoctor = Doctor.fromJson(dataMap);
 
-    var responseData = await request.loginDr(doctor);
+        print(loggedInDoctor.username); // Hakan
+        print(loggedInDoctor.userlastname); // Aydin
 
-    if (responseData['success']) {
-      // JSON verisini ayrıştırın ve "data" bölümünü alın
-      Map<String, dynamic> jsonMap = responseData;
-      Map<String, dynamic> dataMap = jsonMap['data'];
+        if (snackBar != null) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        }
 
-      // Doctor sınıfına dönüştürün
-      Doctor loggedInDoctor = Doctor.fromJson(dataMap);
-
-      print(loggedInDoctor.username); // Hakan
-      print(loggedInDoctor.userlastname); // Aydin
 // DoctorChoosePatient sayfasına doktor nesnesini iletmek için Navigator ile geçirin
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  ListviewBuilderPatient(doctor: loggedInDoctor)));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ListviewBuilderPatient(doctor: loggedInDoctor)));
+      }
     }
   }
 }
