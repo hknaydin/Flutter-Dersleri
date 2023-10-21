@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:harpia_project/views/doctorpages/doctornavigator/DrSettings.dart';
 
 import '../../views/doctorpages/doctornavigator/DrAboutDevice.dart';
+import '../../views/faq.dart';
 import '../component/bottom_user_info.dart';
 import '../component/custom_list_tile.dart';
 import '../component/header.dart';
@@ -92,7 +93,15 @@ class MainDrawerState extends State<PatientDrawer> {
                 title: 's.s.s'.tr(),
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(builder: (context) => FaqScreen()),
+                      )
+                      .then((value) => (value) {
+                            setState(() {});
+                          });
+                },
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
