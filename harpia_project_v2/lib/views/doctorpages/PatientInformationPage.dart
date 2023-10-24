@@ -10,6 +10,8 @@ import '../../drawer/patient/patientDrawerPage.dart';
 import '../../model/user/Patient.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import 'PatientAbout.dart';
+
 class PatientInformationView extends StatefulWidget {
   final Doctor doctor;
   final Patient patient;
@@ -44,7 +46,10 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
         TooltipBehavior(enable: true, header: '', canShowMarker: false);
     super.initState();
     loadBackgroundColor();
+    getPatientData(patient.id);
   }
+
+  void getPatientData(patient_id) {}
 
   void toggleDrawer() {
     if (isDrawerOpen) {
@@ -81,22 +86,26 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            SizedBox(height: 1),
             // Birinci Satır
-            Expanded(
-              flex: 1,
+            Padding(
+              padding: const EdgeInsets.all(2.0),
               child: Card(
                 elevation: 0,
+                margin: EdgeInsets.zero,
                 color: selectedBackgroundColor,
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
                     color: Theme.of(context).colorScheme.outline,
                   ),
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  borderRadius: const BorderRadius.all(Radius.circular(0)),
                 ),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
+                      padding: const EdgeInsets.only(left: 4.0),
                       child: IconButton(
                         icon: const Icon(
                           Icons.menu_outlined,
@@ -106,7 +115,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                         onPressed: toggleDrawer,
                       ),
                     ),
-                    SizedBox(width: 5),
+                    SizedBox(width: 4),
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
@@ -123,11 +132,11 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                           ),
                         ),
                         onPressed: null,
-                        child: Text(
-                          '100 mg/dl',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        child: Text('100 mg/dl',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: buildTextStyleHourAndMinuteValue(
+                                FontWeight.normal, 12)),
                       ),
                     ),
                     SizedBox(width: 10),
@@ -148,7 +157,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              '11:11:11',
+                              '11:11',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -174,10 +183,11 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                           // İkinci butona tıklama işlemi
                         },
                         child: Text(
-                          maxLines: 1,
-                          'getir'.tr(),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                            maxLines: 2,
+                            'getir'.tr(),
+                            overflow: TextOverflow.ellipsis,
+                            style: buildTextStyleHourAndMinuteValue(
+                                FontWeight.normal, 12)),
                       ),
                     ),
                     SizedBox(width: 10),
@@ -191,93 +201,162 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
             buildHourAndMinutePanel(context),
             // Üçüncü Satır (Grafik Çizimi)
             Expanded(
-              flex: 5,
-              child: Container(
-                child: buildSfCartesianChart(),
+              flex: 6,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 1.0, right: 1.0, top: 4.0, bottom: 2.0),
+                child: Card(
+                    elevation: 0,
+                    margin: EdgeInsets.zero,
+                    color: selectedBackgroundColor,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    child: buildSfCartesianChart()),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                children: <Widget>[
-                  // Birinci Kolon
-                  SegmentedButton<Color>(
-                    selected: <Color>{_selectedColor},
-                    onSelectionChanged: (Set<Color> newSelection) {
-                      setState(() {
-                        _selectedColor = newSelection.first;
-                      });
-                    },
-                    segments: const <ButtonSegment<Color>>[
-                      ButtonSegment<Color>(
-                        value: Colors.red,
-                        label: Text('Red'),
-                      ),
-                      ButtonSegment<Color>(
-                        value: Colors.green,
-                        label: Text('Green'),
-                      ),
-                      ButtonSegment<Color>(
-                        value: Colors.yellow,
-                        label: Text('Yellow'),
-                      ),
-                    ],
-                  ),
-                  // İkinci Kolon
-                  Expanded(
-                    flex: 1,
-                    child: Row(
-                      children: <Widget>[
-                        // İkinci sütun içeriği
-                      ],
-                    ),
-                  ),
-                  // Üçüncü Kolon
-                  Expanded(
-                    flex: 1,
-                    child: Row(
-                      children: <Widget>[
-                        // Üçüncü sütun içeriği
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
             // Dördüncü Satır
-            Expanded(
-              flex: 1,
-              child: Column(
-                children: <Widget>[
-                  // Birinci Kolon
-                  Expanded(
-                    flex: 1,
-                    child: Row(
+            Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Card(
+                elevation: 0,
+                margin: EdgeInsets.zero,
+                color: selectedBackgroundColor,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(0)),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          // Birinci Kolon
+                          SegmentedButton<Color>(
+                            selected: <Color>{_selectedColor},
+                            onSelectionChanged: (Set<Color> newSelection) {
+                              setState(() {
+                                _selectedColor = newSelection.first;
+                              });
+                            },
+                            segments: const <ButtonSegment<Color>>[
+                              ButtonSegment<Color>(
+                                value: Colors.red,
+                                label: Text('Red'),
+                              ),
+                              ButtonSegment<Color>(
+                                value: Colors.green,
+                                label: Text('Green'),
+                              ),
+                              ButtonSegment<Color>(
+                                value: Colors.yellow,
+                                label: Text('Yellow'),
+                              ),
+                            ],
+                          ),
+                          // İkinci Kolon
+                          // Üçüncü Kolon
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        // İlk sütun içeriği
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      PatientAboutPage(patient: patient)),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0),
+                              side: BorderSide(color: Colors.blue),
+                            ),
+                            minimumSize: Size(150, 40),
+                          ),
+                          child: Text(
+                            'hasta_bilgisi'.tr(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Hasta bilgisi butonuna tıklama işlemi
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0),
+                              side: BorderSide(color: Colors.blue),
+                            ),
+                            minimumSize: Size(150, 40),
+                          ),
+                          child: Text(
+                            'pdf_cikti'.tr(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  // İkinci Kolon
-                  Expanded(
-                    flex: 1,
-                    child: Row(
+                    // İkinci Kolon
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        // İkinci sütun içeriği
+                        ElevatedButton(
+                          onPressed: () {
+                            // Hasta bilgisi butonuna tıklama işlemi
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(50),
+                                topRight: Radius.circular(50),
+                              ),
+                              side: BorderSide(color: Colors.blue),
+                            ),
+                            minimumSize: Size(250.w, 40),
+                          ),
+                          child: Text(
+                            "${'patient_information'.tr()} ${patient.username} ${patient.userlastname}",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  // Üçüncü Kolon
-                  Expanded(
-                    flex: 1,
-                    child: Row(
-                      children: <Widget>[
-                        // Üçüncü sütun içeriği
-                      ],
-                    ),
-                  ),
-                ],
+                    // Üçüncü Kolon
+                  ],
+                ),
               ),
             ),
           ],
@@ -289,6 +368,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
   SfCartesianChart buildSfCartesianChart() {
     return SfCartesianChart(
       plotAreaBorderWidth: 0,
+      backgroundColor: Colors.white,
       title: ChartTitle(text: 'Capital investment as a share of exports'),
       primaryXAxis: DateTimeAxis(
         edgeLabelPlacement: EdgeLabelPlacement.shift,
@@ -299,75 +379,79 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
     );
   }
 
-  Expanded buildHourAndMinutePanel(BuildContext context) {
-    return Expanded(
-      flex: 1,
+  buildHourAndMinutePanel(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(1.0),
       child: Card(
         elevation: 0,
+        margin: EdgeInsets.zero,
         color: selectedBackgroundColor,
         shape: RoundedRectangleBorder(
           side: BorderSide(
             color: Theme.of(context).colorScheme.outline,
           ),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(0),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Card(
-              elevation: 0,
-              color: selectedBackgroundColor,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: Theme.of(context).colorScheme.outline,
+        child: SizedBox(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Card(
+                elevation: 0,
+                color: selectedBackgroundColor,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(0)),
                 ),
-                borderRadius: const BorderRadius.all(Radius.circular(0)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    Text('set_hour'.tr(),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Text('set_hour'.tr(),
+                          style: buildTextStyleHourAndMinuteValue(
+                              FontWeight.normal, 15)),
+                      SizedBox(width: 20),
+                      Text(
+                        "1",
                         style: buildTextStyleHourAndMinuteValue(
-                            FontWeight.normal, 20)),
-                    SizedBox(width: 20),
-                    Text(
-                      "1",
-                      style:
-                          buildTextStyleHourAndMinuteValue(FontWeight.bold, 20),
-                    ),
-                  ],
+                            FontWeight.bold, 15),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(width: 20),
-            Card(
-              elevation: 0,
-              color: selectedBackgroundColor,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: Theme.of(context).colorScheme.outline,
+              SizedBox(width: 20),
+              Card(
+                elevation: 0,
+                color: selectedBackgroundColor,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(0)),
                 ),
-                borderRadius: const BorderRadius.all(Radius.circular(0)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    Text('set_minute'.tr(),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Text('set_minute'.tr(),
+                          style: buildTextStyleHourAndMinuteValue(
+                              FontWeight.normal, 15)),
+                      SizedBox(width: 20),
+                      Text(
+                        "02",
                         style: buildTextStyleHourAndMinuteValue(
-                            FontWeight.normal, 20)),
-                    SizedBox(width: 20),
-                    Text(
-                      "02",
-                      style:
-                          buildTextStyleHourAndMinuteValue(FontWeight.bold, 20),
-                    ),
-                  ],
+                            FontWeight.bold, 15),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
