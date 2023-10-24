@@ -55,6 +55,7 @@ dependencies:
   flutter_blue: ^0.8.0
   flutter_pw_validator: ^1.4.2
   lottie: ^2.6.0
+  webview_flutter: ^2.0.14
   fluttertoast:
 
   flutter_localizations:
@@ -93,6 +94,14 @@ flutter:
     - assets/translations/
     - assets/images/countries/
     - assets/images/categories/
+    - assets/file_tr_terms.html
+    - assets/file_tr_policy.html
+    - assets/file_en_terms.html
+    - assets/file_en_policy.html
+    - assets/file_fr_terms.html
+    - assets/file_fr_policy.html
+    - assets/file_zh_terms.html
+    - assets/file_zh_policy.html
 
   # To add assets to your application, add an assets section, like this:
   # assets:

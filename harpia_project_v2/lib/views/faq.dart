@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:harpia_project/utils/MySharedPreferences.dart';
 
 class FaqScreen extends StatefulWidget {
   const FaqScreen({Key? key}) : super(key: key);
@@ -10,13 +11,39 @@ class FaqScreen extends StatefulWidget {
 
 class FaqScreenState extends State<FaqScreen> {
   int selectedIndex = -1;
+  Color selectedBackgroundColor = Colors.white; // Seçilen arka plan rengi
+
+  @override
+  void initState() {
+    super.initState();
+    loadBackgroundColor();
+  }
+
+  void loadBackgroundColor() async {
+    int colorValue = await MySharedPreferences.getBackgroundColor();
+    setState(() {
+      selectedBackgroundColor = Color(colorValue);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: selectedBackgroundColor,
+          automaticallyImplyLeading: false,
+          title: Column(
+            children: [
+              Text(
+                'frequently_asked_question'.tr(),
+              ),
+            ],
+          ),
+          centerTitle: true,
+        ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 12.0),
+          padding: const EdgeInsets.only(top: 12.0, bottom: 20),
           child: ListView.builder(
             itemCount: itemData.length,
             itemBuilder: (context, index) {
@@ -96,6 +123,46 @@ class FaqScreenState extends State<FaqScreen> {
     ItemModel(
       headerItem: 'where_to_use'.tr(),
       discription: 'diabet'.tr(),
+      colorsItem: Colors.black,
+    ),
+    ItemModel(
+      headerItem: 'lifespan_of_device'.tr(),
+      discription: 'diabet'.tr(),
+      colorsItem: Colors.black,
+    ),
+    ItemModel(
+      headerItem: 'who_are_we'.tr(),
+      discription: 'answer_fourth'.tr(),
+      colorsItem: Colors.black,
+    ),
+    ItemModel(
+      headerItem: 'lifespan_of_device'.tr(),
+      discription: 'diabet'.tr(),
+      colorsItem: Colors.black,
+    ),
+    ItemModel(
+      headerItem: 'who_are_we'.tr(),
+      discription: 'answer_fourth'.tr(),
+      colorsItem: Colors.black,
+    ),
+    ItemModel(
+      headerItem: 'lifespan_of_device'.tr(),
+      discription: 'diabet'.tr(),
+      colorsItem: Colors.black,
+    ),
+    ItemModel(
+      headerItem: 'who_are_we'.tr(),
+      discription: 'answer_fourth'.tr(),
+      colorsItem: Colors.black,
+    ),
+    ItemModel(
+      headerItem: 'lifespan_of_device'.tr(),
+      discription: 'diabet'.tr(),
+      colorsItem: Colors.black,
+    ),
+    ItemModel(
+      headerItem: 'who_are_we'.tr(),
+      discription: 'answer_fourth'.tr(),
       colorsItem: Colors.black,
     ),
     ItemModel(

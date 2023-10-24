@@ -455,7 +455,7 @@ CardField_menu(Size size, Color color, Icon icon, String title, String subtitle,
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: SizedBox(
-        height: 200.sp,
+        height: 230.sp,
         width: MediaQuery.of(context).size.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,7 +514,7 @@ CardField_categories(Size size, String subtitle, String city,
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: SizedBox(
-        height: 150.sp,
+        height: 160.sp,
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [

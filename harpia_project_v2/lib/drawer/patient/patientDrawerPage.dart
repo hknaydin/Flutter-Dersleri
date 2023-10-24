@@ -6,6 +6,7 @@ import 'package:harpia_project/views/doctorpages/doctornavigator/DrSettings.dart
 
 import '../../views/doctorpages/doctornavigator/DrAboutDevice.dart';
 import '../../views/faq.dart';
+import '../../views/harpia_about.dart';
 import '../component/bottom_user_info.dart';
 import '../component/custom_list_tile.dart';
 import '../component/header.dart';
@@ -117,7 +118,15 @@ class MainDrawerState extends State<PatientDrawer> {
                 title: 'Harpia',
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(builder: (context) => HarpiaAbout()),
+                      )
+                      .then((value) => (value) {
+                            setState(() {});
+                          });
+                },
               ),
               const Divider(color: Colors.grey),
               SizedBox(height: 10.h),
