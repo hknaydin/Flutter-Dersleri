@@ -279,8 +279,11 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      PatientAboutPage(patient: patient)),
+                                  builder: (context) => PatientAboutPage(
+                                        patient: patient,
+                                        selectedBackgroundColor:
+                                            selectedBackgroundColor,
+                                      )),
                             );
                           },
                           style: ElevatedButton.styleFrom(

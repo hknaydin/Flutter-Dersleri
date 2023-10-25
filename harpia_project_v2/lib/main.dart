@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:harpia_project/views/network/network_error.dart';
 import 'package:harpia_project/utils/MySharedPreferences.dart';
 import 'package:harpia_project/views/preview.dart';
-import 'views/loginscreen.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {
