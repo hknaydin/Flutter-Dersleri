@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:harpia_project/network/HttpRequestPatient.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 import '../../model/user/Patient.dart';
+import '../../result/dataResult.dart';
 
 class PatientAboutPage extends StatefulWidget {
   final Patient patient;
@@ -20,7 +25,7 @@ class PatientAboutPage extends StatefulWidget {
 }
 
 class PatientAboutPageState extends State<PatientAboutPage> {
-  final Patient patient;
+  late Patient patient;
   final Color selectedBackgroundColor;
   late int currentGlobalHipoGlisemi;
   late int currentGlobalHiperGlisemi;
@@ -441,7 +446,12 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        updateDbHipoAndHiperGlisemi(
+                            context,
+                            currentGlobalHipoGlisemi,
+                            currentGlobalHiperGlisemi);
+                      },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(0),
@@ -495,11 +505,12 @@ class PatientAboutPageState extends State<PatientAboutPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(dialogTitle),
+            title: Text(dialogTitle, textAlign: TextAlign.center),
             content: StatefulBuilder(builder: (context, SBsetState) {
               return NumberPicker(
+                  textStyle: TextStyle(color: Colors.blue, fontSize: 20),
                   selectedTextStyle:
-                      const TextStyle(color: Colors.red, fontSize: 30),
+                      const TextStyle(color: Colors.red, fontSize: 40),
                   value: dialogTitle == 'hipo_value_set'.tr()
                       ? currentHipoGlisemi
                       : currentHiperGlisemi,
@@ -539,5 +550,43 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                 .spaceBetween, // Düğmeleri sağa ve sola hizalar
           );
         });
+  }
+
+  void updateDbHipoAndHiperGlisemi(BuildContext context,
+      int paramGlobalHipoGlisemi, int paramGlobalHiperGlisemi) {
+    var request = PatientApi();
+
+    request
+        .setPatientHipoAndHiperValue(context, patient.id,
+            paramGlobalHipoGlisemi, paramGlobalHiperGlisemi)
+        .then((response) async {
+      // debugPrint(resp.body);
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+      var data = DataResult.fromJson(jsonData);
+      print(data);
+      print("res.body : ${jsonData}");
+      if (data.success) {
+        var extractedData = data.data;
+        Patient pt = Patient.fromJson(extractedData);
+        setState(() => patient = pt);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('warning'.tr(), textAlign: TextAlign.center),
+              content: Text('set_hipo_and_hiper_success'.tr()),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('ok'.tr()),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
   }
 }
