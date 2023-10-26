@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 import '../../model/user/Patient.dart';
 
@@ -21,12 +22,41 @@ class PatientAboutPage extends StatefulWidget {
 class PatientAboutPageState extends State<PatientAboutPage> {
   final Patient patient;
   final Color selectedBackgroundColor;
+  late int currentGlobalHipoGlisemi;
+  late int currentGlobalHiperGlisemi;
+
   PatientAboutPageState(
       {required this.patient, required this.selectedBackgroundColor});
 
   @override
   void initState() {
     super.initState();
+    initGlisemiValues();
+  }
+
+  void initGlisemiValues() {
+    currentGlobalHipoGlisemi = patient.hipo_glisemi;
+    currentGlobalHiperGlisemi = patient.hiper_glisemi;
+  }
+
+  int calculateAge(String dateOfBirth) {
+    List<String> tarihParcalari = dateOfBirth.split('.');
+    int gun = int.parse(tarihParcalari[0]);
+    int ay = int.parse(tarihParcalari[1]);
+    int yil = int.parse(tarihParcalari[2]);
+
+    DateTime dogumTarihiObjesi = DateTime(yil, ay, gun);
+    DateTime bugun = DateTime.now();
+
+    int yas = bugun.year - dogumTarihiObjesi.year;
+
+    if (bugun.month < dogumTarihiObjesi.month ||
+        (bugun.month == dogumTarihiObjesi.month &&
+            bugun.day < dogumTarihiObjesi.day)) {
+      yas--;
+    }
+
+    return yas;
   }
 
   @override
@@ -76,12 +106,8 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               padding: EdgeInsets.only(
                                   left: 10.0, top: 4, bottom: 4),
                               child: Text(
-                                'hasta_ad'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'hasta_ad'.tr()} ${patient.username}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -98,12 +124,8 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               padding: EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'hasta_soyad'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'hasta_soyad'.tr()} ${patient.userlastname}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -120,12 +142,8 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               padding: EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'hasta_yas'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'hasta_yas'.tr()} ${calculateAge(patient.data_of_birth)}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -142,12 +160,8 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               padding: EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'cinsiyet'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'cinsiyet'.tr()} ${patient.gender}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -161,15 +175,11 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'hasta_kan_grubu'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'hasta_kan_grubu'.tr()} ${patient.blood_information}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -183,15 +193,11 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'hipo_glisemi'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'hipo_glisemi'.tr()} ${patient.hipo_glisemi}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -205,15 +211,11 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'hiper_glisemi'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'hiper_glisemi'.tr()} ${patient.hiper_glisemi}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -227,15 +229,11 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'kilo'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'kilo'.tr()} ${patient.weight}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -249,15 +247,11 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'boy'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'boy'.tr()} ${patient.length}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -271,15 +265,11 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'hasta_uyruk'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'hasta_uyruk'.tr()} ${patient.nationality}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -293,15 +283,11 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'hasta_dogum_yeri'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'hasta_dogum_yeri'.tr()} ${patient.place_of_birth}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -315,15 +301,11 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'hasta_dogum_tarihi'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'hasta_dogum_tarihi'.tr()} ${patient.data_of_birth}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -337,15 +319,11 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 10.0, top: 6, bottom: 6),
                               child: Text(
-                                'hasta_iletisim_bilgileri'.tr(),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                ),
+                                "${'hasta_iletisim_bilgileri'.tr()}\n${patient.tel_no}",
+                                style: buildTextStyle(),
                               ),
                             ),
                           ),
@@ -364,7 +342,7 @@ class PatientAboutPageState extends State<PatientAboutPage> {
               color: Colors.grey[300],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10, right: 20),
             child: Card(
@@ -380,66 +358,22 @@ class PatientAboutPageState extends State<PatientAboutPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            int selectedValue = 0;
-
-                            return AlertDialog(
-                              title: Text("Hipo Değeri Seç"),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Slider(
-                                      value: selectedValue.toDouble(),
-                                      min: 0,
-                                      max: 100,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          selectedValue = newValue.round();
-                                        });
-                                      },
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text("İptal"),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            print(
-                                                "Seçilen değer: $selectedValue");
-                                          },
-                                          child: Text("OK"),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: Card(
-                        elevation: 0,
-                        margin: EdgeInsets.zero,
-                        color: selectedBackgroundColor,
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(0)),
+                    Card(
+                      elevation: 0,
+                      margin: EdgeInsets.zero,
+                      color: selectedBackgroundColor,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Theme.of(context).colorScheme.outline,
                         ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(0)),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          chooseDialogHipoAndHiperGlisemi('hipo_value_set'
+                              .tr()); // Tıklama işleminde _showDialog fonksiyonunu çağırır
+                        },
                         child: Row(
                           children: [
                             Expanded(
@@ -449,23 +383,15 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                                 child: Text(
                                   'hipo_glisemi'.tr(),
                                   textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
+                                  style: buildTextStyleBottomValues(),
                                 ),
                               ),
                             ),
                             Expanded(
                               child: Text(
-                                "12",
+                                currentGlobalHipoGlisemi.toString(),
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+                                style: buildTextStyleBottomValues(),
                               ),
                             ),
                           ],
@@ -473,66 +399,22 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            int selectedValue = 0;
-
-                            return AlertDialog(
-                              title: Text("Hiper Değeri Seç"),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Slider(
-                                      value: selectedValue.toDouble(),
-                                      min: 0,
-                                      max: 100,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          selectedValue = newValue.round();
-                                        });
-                                      },
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text("İptal"),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            print(
-                                                "Seçilen değer: $selectedValue");
-                                          },
-                                          child: Text("OK"),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: Card(
-                        elevation: 0,
-                        margin: EdgeInsets.zero,
-                        color: selectedBackgroundColor,
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(0)),
+                    Card(
+                      elevation: 0,
+                      margin: EdgeInsets.zero,
+                      color: selectedBackgroundColor,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Theme.of(context).colorScheme.outline,
                         ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(0)),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          chooseDialogHipoAndHiperGlisemi('hiper_value_set'
+                              .tr()); // Tıklama işleminde _showDialog fonksiyonunu çağırır
+                        },
                         child: Row(
                           children: [
                             Expanded(
@@ -542,23 +424,15 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                                 child: Text(
                                   'hiper_glisemi'.tr(),
                                   textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
+                                  style: buildTextStyleBottomValues(),
                                 ),
                               ),
                             ),
                             Expanded(
                               child: Text(
-                                "20",
+                                currentGlobalHiperGlisemi.toString(),
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+                                style: buildTextStyleBottomValues(),
                               ),
                             ),
                           ],
@@ -578,20 +452,92 @@ class PatientAboutPageState extends State<PatientAboutPage> {
                       child: Text(
                         'degerleri_guncelle'.tr(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
                       ),
                     ),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),
             ),
           ),
+          const SizedBox(height: 5),
         ],
       ),
     ));
+  }
+
+  TextStyle buildTextStyleBottomValues() {
+    return const TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+    );
+  }
+
+  TextStyle buildTextStyle() {
+    return const TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.normal,
+      fontSize: 16,
+    );
+  }
+
+  void chooseDialogHipoAndHiperGlisemi(String dialogTitle) {
+    int currentHipoGlisemi = patient.hipo_glisemi; // Başlangıçta seçili değer
+    int currentHiperGlisemi = patient.hiper_glisemi; // Başlangıçta seçili değer
+
+    showDialog<int>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(dialogTitle),
+            content: StatefulBuilder(builder: (context, SBsetState) {
+              return NumberPicker(
+                  selectedTextStyle:
+                      const TextStyle(color: Colors.red, fontSize: 30),
+                  value: dialogTitle == 'hipo_value_set'.tr()
+                      ? currentHipoGlisemi
+                      : currentHiperGlisemi,
+                  minValue: 1,
+                  maxValue: 100,
+                  onChanged: (value) {
+                    setState(() {
+                      dialogTitle == 'hipo_value_set'.tr()
+                          ? currentHipoGlisemi = value
+                          : currentHiperGlisemi = value;
+                    }); // to change on widget level state
+                    SBsetState(() => dialogTitle == 'hipo_value_set'.tr()
+                        ? currentHipoGlisemi = value
+                        : currentHiperGlisemi =
+                            value); //* to change on dialog state
+                  });
+            }),
+            actions: [
+              TextButton(
+                child: Text('cancel'.tr()),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pop(); // İptal butonuna basıldığında dialog kapatılır
+                },
+              ),
+              TextButton(
+                child: Text('set'.tr()),
+                onPressed: () {
+                  setState(() => dialogTitle == 'hipo_value_set'.tr()
+                      ? currentGlobalHipoGlisemi = currentHipoGlisemi
+                      : currentGlobalHiperGlisemi = currentHiperGlisemi);
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+            actionsAlignment: MainAxisAlignment
+                .spaceBetween, // Düğmeleri sağa ve sola hizalar
+          );
+        });
   }
 }
