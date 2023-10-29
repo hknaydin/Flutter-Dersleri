@@ -21,18 +21,17 @@ List<PreviewItems> listOfItems = [
   ),
   PreviewItems(
     img: "assets/images/2.png",
-    title: "Share your training\nprograms",
-    subTitle:
-        "There will be many people who\n want hear your stories and\n experiences",
+    title: 'exercise'.tr(),
+    subTitle: 'exercise_answer'.tr(),
   ),
   PreviewItems(
     img: "assets/images/3.png",
-    title: "Find another doctor near\nyou",
-    subTitle: "Make your friendship and create a\nnew community",
+    title: 'healthy_eating'.tr(),
+    subTitle: 'healthy_eating_answer'.tr(),
   ),
   PreviewItems(
     img: "assets/images/logo.png",
-    title: "Find another doctor near\nyou",
-    subTitle: "Make your friendship and create a\nnew community",
+    title: 'mental'.tr(),
+    subTitle: 'mental_answer'.tr(),
   ),
 ];

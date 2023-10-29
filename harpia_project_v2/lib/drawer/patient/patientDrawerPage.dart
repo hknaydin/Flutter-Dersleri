@@ -2,12 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:harpia_project/views/doctorpages/doctornavigator/DrSettings.dart';
 
 import '../../views/doctorpages/doctornavigator/DrAboutDevice.dart';
+import '../../views/doctorpages/doctornavigator/DrSharePage.dart';
 import '../../views/faq.dart';
 import '../../views/harpia_about.dart';
-import '../component/bottom_user_info.dart';
 import '../component/custom_list_tile.dart';
 import '../component/header.dart';
 
@@ -27,7 +28,7 @@ class MainDrawerState extends State<PatientDrawer> {
       child: AnimatedContainer(
         curve: Curves.easeInOutCubic,
         duration: const Duration(milliseconds: 500),
-        width: _isCollapsed ? 280 : 100,
+        width: _isCollapsed ? 250 : 100,
         margin: const EdgeInsets.only(bottom: 0, top: 0),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -110,7 +111,24 @@ class MainDrawerState extends State<PatientDrawer> {
                 title: 'share'.tr(),
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
-                onTap: () {},
+                onTap: () {
+                  Fluttertoast.showToast(
+                      msg: "This is DoctorSharePage",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(
+                            builder: (context) => DoctorSharePage()),
+                      )
+                      .then((value) => (value) {
+                            setState(() {});
+                          });
+                },
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,

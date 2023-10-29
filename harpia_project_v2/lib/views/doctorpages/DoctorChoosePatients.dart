@@ -7,6 +7,7 @@ import 'package:harpia_project/model/user/Doctor.dart';
 
 import '../../model/user/Patient.dart';
 import '../../network/HttpRequestDoctor.dart';
+import '../../utils/Utils.dart';
 import 'PatientInformationPage.dart';
 
 class ListviewBuilderPatient extends StatefulWidget {
@@ -26,12 +27,14 @@ class ListviewBuilderPatientState extends State<ListviewBuilderPatient>
   late List<Patient> patients = []; // Hasta bilgilerini tutmak için bir liste
   late AnimationController animationController;
   late Animation<double> animation;
+  Color selectedBackgroundColor = Colors.white; // Seçilen arka plan rengi
 
   ListviewBuilderPatientState({required this.doctor});
 
   @override
   void initState() {
     super.initState();
+    _loadBackgroundColor();
     fetchPatients(doctor);
     animationController = AnimationController(
       vsync: this,
@@ -45,11 +48,18 @@ class ListviewBuilderPatientState extends State<ListviewBuilderPatient>
     );
   }
 
+  Future<void> _loadBackgroundColor() async {
+    Color colorValue = await utilLoadBackgroundColor();
+    setState(() {
+      selectedBackgroundColor = colorValue;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: selectedBackgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

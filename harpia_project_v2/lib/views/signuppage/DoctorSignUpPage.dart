@@ -207,8 +207,8 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                               successColor:
                                                   Colors.green.shade700,
                                               minLength: 8,
-                                              uppercaseCharCount: 2,
-                                              numericCharCount: 3,
+                                              uppercaseCharCount: 1,
+                                              numericCharCount: 2,
                                               specialCharCount: 1,
                                               normalCharCount: 3,
                                               width: 250,
@@ -276,38 +276,7 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
                                                     children: [
                                                       TextSpan(
                                                         text:
-                                                            "By creating an account, you agree to our ",
-                                                        style: TextStyle(
-                                                          color: const Color(
-                                                              0xffADA4A5),
-                                                          fontSize: ResponsiveDesign
-                                                                  .getScreenWidth() /
-                                                              30,
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text:
-                                                            "Conditions of Use",
-                                                        style: TextStyle(
-                                                          color: const Color(
-                                                              0xffADA4A5),
-                                                          fontSize: ResponsiveDesign
-                                                                  .getScreenWidth() /
-                                                              30,
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: " and ",
-                                                        style: TextStyle(
-                                                          color: const Color(
-                                                              0xffADA4A5),
-                                                          fontSize: ResponsiveDesign
-                                                                  .getScreenWidth() /
-                                                              30,
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: "Privacy Notice",
+                                                            "By creating an account, you agree to our Conditions of Use and Privacy Notice",
                                                         style: TextStyle(
                                                           color: const Color(
                                                               0xffADA4A5),
@@ -485,7 +454,7 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
             initialDate: DateTime.now(),
             firstDate: DateTime(
                 2000), //DateTime.now() - not to allow to choose before today.
-            lastDate: DateTime(2101));
+            lastDate: DateTime.now());
 
         if (pickedDate != null) {
           print(
@@ -608,6 +577,11 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
+          icon: Icon(
+            Icons.check_circle_outline,
+            color: Colors.green,
+            size: 50,
+          ),
           title: Text(title),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -629,10 +603,11 @@ class _DoctorSignUpPageState extends State<DoctorSignUpPage> {
         );
       },
     );
+    if (isSuccess) {
+      await Future.delayed(Duration(seconds: 2));
 
-    await Future.delayed(Duration(seconds: 2));
-
-    Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    }
   }
 
   void showAlertDialogInvalidUsernameOrPassword(

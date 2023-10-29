@@ -32,17 +32,17 @@ class CustomDrawerHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 60,
-                      height: 60,
+                      width: 50,
+                      height: 50,
                       decoration: BoxDecoration(
                         color: Colors.grey,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                          'https://t3.ftcdn.net/jpg/02/99/21/98/360_F_299219888_2E7GbJyosu0UwAzSGrpIxS0BrmnTCdo4.jpg',
-                          fit: BoxFit.cover,
+                        child: Image.asset(
+                          'assets/images/1.png',
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),

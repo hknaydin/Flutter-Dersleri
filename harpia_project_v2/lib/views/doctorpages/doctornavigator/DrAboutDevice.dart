@@ -7,6 +7,8 @@ import '../../../utils/MySharedPreferences.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
+import '../../../utils/Utils.dart';
+
 class DoctorAboutDevice extends StatefulWidget {
   const DoctorAboutDevice({super.key});
 
@@ -26,7 +28,7 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
   @override
   initState() {
     super.initState();
-    loadBackgroundColor();
+    _loadBackgroundColor();
     getDeviceInformation();
     checkBluetoothAvailability();
     findDensity();
@@ -47,10 +49,10 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
     }
   }
 
-  void loadBackgroundColor() async {
-    int colorValue = await MySharedPreferences.getBackgroundColor();
+  Future<void> _loadBackgroundColor() async {
+    Color colorValue = await utilLoadBackgroundColor();
     setState(() {
-      selectedBackgroundColor = Color(colorValue);
+      selectedBackgroundColor = colorValue;
     });
   }
 

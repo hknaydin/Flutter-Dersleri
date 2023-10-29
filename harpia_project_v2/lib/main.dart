@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:harpia_project/utils/Utils.dart';
 import 'package:harpia_project/views/network/network_error.dart';
 import 'package:harpia_project/utils/MySharedPreferences.dart';
 import 'package:harpia_project/views/preview.dart';
@@ -162,20 +163,11 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkInternetAndNavigate() async {
-    bool hasInternet = await _checkInternetConnection();
+    bool hasInternet = await checkInternetConnection();
     if (hasInternet) {
       _navigateToLoginPage();
     } else {
       _navigateToNetworkErrorPage();
-    }
-  }
-
-  Future<bool> _checkInternetConnection() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } on SocketException catch (_) {
-      return false;
     }
   }
 

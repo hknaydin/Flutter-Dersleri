@@ -1,15 +1,18 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 
 import 'package:crypto/crypto.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:harpia_project/utils/MySharedPreferences.dart';
 
 import '../model/user/Doctor.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/user/Patient.dart';
+import '../utils/Utils.dart';
 
 class DoctorApi {
   Future<http.Response> signUp(Doctor doctor, BuildContext context) async {
@@ -39,9 +42,26 @@ class DoctorApi {
       print("URL : $url");
       Map<String, dynamic> requestData = doctor.toJson();
       print("to json  $requestData");
-      var resp = await http.post(url,
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(requestData));
+      var resp = await http
+          .post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestData),
+      )
+          .timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          // Zaman aşımı hatası durumunda toast mesajı görüntüle
+          Fluttertoast.showToast(
+            msg: 'Zaman aşımı! İstek tamamlanamadı.',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+          throw TimeoutException('Zaman aşımı! İstek tamamlanamadı.');
+        },
+      );
       print('requestData : $requestData');
       print('resp : $resp');
       print('resp.body : ${resp.body}');
@@ -65,8 +85,10 @@ class DoctorApi {
       Uri url = Uri.parse('http://$hospitalInternalIp:8080/users/get_role')
           .replace(queryParameters: requestData);
 
-      var response =
-          await http.post(url, headers: {'Content-Type': 'application/json'});
+      var response = await http
+          .post(url, headers: {'Content-Type': 'application/json'}).timeout(
+        Duration(seconds: 10),
+      );
 
       if (response.statusCode == 200) {
         // İstek başarılı olduysa rolü alın
@@ -85,7 +107,8 @@ class DoctorApi {
     }
   }
 
-  Future<Map<String, dynamic>> loginDr(Doctor doctor) async {
+  Future<Map<String, dynamic>> loginDr(
+      BuildContext content, Doctor doctor) async {
     try {
       // Kullanıcı adı ve şifreyi kullanarak backend'e istek gönderin
       String hospitalInternalIp =
@@ -94,9 +117,24 @@ class DoctorApi {
 
       Map<String, dynamic> requestData = doctor.toJson();
       print("to json  $requestData");
-      var response = await http.post(url,
-          headers: {'Content-Type': 'application/json; charset=utf-8'},
-          body: jsonEncode(requestData));
+      var response = await http
+          .post(url,
+              headers: {'Content-Type': 'application/json; charset=utf-8'},
+              body: jsonEncode(requestData))
+          .timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          // Zaman aşımı hatası durumunda toast mesajı görüntüle
+          Fluttertoast.showToast(
+            msg: 'Zaman aşımı! İstek tamamlanamadı.',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+          throw TimeoutException('Zaman aşımı! İstek tamamlanamadı.');
+        },
+      );
       print('requestData : $requestData');
 
       print('resp : $response');
@@ -111,9 +149,11 @@ class DoctorApi {
       } else {
         // İstek başarısız olduysa hata mesajını alın
         var errorMessage = response.body;
+        utilShowErrorDialog(content, errorMessage.toString());
         throw Exception('Login error: $errorMessage');
       }
     } catch (error) {
+      utilShowErrorDialog(content, error.toString());
       throw Exception('An error occurred while performing login: $error');
     }
   }
@@ -131,9 +171,24 @@ class DoctorApi {
       Uri url = Uri.parse('http://$hospitalInternalIp:8080/users/getPatient')
           .replace(queryParameters: requestData);
 
-      var response = await http.post(url,
-          headers: {'Content-Type': 'application/json; charset=utf-8'},
-          body: jsonEncode(requestData));
+      var response = await http
+          .post(url,
+              headers: {'Content-Type': 'application/json; charset=utf-8'},
+              body: jsonEncode(requestData))
+          .timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          // Zaman aşımı hatası durumunda toast mesajı görüntüle
+          Fluttertoast.showToast(
+            msg: 'Zaman aşımı! İstek tamamlanamadı.',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+          throw TimeoutException('Zaman aşımı! İstek tamamlanamadı.');
+        },
+      );
 
       print('resp : $response');
       print('resp.body : ${jsonDecode(utf8.decode(response.bodyBytes))}');

@@ -4,6 +4,8 @@ import 'package:harpia_project/utils/MySharedPreferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
+import '../../../utils/Utils.dart';
+
 class DoctorSetting extends StatefulWidget {
   const DoctorSetting({super.key});
 
@@ -27,6 +29,14 @@ class DoctorSettingState extends State<DoctorSetting> {
     // TODO: implement initState
     super.initState();
     initPackageInfo();
+    _loadBackgroundColor();
+  }
+
+  Future<void> _loadBackgroundColor() async {
+    Color colorValue = await utilLoadBackgroundColor();
+    setState(() {
+      selectedBackgroundColor = colorValue;
+    });
   }
 
   @override

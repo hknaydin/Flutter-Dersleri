@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:harpia_project/model/userrole/userRole.dart';
+import 'package:harpia_project/utils/Utils.dart';
 import 'package:harpia_project/views/about_project_and_team.dart';
 import 'package:harpia_project/views/register.dart';
 import 'package:harpia_project/utils/Validation.dart';
@@ -438,10 +439,12 @@ class GirisSayfasiState extends State<LoginScreen> {
         );
 
         // Backend tarafından cevap gelene kadar bekleyin
-        await performLogin(userMail, userPassword, context);
-
-        // Progres çubuğunu kaldır
-        // Navigator.of(context).pop();
+        try {
+          await performLogin(userMail, userPassword, context);
+        } catch (e) {
+          utilShowErrorDialog(context, e.toString());
+          return;
+        }
       } else {
         showDialog(
           context: context,
@@ -672,25 +675,8 @@ class GirisSayfasiState extends State<LoginScreen> {
     } catch (e) {
       // An exception occurred, handle it as an error
       Navigator.of(context).pop(); // Close the "Signing" dialog
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('error'.tr()),
-            content:
-                Text('failed_to_connect_to_the_server_please_try_again'.tr()),
-            actions: <Widget>[
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the error dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
+      utilShowErrorDialog(
+          context, 'failed_to_connect_to_the_server_please_try_again'.tr());
 
       return; // Exit the function to prevent further execution
     }
@@ -749,7 +735,7 @@ class GirisSayfasiState extends State<LoginScreen> {
           employedInstitution: "ktu",
           loggedIn: true);
 
-      var responseData = await request.loginDr(doctor);
+      var responseData = await request.loginDr(context, doctor);
 
       if (responseData['success']) {
         // JSON verisini ayrıştırın ve "data" bölümünü alın

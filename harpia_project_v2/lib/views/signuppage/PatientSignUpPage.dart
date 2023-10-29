@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/ResponsiveDesign.dart';
@@ -48,6 +49,17 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
   final TextEditingController patientBirthDateController =
       TextEditingController();
   String? _selectedDoctor;
+  List<Gender> genders = [];
+  bool checkedValue = false;
+
+  bool success = false;
+
+  @override
+  void initState() {
+    super.initState();
+    genders.add(Gender('cinsiyet_male'.tr(), Icons.male, true));
+    genders.add(Gender('cinsiyet_female'.tr(), Icons.female, false));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -249,9 +261,104 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
                                               'please_enter_the_password',
                                               'please_enter_password_that_is_difficult_to_guess',
                                               TextInputType.text),
+                                          FlutterPwValidator(
+                                            defaultColor: Colors.grey.shade300,
+                                            controller:
+                                                patientPasswordController,
+                                            successColor: Colors.green.shade700,
+                                            minLength: 8,
+                                            uppercaseCharCount: 1,
+                                            numericCharCount: 2,
+                                            specialCharCount: 1,
+                                            normalCharCount: 3,
+                                            width: 250,
+                                            height: 100,
+                                            onSuccess: () {
+                                              setState(() {
+                                                success = true;
+                                              });
+                                            },
+                                            onFail: () {
+                                              setState(() {
+                                                success = false;
+                                              });
+                                            },
+                                          ),
                                           SizedBox(
                                               height: Constat
                                                   .doctorRegisterPanelWidgetSpace),
+                                          SizedBox(
+                                            width: 250.w,
+                                            height: 70.h,
+                                            child: Align(
+                                              alignment: Alignment
+                                                  .center, // Ortalamayı sağlar
+                                              child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                shrinkWrap: true,
+                                                itemCount: genders.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  final gender = genders[index];
+                                                  return InkWell(
+                                                    splashColor:
+                                                        Colors.pinkAccent,
+                                                    onTap: () {
+                                                      setState(() {
+                                                        genders.forEach(
+                                                            (gender) => gender
+                                                                    .isSelected =
+                                                                false);
+                                                        genders[index]
+                                                            .isSelected = true;
+                                                        selectGender(
+                                                            genders[index]);
+                                                      });
+                                                    },
+                                                    child: CustomRadio(
+                                                        genders[index]),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            child: CheckboxListTile(
+                                              contentPadding: EdgeInsets
+                                                  .zero, // Boşluğu kaldırmak için bu satırı ekledik
+                                              title: RichText(
+                                                textAlign: TextAlign.justify,
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text:
+                                                          "By creating an account, you agree to our Conditions of Use and Privacy Notice",
+                                                      style: TextStyle(
+                                                        color: const Color(
+                                                            0xffADA4A5),
+                                                        fontSize: ResponsiveDesign
+                                                                .getScreenWidth() /
+                                                            30,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              activeColor:
+                                                  const Color(0xff7B6F72),
+                                              value: checkedValue,
+                                              onChanged: (newValue) {
+                                                setState(() {
+                                                  checkedValue = newValue!;
+                                                });
+                                              },
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .leading,
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -302,6 +409,13 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
         SizedBox(height: Constat.doctorRegisterPanelWidgetSpace),
       ],
     );
+  }
+
+  void selectGender(Gender selectedGender) {
+    setState(() {
+      genders.forEach((gender) => gender.isSelected = false);
+      selectedGender.isSelected = true;
+    });
   }
 
   TextFormField PatientInputFormField(
@@ -472,4 +586,46 @@ class _PatientSignUpPageState extends State<PatientSignUpPage> {
             msg: msg,
             roleId: 0));
   }
+}
+
+class CustomRadio extends StatelessWidget {
+  Gender _gender;
+
+  CustomRadio(this._gender);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        color: _gender.isSelected ? Color(0xFF3B4257) : Colors.white,
+        child: Container(
+          height: 40,
+          width: 80,
+          alignment: Alignment.center,
+          margin: new EdgeInsets.only(left: 10.0, right: 10.0),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                _gender.icon,
+                color: _gender.isSelected ? Colors.white : Colors.grey,
+                size: 35,
+              ),
+              SizedBox(height: 5),
+              Text(
+                _gender.name,
+                style: TextStyle(
+                    fontSize: ResponsiveDesign.getScreenWidth() / 30,
+                    color: _gender.isSelected ? Colors.white : Colors.grey),
+              )
+            ],
+          ),
+        ));
+  }
+}
+
+class Gender {
+  String name;
+  IconData icon;
+  bool isSelected;
+
+  Gender(this.name, this.icon, this.isSelected);
 }
