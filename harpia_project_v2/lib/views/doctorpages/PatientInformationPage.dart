@@ -1,17 +1,23 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:harpia_project/model/patientGlikoz/PatientGlikozValues.dart';
 import 'package:harpia_project/model/user/Doctor.dart';
 import 'package:harpia_project/utils/MySharedPreferences.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../drawer/patient/patientDrawerPage.dart';
 import '../../model/user/Patient.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../network/HttpRequestPatient.dart';
+import '../../result/dataResult.dart';
 import 'PatientAbout.dart';
 
 class PatientInformationView extends StatefulWidget {
@@ -26,11 +32,6 @@ class PatientInformationView extends StatefulWidget {
       PatientPageForDoctorState(doctor: doctor, patient: patient);
 }
 
-late List<num> _xValues;
-late List<num> _yValues;
-List<double> _xPointValues = <double>[];
-List<double> _yPointValues = <double>[];
-
 class PatientPageForDoctorState extends State<PatientInformationView> {
   late String doctorName = "";
   final Doctor doctor;
@@ -44,17 +45,33 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
   late int patientGlobalHourPeriod = 0;
   late int patientGlobalMinutePeriod = 0;
   late String patientMeasurePeriod = "";
+  late Patient _pt;
+  late List<PatientGlikozValues> patientGlikozValues =
+      []; // Hasta bilgilerini tutmak için bir liste
+
   @override
   void initState() {
     _tooltipBehavior =
         TooltipBehavior(enable: true, header: '', canShowMarker: false);
     super.initState();
+    _pt = patient;
     loadBackgroundColor();
-    getPatientData(patient.id);
+    getPatientData(_pt.id);
     setPatientMeasurePeriod();
   }
 
-  void getPatientData(patient_id) {}
+  Future<void> getPatientData(int patientId) async {
+    var request = PatientApi();
+
+    List<PatientGlikozValues> _patientGlikozValues =
+        await request.getPatientGlikozValues(patientId);
+
+    print(_patientGlikozValues);
+
+    setState(() {
+      patientGlikozValues = _patientGlikozValues; // Hastaları güncelle
+    });
+  }
 
   void toggleDrawer() {
     if (isDrawerOpen) {
@@ -185,7 +202,10 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                           ),
                         ),
                         onPressed: () {
-                          // İkinci butona tıklama işlemi
+                          setPatientSensorPeriod(
+                              _pt.id,
+                              patientGlobalHourPeriod,
+                              patientGlobalMinutePeriod);
                         },
                         child: Text(
                             maxLines: 2,
@@ -285,7 +305,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => PatientAboutPage(
-                                        patient: patient,
+                                        patient: _pt,
                                         selectedBackgroundColor:
                                             selectedBackgroundColor,
                                       )),
@@ -351,7 +371,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                             minimumSize: Size(250.w, 40),
                           ),
                           child: Text(
-                            "${'patient_information'.tr()} ${patient.username} ${patient.userlastname}",
+                            "${'patient_information'.tr()} ${_pt.username} ${_pt.userlastname}",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.black,
@@ -375,15 +395,31 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
 
   SfCartesianChart buildSfCartesianChart() {
     return SfCartesianChart(
-      plotAreaBorderWidth: 0,
+      plotAreaBorderWidth: 2,
       backgroundColor: Colors.white,
       title: ChartTitle(text: 'Capital investment as a share of exports'),
-      primaryXAxis: DateTimeAxis(
-        edgeLabelPlacement: EdgeLabelPlacement.shift,
-        dateFormat: DateFormat.yMMM(),
-        intervalType: DateTimeIntervalType.months,
-        interval: 3,
+      primaryXAxis: CategoryAxis(),
+      legend: Legend(isVisible: true),
+      tooltipBehavior: TooltipBehavior(enable: true), // Enables the tooltip.
+      zoomPanBehavior: ZoomPanBehavior(
+        enablePanning: true, // Enable panning (dragging) of the chart.
+        enablePinching: true, // Enable pinching (zooming) of the chart.
+        enableDoubleTapZooming: true, // Enable double-tap zooming of the chart.
+        enableSelectionZooming: true, // Enable selection zooming of the chart.
       ),
+      // Enables the legend.
+      series: <ChartSeries>[
+        LineSeries<PatientGlikozValues, String>(
+            markerSettings: MarkerSettings(isVisible: true),
+            dataSource: patientGlikozValues,
+            xValueMapper: (PatientGlikozValues glikoz, _) =>
+                glikoz.login_time.toString(),
+            yValueMapper: (PatientGlikozValues glikoz, _) =>
+                int.parse(glikoz.glikoz_value),
+            dataLabelSettings:
+                DataLabelSettings(isVisible: true) // Enables the data label.
+            ),
+      ],
     );
   }
 
@@ -408,6 +444,8 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
               Expanded(
                 child: InkWell(
                   onTap: () {
+                    Vibration.vibrate(
+                        pattern: [500, 1000, 500, 2000, 500, 3000, 500, 500]);
                     numberPickerDialogHour('set_hour'.tr());
                   },
                   child: Card(
@@ -565,7 +603,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
   }
 
   void setPatientMeasurePeriod() {
-    int totalSeconds = int.parse(patient.sensor_period);
+    int totalSeconds = int.parse(_pt.sensor_period);
     int minutes = totalSeconds ~/ 60;
     int hours = minutes ~/ 60;
     int remainingMinutes = minutes % 60;
@@ -576,6 +614,29 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
       patientGlobalHourPeriod = hours;
       patientGlobalMinutePeriod = remainingMinutes;
       patientMeasurePeriod = date;
+    });
+  }
+
+  void setPatientSensorPeriod(int patientId, int patientGlobalHourPeriod,
+      int patientGlobalMinutePeriod) {
+    var request = PatientApi();
+
+    int totalSeconds =
+        patientGlobalHourPeriod * 3600 + patientGlobalMinutePeriod * 60;
+
+    request
+        .setPatientSensorPeriod(patientId, totalSeconds)
+        .then((response) async {
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+      var data = DataResult.fromJson(jsonData);
+      if (data.success) {
+        var extractedData = data.data;
+        Patient pt = Patient.fromJson(extractedData);
+        setPatientMeasurePeriod();
+        setState(() {
+          _pt = pt;
+        });
+      }
     });
   }
 }

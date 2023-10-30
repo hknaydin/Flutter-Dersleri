@@ -604,33 +604,31 @@ class GirisSayfasiState extends State<LoginScreen> {
 
   void informationMessage() {
     snackBar = SnackBar(
-      content: Expanded(
-        child: Row(
-          children: [
-            SvgPicture.asset('assets/images/ic_dikey_1.svg',
-                width: 24, height: 24),
-            SizedBox(
-              width: 15.w,
-            ), // Resim ekleyin
-            Expanded(
-              child: Column(
-                children: [
-                  Text(
-                      textAlign: TextAlign.justify,
-                      'tedavi_icin_degil'.tr(),
-                      style: TextStyle(
-                          fontSize: ResponsiveDesign.getScreenWidth() / 25,
-                          fontWeight: FontWeight.bold)),
-                  Text(
-                      textAlign: TextAlign.justify,
-                      'bu_uygulamada_sunulan'.tr(),
-                      style: TextStyle(
-                          fontSize: ResponsiveDesign.getScreenWidth() / 30)),
-                ],
-              ),
+      content: Row(
+        children: [
+          SvgPicture.asset('assets/images/ic_dikey_1.svg',
+              width: 24, height: 24),
+          SizedBox(
+            width: 15.w,
+          ), // Resim ekleyin
+          Expanded(
+            child: Column(
+              children: [
+                Text(
+                    textAlign: TextAlign.justify,
+                    'tedavi_icin_degil'.tr(),
+                    style: TextStyle(
+                        fontSize: ResponsiveDesign.getScreenWidth() / 25,
+                        fontWeight: FontWeight.bold)),
+                Text(
+                    textAlign: TextAlign.justify,
+                    'bu_uygulamada_sunulan'.tr(),
+                    style: TextStyle(
+                        fontSize: ResponsiveDesign.getScreenWidth() / 30)),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       action: SnackBarAction(
         label: 'close'.tr(),

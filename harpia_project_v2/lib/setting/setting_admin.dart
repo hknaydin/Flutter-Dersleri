@@ -272,29 +272,31 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: 100.w,
-        height: 50.h,
-        child: ElevatedButton(
-            onPressed: () {
-              formKey.currentState!
-                  .save(); // Form içindeki onSave metotlarını çağırır.
-              print("username: " + username);
-              print("pass: " + password);
-              loginProcess(context, username, password);
-            },
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.sp),
-                        side: BorderSide(color: Colors.pink))),
-                backgroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.pink),
-                foregroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.white)),
-            child: Text('login'.tr(),
-                style: TextStyle(
-                    fontSize: ResponsiveDesign.getScreenWidth() / 20))));
+    return SafeArea(
+      child: SizedBox(
+          width: 100.w,
+          height: 50.h,
+          child: ElevatedButton(
+              onPressed: () {
+                formKey.currentState!
+                    .save(); // Form içindeki onSave metotlarını çağırır.
+                print("username: " + username);
+                print("pass: " + password);
+                loginProcess(context, username, password);
+              },
+              style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.sp),
+                          side: BorderSide(color: Colors.pink))),
+                  backgroundColor:
+                      MaterialStateColor.resolveWith((states) => Colors.pink),
+                  foregroundColor:
+                      MaterialStateColor.resolveWith((states) => Colors.white)),
+              child: Text('login'.tr(),
+                  style: TextStyle(
+                      fontSize: ResponsiveDesign.getScreenWidth() / 20)))),
+    );
   }
 
   Future<void> loginProcess(

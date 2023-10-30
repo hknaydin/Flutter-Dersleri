@@ -9,6 +9,7 @@ import '../../views/doctorpages/doctornavigator/DrAboutDevice.dart';
 import '../../views/doctorpages/doctornavigator/DrSharePage.dart';
 import '../../views/faq.dart';
 import '../../views/harpia_about.dart';
+import '../../views/loginscreen.dart';
 import '../component/custom_list_tile.dart';
 import '../component/header.dart';
 
@@ -154,7 +155,9 @@ class MainDrawerState extends State<PatientDrawer> {
                 title: 'logout'.tr(),
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
-                onTap: () {},
+                onTap: () {
+                  logout(); // Logout fonksiyonunu çağırır},
+                },
               ),
               const Spacer(),
               const SizedBox(height: 10),
@@ -182,6 +185,14 @@ class MainDrawerState extends State<PatientDrawer> {
           ),
         ),
       ),
+    );
+  }
+
+  void logout() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+      (route) => false,
     );
   }
 }

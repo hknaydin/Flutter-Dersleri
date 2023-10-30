@@ -6,16 +6,6 @@ import '../core/ResponsiveDesign.dart';
 import 'ProductColor.dart';
 
 class CustomSnackBar {
-  // static ScaffoldMessenger getScaffoldMessenger(BuildContext context, String text) {
-  //   return ScaffoldMessenger.of(context).showSnackBar(getSnackBar(text));
-  //
-  // }
-  // static void showScaffoldMessage(
-  //     {required BuildContext context, required String msg}) {
-  //   ScaffoldMessenger.of(context)
-  //       .showSnackBar(getSnackBar(msg));
-  // }
-
   static SnackBar getSnackBar(String msg) {
     return SnackBar(
       content: Row(
@@ -41,9 +31,7 @@ class CustomSnackBar {
       backgroundColor: ProductColor.black,
       duration: Duration(seconds: 5),
       behavior:
-          SnackBarBehavior.floating, // Altta yüzen bir SnackBar olarak ayarla
-      margin: EdgeInsets.only(
-          left: 5, right: 5, bottom: 20.0), // Alt boşluğu ayarla
+          SnackBarBehavior.fixed, // Altta yüzen bir SnackBar olarak ayarla
     );
   }
 }
