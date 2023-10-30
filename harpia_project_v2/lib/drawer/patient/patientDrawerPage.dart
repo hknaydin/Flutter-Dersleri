@@ -72,14 +72,10 @@ class MainDrawerState extends State<PatientDrawer> {
                 infoCount: 0,
                 doHaveMoreOptions: Icons.arrow_forward_ios,
                 onTap: () {
-                  Navigator.of(context)
-                      .push(
-                        MaterialPageRoute(
-                            builder: (context) => DoctorAboutDevice()),
-                      )
-                      .then((value) => (value) {
-                            setState(() {});
-                          });
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => DoctorAboutDevice()),
+                  );
                 },
               ),
               CustomListTile(

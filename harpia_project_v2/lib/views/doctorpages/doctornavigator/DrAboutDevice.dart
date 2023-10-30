@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../utils/MySharedPreferences.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
@@ -40,11 +39,11 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
 
     if (isBluetoothAvailable) {
       setState(() {
-        isBluetooth = 'YES';
+        isBluetooth = "YES";
       });
     } else {
       setState(() {
-        isBluetooth = 'NO';
+        isBluetooth = "NO";
       });
     }
   }
@@ -81,25 +80,25 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
   void findDensity() async {
     switch (MediaQuery.of(context).devicePixelRatio.toInt()) {
       case 120:
-        resolutionDip = 'ldpi';
+        resolutionDip = "ldpi";
         break;
       case 160:
-        resolutionDip = 'mdpi';
+        resolutionDip = "mdpi";
         break;
       case 240:
-        resolutionDip = 'hdpi';
+        resolutionDip = "hdpi";
         break;
       case 320:
-        resolutionDip = 'xhdpi';
+        resolutionDip = "xhdpi";
         break;
       case 480:
-        resolutionDip = 'xxhdpi';
+        resolutionDip = "xxhdpi";
         break;
       case 640:
-        resolutionDip = 'xxxhdpi';
+        resolutionDip = "xxxhdpi";
         break;
       default:
-        resolutionDip = 'unknown';
+        resolutionDip = "unknown";
     }
   }
 
@@ -176,7 +175,7 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                     padding: const EdgeInsets.all(20),
                     child: Text(
                       'about_device'.tr(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -192,7 +191,7 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                   padding: const EdgeInsets.all(20),
                   child: Text(
                     'hardware'.tr(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -210,31 +209,31 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                           children: <Widget>[
                             Text(
                               'device_name'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
                             Text(
                               'android_version'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
                             Text(
                               'manufacturer'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
                             Text(
                               'model'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
                             Text(
                               'brand'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
@@ -252,7 +251,7 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                                   : Platform.isIOS
                                       ? _deviceData['device']
                                       : deviceName, // Buraya ilgili verileri ekleyin
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
@@ -263,7 +262,7 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                                       ? _deviceData['utsname.release:']
                                           .toString()
                                       : deviceName,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
@@ -274,7 +273,7 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                                       ? _deviceData['identifierForVendor']
                                           .toString()
                                       : deviceName,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
@@ -284,7 +283,7 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                                   : Platform.isIOS
                                       ? _deviceData['device']
                                       : deviceName,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
@@ -294,7 +293,7 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                                   : Platform.isIOS
                                       ? _deviceData['device']
                                       : deviceName,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
@@ -306,14 +305,14 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                 ),
                 Container(
                   height: 3,
-                  color: Color(0x80D1D1D1),
-                  margin: EdgeInsets.only(top: 12),
+                  color: const Color(0x80D1D1D1),
+                  margin: const EdgeInsets.only(top: 12),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Text(
                     'bluetooth_smart'.tr(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -331,13 +330,13 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                           children: <Widget>[
                             Text(
                               'bluetooth_smart_supported'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
                             Text(
                               'advertiser_mode_supported'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
@@ -351,11 +350,11 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                           children: <Widget>[
                             Text(
                               isBluetooth, // Bu değerleri ilgili olanlarla güncelleyin
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
-                            Text(
+                            const Text(
                               'YES',
                               style: TextStyle(
                                 color: Colors.black,
@@ -369,14 +368,14 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                 ),
                 Container(
                   height: 3,
-                  color: Color(0x80D1D1D1),
-                  margin: EdgeInsets.only(top: 12),
+                  color: const Color(0x80D1D1D1),
+                  margin: const EdgeInsets.only(top: 12),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Text(
                     'screen'.tr(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -394,25 +393,25 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                           children: <Widget>[
                             Text(
                               'resolution'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
                             Text(
                               'dimension_px'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
                             Text(
                               'dimension_dip'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
                             Text(
                               'size'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
@@ -426,23 +425,23 @@ class DoctorAboutDeviceState extends State<DoctorAboutDevice> {
                           children: <Widget>[
                             Text(
                               resolutionDip, // Bu değerleri ilgili olanlarla güncelleyin
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
                             Text(
                               "$resolutionWidth x $resolutionHeight",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
                             Text(
                               "$screenWidth x $screenHeight",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
-                            Text(
+                            const Text(
                               'Normal',
                               style: TextStyle(
                                 color: Colors.black,
