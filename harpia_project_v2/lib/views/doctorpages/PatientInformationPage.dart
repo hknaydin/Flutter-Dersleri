@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:harpia_project/model/user/Doctor.dart';
 import 'package:harpia_project/utils/MySharedPreferences.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 import '../../drawer/patient/patientDrawerPage.dart';
 import '../../model/user/Patient.dart';
@@ -39,7 +41,9 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isDrawerOpen = false;
   TooltipBehavior? _tooltipBehavior;
-
+  late int patientGlobalHourPeriod = 0;
+  late int patientGlobalMinutePeriod = 0;
+  late String patientMeasurePeriod = "";
   @override
   void initState() {
     _tooltipBehavior =
@@ -47,6 +51,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
     super.initState();
     loadBackgroundColor();
     getPatientData(patient.id);
+    setPatientMeasurePeriod();
   }
 
   void getPatientData(patient_id) {}
@@ -157,7 +162,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              '11:11',
+                              patientMeasurePeriod,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -248,18 +253,18 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                                 _selectedColor = newSelection.first;
                               });
                             },
-                            segments: const <ButtonSegment<Color>>[
+                            segments: <ButtonSegment<Color>>[
                               ButtonSegment<Color>(
                                 value: Colors.red,
-                                label: Text('Red'),
+                                label: Text('daily'.tr()),
                               ),
                               ButtonSegment<Color>(
                                 value: Colors.green,
-                                label: Text('Green'),
+                                label: Text('weekly'.tr()),
                               ),
                               ButtonSegment<Color>(
                                 value: Colors.yellow,
-                                label: Text('Yellow'),
+                                label: Text('monthly'.tr()),
                               ),
                             ],
                           ),
@@ -382,7 +387,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
     );
   }
 
-  buildHourAndMinutePanel(BuildContext context) {
+  Widget buildHourAndMinutePanel(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: Card(
@@ -400,56 +405,76 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Card(
-                elevation: 0,
-                color: selectedBackgroundColor,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(0)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Text('set_hour'.tr(),
-                          style: buildTextStyleHourAndMinuteValue(
-                              FontWeight.normal, 15)),
-                      SizedBox(width: 20),
-                      Text(
-                        "1",
-                        style: buildTextStyleHourAndMinuteValue(
-                            FontWeight.bold, 15),
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    numberPickerDialogHour('set_hour'.tr());
+                  },
+                  child: Card(
+                    elevation: 0,
+                    color: selectedBackgroundColor,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.outline,
                       ),
-                    ],
+                      borderRadius: const BorderRadius.all(Radius.circular(0)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        children: [
+                          Text('set_hour'.tr(),
+                              style: buildTextStyleHourAndMinuteValue(
+                                  FontWeight.normal, 15)),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: Text(
+                              patientGlobalHourPeriod.toString(),
+                              style: buildTextStyleHourAndMinuteValue(
+                                  FontWeight.bold, 15),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
               SizedBox(width: 20),
-              Card(
-                elevation: 0,
-                color: selectedBackgroundColor,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(0)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Text('set_minute'.tr(),
-                          style: buildTextStyleHourAndMinuteValue(
-                              FontWeight.normal, 15)),
-                      SizedBox(width: 20),
-                      Text(
-                        "02",
-                        style: buildTextStyleHourAndMinuteValue(
-                            FontWeight.bold, 15),
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    numberPickerDialogHour('set_minute'.tr());
+                  },
+                  child: Card(
+                    elevation: 0,
+                    color: selectedBackgroundColor,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.outline,
                       ),
-                    ],
+                      borderRadius: const BorderRadius.all(Radius.circular(0)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        children: [
+                          Text('set_minute'.tr(),
+                              style: buildTextStyleHourAndMinuteValue(
+                                  FontWeight.normal, 15)),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: Text(
+                              patientGlobalMinutePeriod.toString(),
+                              style: buildTextStyleHourAndMinuteValue(
+                                  FontWeight.bold, 15),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               )
@@ -467,5 +492,90 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
       fontWeight: fontWeight,
       fontSize: fontSize,
     );
+  }
+
+  String setMeasuringPeriod(String ptSensorPeriod) {
+    int totalSeconds = int.parse(ptSensorPeriod);
+    int minutes = totalSeconds ~/ 60;
+    int hours = minutes ~/ 60;
+    int remainingMinutes = minutes % 60;
+
+    String date =
+        '${hours.toString().padLeft(2, '0')}:${remainingMinutes.toString().padLeft(2, '0')}';
+    setState(() {
+      patientGlobalHourPeriod = hours;
+      patientGlobalMinutePeriod = remainingMinutes;
+    });
+    return date;
+  }
+
+  void numberPickerDialogHour(String dialogTitle) {
+    int currentHourPeriod = patientGlobalHourPeriod;
+    int currentMinutePeriod = patientGlobalMinutePeriod;
+
+    showDialog<int>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(dialogTitle, textAlign: TextAlign.center),
+            content: StatefulBuilder(builder: (context, SBsetState) {
+              return NumberPicker(
+                  textStyle: TextStyle(color: Colors.blue, fontSize: 20),
+                  selectedTextStyle:
+                      const TextStyle(color: Colors.red, fontSize: 40),
+                  value: dialogTitle == 'set_hour'.tr()
+                      ? currentHourPeriod
+                      : currentMinutePeriod,
+                  minValue: 0,
+                  maxValue: dialogTitle == 'set_hour'.tr() ? 23 : 59,
+                  onChanged: (value) {
+                    setState(() {
+                      dialogTitle == 'set_hour'.tr()
+                          ? currentHourPeriod = value
+                          : currentMinutePeriod = value;
+                    }); // to change on widget level state
+                    SBsetState(() => dialogTitle == 'set_hour'.tr()
+                        ? currentHourPeriod = value
+                        : currentMinutePeriod =
+                            value); //* to change on dialog state
+                  });
+            }),
+            actions: [
+              TextButton(
+                child: Text('cancel'.tr()),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pop(); // İptal butonuna basıldığında dialog kapatılır
+                },
+              ),
+              TextButton(
+                child: Text('set'.tr()),
+                onPressed: () {
+                  setState(() => dialogTitle == 'set_hour'.tr()
+                      ? patientGlobalHourPeriod = currentHourPeriod
+                      : patientGlobalMinutePeriod = currentMinutePeriod);
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+            actionsAlignment: MainAxisAlignment
+                .spaceBetween, // Düğmeleri sağa ve sola hizalar
+          );
+        });
+  }
+
+  void setPatientMeasurePeriod() {
+    int totalSeconds = int.parse(patient.sensor_period);
+    int minutes = totalSeconds ~/ 60;
+    int hours = minutes ~/ 60;
+    int remainingMinutes = minutes % 60;
+
+    String date =
+        '${hours.toString().padLeft(2, '0')}:${remainingMinutes.toString().padLeft(2, '0')}';
+    setState(() {
+      patientGlobalHourPeriod = hours;
+      patientGlobalMinutePeriod = remainingMinutes;
+      patientMeasurePeriod = date;
+    });
   }
 }
