@@ -443,7 +443,6 @@ class GirisSayfasiState extends State<LoginScreen> {
           await performLogin(userMail, userPassword, context);
         } catch (e) {
           utilShowErrorDialog(context, e.toString());
-          return;
         }
       } else {
         showDialog(

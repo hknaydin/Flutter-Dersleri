@@ -1,6 +1,6 @@
 {
   "locale": "en",
-  "login": "Login",
+  "login": "Login","next": "Next",
   "login_successful": "Login Successful",
   "set_hipo_and_hiper_success": "Hypo and Hyper Glycemia values updated successfully",
   "skip":"Skip",

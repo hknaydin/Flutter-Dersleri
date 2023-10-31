@@ -62,10 +62,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
+  Color selectedBackgroundColor = Colors.white; // Seçilen arka plan rengi
+
   @override
   void initState() {
     super.initState();
     _checkInternetAndNavigate();
+    loadBackgroundColor();
   }
 
   @override
@@ -75,7 +78,7 @@ class SplashScreenState extends State<SplashScreen> {
     // Enable immersive mode
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: selectedBackgroundColor,
       body: Stack(
         children: [
           // First LinearLayout with background image
@@ -186,5 +189,12 @@ class SplashScreenState extends State<SplashScreen> {
       context,
       MaterialPageRoute(builder: (context) => NetworkErrorPage()),
     );
+  }
+
+  void loadBackgroundColor() async {
+    int colorValue = await MySharedPreferences.getBackgroundColor();
+    setState(() {
+      selectedBackgroundColor = Color(colorValue);
+    });
   }
 }

@@ -7,6 +7,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'dart:math' as math;
 
+import '../utils/MySharedPreferences.dart';
+
 final List<String> imageList = [
   'assets/images/ic_dikey.svg',
   'assets/images/ic_dikey.svg',
@@ -25,6 +27,21 @@ class About extends StatefulWidget {
 }
 
 class AboutState extends State<About> {
+  Color selectedBackgroundColor = Colors.white; // Seçilen arka plan rengi
+
+  void loadBackgroundColor() async {
+    int colorValue = await MySharedPreferences.getBackgroundColor();
+    setState(() {
+      selectedBackgroundColor = Color(colorValue);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadBackgroundColor();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -32,6 +49,7 @@ class AboutState extends State<About> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: selectedBackgroundColor,
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(

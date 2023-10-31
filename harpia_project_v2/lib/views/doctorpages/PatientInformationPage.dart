@@ -1,11 +1,8 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:harpia_project/model/patientGlikoz/PatientGlikozValues.dart';
 import 'package:harpia_project/model/user/Doctor.dart';
 import 'package:harpia_project/utils/MySharedPreferences.dart';
@@ -33,6 +30,7 @@ class PatientInformationView extends StatefulWidget {
 }
 
 class PatientPageForDoctorState extends State<PatientInformationView> {
+  late TrackballBehavior _trackballBehavior;
   late String doctorName = "";
   final Doctor doctor;
   final Patient patient;
@@ -53,6 +51,8 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
   void initState() {
     _tooltipBehavior =
         TooltipBehavior(enable: true, header: '', canShowMarker: false);
+    _trackballBehavior = TrackballBehavior(
+        enable: true, activationMode: ActivationMode.singleTap);
     super.initState();
     _pt = patient;
     loadBackgroundColor();
@@ -103,12 +103,12 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: selectedBackgroundColor,
-        drawer: PatientDrawer(),
+        drawer: const PatientDrawer(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            SizedBox(height: 1),
+            const SizedBox(height: 1),
             // Birinci Satır
             Padding(
               padding: const EdgeInsets.all(2.0),
@@ -137,7 +137,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                         onPressed: toggleDrawer,
                       ),
                     ),
-                    SizedBox(width: 4),
+                    const SizedBox(width: 4),
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
@@ -146,7 +146,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                           primary: Colors.red.withOpacity(0),
                           // Butonun tıklanınca rengi
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(
+                            side: const BorderSide(
                               color: Colors.black,
                               width: 1,
                             ),
@@ -161,7 +161,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                                 FontWeight.normal, 12)),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,14 +187,14 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                         ),
                       ],
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 0.0,
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(
+                            side: const BorderSide(
                               color: Colors.black,
                               width: 1,
                             ),
@@ -215,7 +215,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                                 FontWeight.normal, 12)),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                   ],
                 ),
               ),
@@ -258,7 +258,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                 ),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Center(
@@ -293,7 +293,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
@@ -314,21 +314,21 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
-                              side: BorderSide(color: Colors.blue),
+                              side: const BorderSide(color: Colors.blue),
                             ),
-                            minimumSize: Size(150, 40),
+                            minimumSize: const Size(150, 40),
                           ),
                           child: Text(
                             'hasta_bilgisi'.tr(),
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: () {
                             // Hasta bilgisi butonuna tıklama işlemi
@@ -336,14 +336,14 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0),
-                              side: BorderSide(color: Colors.blue),
+                              side: const BorderSide(color: Colors.blue),
                             ),
-                            minimumSize: Size(150, 40),
+                            minimumSize: const Size(150, 40),
                           ),
                           child: Text(
                             'pdf_cikti'.tr(),
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -361,7 +361,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                             // Hasta bilgisi butonuna tıklama işlemi
                           },
                           style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
+                            shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(50),
                                 topRight: Radius.circular(50),
@@ -373,7 +373,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                           child: Text(
                             "${'patient_information'.tr()} ${_pt.username} ${_pt.userlastname}",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -397,15 +397,18 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
     return SfCartesianChart(
       plotAreaBorderWidth: 2,
       backgroundColor: Colors.white,
+      trackballBehavior: _trackballBehavior,
       title: ChartTitle(text: 'Capital investment as a share of exports'),
       primaryXAxis: CategoryAxis(),
-      legend: Legend(isVisible: true),
+      primaryYAxis: NumericAxis(),
+      legend: const Legend(isVisible: true),
       tooltipBehavior: TooltipBehavior(enable: true), // Enables the tooltip.
       zoomPanBehavior: ZoomPanBehavior(
         enablePanning: true, // Enable panning (dragging) of the chart.
         enablePinching: true, // Enable pinching (zooming) of the chart.
         enableDoubleTapZooming: true, // Enable double-tap zooming of the chart.
-        enableSelectionZooming: true, // Enable selection zooming of the chart.
+        enableSelectionZooming: true,
+        enableMouseWheelZooming: true, // Enable selection zooming of the chart.
       ),
       // Enables the legend.
       series: <ChartSeries>[
@@ -464,7 +467,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                           Text('set_hour'.tr(),
                               style: buildTextStyleHourAndMinuteValue(
                                   FontWeight.normal, 15)),
-                          SizedBox(width: 20),
+                          const SizedBox(width: 20),
                           Expanded(
                             child: Text(
                               patientGlobalHourPeriod.toString(),
@@ -479,7 +482,7 @@ class PatientPageForDoctorState extends State<PatientInformationView> {
                   ),
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               Expanded(
                 child: InkWell(
                   onTap: () {

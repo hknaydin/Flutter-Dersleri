@@ -25,6 +25,8 @@ String username = "", password = "";
 class SettingAdminState extends State<SettingAdmin> {
   TextEditingController tfUsername = TextEditingController();
   TextEditingController tfPassword = TextEditingController();
+  Color selectedBackgroundColor = Colors.white; // Seçilen arka plan rengi
+
   var formKey = GlobalKey<FormState>();
 
   @override
@@ -39,6 +41,14 @@ class SettingAdminState extends State<SettingAdmin> {
     super.initState();
     // SharedPreferences'i başlat
     loadSharedPreferences();
+    loadBackgroundColor();
+  }
+
+  void loadBackgroundColor() async {
+    int colorValue = await MySharedPreferences.getBackgroundColor();
+    setState(() {
+      selectedBackgroundColor = Color(colorValue);
+    });
   }
 
   void loadSharedPreferences() async {
@@ -57,6 +67,7 @@ class SettingAdminState extends State<SettingAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: selectedBackgroundColor,
       body: Column(
         children: [
           Expanded(

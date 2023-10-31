@@ -27,6 +27,7 @@ class SettingIpEnterState extends State<SettingIpEnter> {
   TextEditingController tfHospitalName = TextEditingController();
   TextEditingController tfInternalIp = TextEditingController();
   TextEditingController tfExternalIp = TextEditingController();
+  Color selectedBackgroundColor = Colors.white; // Seçilen arka plan rengi
 
   var formKey = GlobalKey<FormState>();
 
@@ -42,6 +43,14 @@ class SettingIpEnterState extends State<SettingIpEnter> {
   void initState() {
     super.initState();
     loadSharedPreferences();
+    loadBackgroundColor();
+  }
+
+  void loadBackgroundColor() async {
+    int colorValue = await MySharedPreferences.getBackgroundColor();
+    setState(() {
+      selectedBackgroundColor = Color(colorValue);
+    });
   }
 
   void loadSharedPreferences() async {
@@ -63,6 +72,7 @@ class SettingIpEnterState extends State<SettingIpEnter> {
       debugShowCheckedModeBanner: false,
       home: SafeArea(
         child: Scaffold(
+          backgroundColor: selectedBackgroundColor,
           body: Column(
             children: [
               Expanded(

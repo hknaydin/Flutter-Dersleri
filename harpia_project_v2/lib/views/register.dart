@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:harpia_project/views/signuppage/DoctorSignUpPage.dart';
 import 'package:harpia_project/views/signuppage/PatientSignUpPage.dart';
 
+import '../utils/MySharedPreferences.dart';
+
 enum UserType {
   Doctor,
   Patient,
@@ -24,6 +26,7 @@ class RegisterPageState extends State<RegisterPage> {
   final TextEditingController _tcController = TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
   final TextEditingController _institutionController = TextEditingController();
+  Color selectedBackgroundColor = Colors.white; // Seçilen arka plan rengi
 
   List<Widget> pages = [
     DoctorSignUpPage(),
@@ -43,12 +46,26 @@ class RegisterPageState extends State<RegisterPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    loadBackgroundColor();
+  }
+
+  void loadBackgroundColor() async {
+    int colorValue = await MySharedPreferences.getBackgroundColor();
+    setState(() {
+      selectedBackgroundColor = Color(colorValue);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: DefaultTabController(
         length: 2,
         initialIndex: 0,
         child: Scaffold(
+          backgroundColor: selectedBackgroundColor,
           body: TabBarView(
             children: pages,
           ),

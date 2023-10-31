@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -45,7 +46,7 @@ class PatientApi {
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == HttpStatus.ok) {
         return response;
       } else {
         // İstek başarısız olduysa hata mesajını alın
@@ -88,7 +89,7 @@ class PatientApi {
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == HttpStatus.ok) {
         return response;
       } else {
         // İstek başarısız olduysa hata mesajını alın
@@ -137,7 +138,7 @@ class PatientApi {
       print('resp : $response');
       print('resp.body : ${jsonDecode(utf8.decode(response.bodyBytes))}');
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == HttpStatus.ok) {
         // İstek başarılı olduysa rolü alın
         var responseData = response.body;
 

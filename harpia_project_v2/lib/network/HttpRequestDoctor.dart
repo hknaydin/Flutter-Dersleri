@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -90,7 +91,7 @@ class DoctorApi {
         Duration(seconds: 10),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == HttpStatus.ok) {
         // İstek başarılı olduysa rolü alın
         var responseData = jsonDecode(utf8.decode(response.bodyBytes));
         String role = responseData;
@@ -140,7 +141,7 @@ class DoctorApi {
       print('resp : $response');
       print('resp.body : ${jsonDecode(utf8.decode(response.bodyBytes))}');
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == HttpStatus.ok) {
         // İstek başarılı olduysa rolü alın
         var responseData = jsonDecode(utf8.decode(response.bodyBytes));
 
@@ -193,7 +194,7 @@ class DoctorApi {
       print('resp : $response');
       print('resp.body : ${jsonDecode(utf8.decode(response.bodyBytes))}');
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == HttpStatus.ok) {
         // İstek başarılı olduysa rolü alın
         var responseData = response.body;
 
