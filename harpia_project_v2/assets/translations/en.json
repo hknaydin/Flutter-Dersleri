@@ -2,6 +2,7 @@
   "locale": "en",
   "login": "Login","next": "Next",
   "login_successful": "Login Successful",
+  "choose_theme": "Choose Theme",
   "set_hipo_and_hiper_success": "Hypo and Hyper Glycemia values updated successfully",
   "skip":"Skip",
   "exercise": "Exercise","exercise_answer": "Exercise is important, especially for preventing cardiovascular diseases. Therefore, it is beneficial to engage in at least 150 minutes of exercise per week. Even a simple walk can help you take a step towards a healthier life in the future.",

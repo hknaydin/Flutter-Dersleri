@@ -15,6 +15,7 @@ class DoctorSetting extends StatefulWidget {
 
 class DoctorSettingState extends State<DoctorSetting> {
   Color selectedBackgroundColor = Colors.white; // Seçilen arka plan rengi
+
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
     packageName: 'Unknown',

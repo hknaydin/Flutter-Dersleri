@@ -2,6 +2,7 @@
   "locale": "tr","next":"Sonraki",
   "login_successful": "Giriş Başarılı",
   "take_care_of_your_health":"Sağlığınıza önem verin",
+  "choose_theme":"Tema Seç",
   "set_hipo_and_hiper_success":"Hipo Glisemi ve Hiper Glisemi Değerleri başarılı bir şekilde güncellendi",
   "skip":"Atla",
   "exercise": "Egzersiz","exercise_answer":"Egzersiz özellikle kalp damar hastalıklarından korunmak için önemlidir. Bu nedenle haftada en az 150 dakika egzersiz yapmanda yarar var. Basit bir yürüyüş bile ileride daha sağlıklı bir hayata adım atmana yardımcı olacak.",

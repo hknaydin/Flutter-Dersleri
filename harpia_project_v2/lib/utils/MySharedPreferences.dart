@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constant/favorite.dart';
+
 class MySharedPreferences {
   static String LOCALNAME = "localName";
   static String ADMINUSERNAME = "username";
@@ -11,6 +13,37 @@ class MySharedPreferences {
   static String LOGINUSERNAME = "loginUserName";
   static String LOGINUSERPASSWORD = "loginUserPassword";
   static String BACKGROUNDCOLOR = "backgroundcolor";
+  static String APPTHEME = "appTheme";
+  static String APPFAVORITESTATE = "appFavoriteState";
+
+  static Future<Null> setAppFavoriteState(Favorite state, String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    List<String> present =
+        prefs.getStringList(MySharedPreferences.APPFAVORITESTATE) ??
+            List<String>.empty(growable: true);
+    state == Favorite.enabled ? present.add(id) : present.remove(id);
+    prefs.setStringList(MySharedPreferences.APPFAVORITESTATE, present);
+  }
+
+  static Future<Favorite> getAppFavoriteState(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> present =
+        prefs.getStringList('favorite') ?? List<String>.empty();
+    return present.contains(id) ? Favorite.enabled : Favorite.disabled;
+  }
+
+  static Future<Null> setAppTheme(ThemeMode value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt(MySharedPreferences.APPTHEME, value.index);
+  }
+
+  static Future<ThemeMode> getAppTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int index = prefs.getInt(MySharedPreferences.APPTHEME) ?? 1;
+
+    return ThemeMode.values[index];
+  }
 
   static Future<Null> setBackgroundColor(Color color) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

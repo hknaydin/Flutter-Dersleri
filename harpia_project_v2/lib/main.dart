@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:harpia_project/theme/theme.dart';
 import 'package:harpia_project/utils/Utils.dart';
 import 'package:harpia_project/views/network/network_error.dart';
 import 'package:harpia_project/utils/MySharedPreferences.dart';
 import 'package:harpia_project/views/preview.dart';
 import 'package:get_storage/get_storage.dart';
+
+ThemeMode appTheme = ThemeMode.dark; // Varsayılan tema
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,20 +36,19 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    bool themeMoe = false;
     return ScreenUtilInit(
       designSize: const Size(300, 800),
       builder: (context, child) => MaterialApp(
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        theme: ThemeData(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-        ),
+        themeMode: ThemeMode.dark,
+        theme: lightTheme,
+        darkTheme: darkTheme,
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
       ),
